@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="tn.controllers.MainController"
+      prefHeight="600.0" prefWidth="800.0"
+      spacing="10" alignment="CENTER">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Gestion des Produits" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button fx:id="btnAddProduit" text="Ajouter Produit" onAction="#handleAddProduit" />
+        <Button fx:id="btnRefresh" text="Actualiser" onAction="#handleRefresh" />
+        <TextField fx:id="searchField" promptText="Rechercher par nom..." />
+        <Button text="Rechercher" onAction="#handleSearch"/>
+    </HBox>
+
+    <TableView fx:id="produitTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="50" />
+            <TableColumn fx:id="colNom" text="Nom" prefWidth="150" />
+            <TableColumn fx:id="colDescription" text="Description" prefWidth="150" />
+            <TableColumn fx:id="colCategorie" text="Catégorie" prefWidth="100" />
+            <TableColumn fx:id="colPrix" text="Prix" prefWidth="100" />
+            <TableColumn fx:id="colStock" text="Stock" prefWidth="100" />
+            <TableColumn fx:id="colActions" text="Actions" prefWidth="150" />
+        </columns>
+    </TableView>
+
+    <Label fx:id="statusLabel" text="Total produits: 0" />
+</VBox>
