@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.text.Text?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="Controllers.MainDashboardController"
+      stylesheets="@../styles/styles.css">
+
+    <!-- Sidebar -->
+    <VBox styleClass="sidebar">
+        <!-- Profile Section -->
+        <VBox styleClass="sidebar-profile">
+            <HBox styleClass="profile-container">
+                <!-- Profile Photo Container -->
+                <StackPane styleClass="profile-photo-container">
+                    <Circle fx:id="profilePhoto" radius="30" styleClass="profile-photo"/>
+                    <Circle fx:id="statusIndicator" radius="8" styleClass="status-indicator"
+                            translateX="20" translateY="20"/>
+                </StackPane>
+
+                <!-- User Info -->
+                <VBox styleClass="user-info">
+                    <Label fx:id="userFullName" styleClass="user-fullname"/>
+                    <Label fx:id="userType" styleClass="user-type"/>
+                    <Label fx:id="userStatus" styleClass="user-status"/>
+                    <Button onAction="#handleEditProfile" styleClass="edit-profile-button">
+                        <graphic>
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="💼" styleClass="edit-profile-icon"/>
+                                <Label text="Modifier profil" styleClass="edit-profile-text"/>
+                            </HBox>
+                        </graphic>
+                    </Button>
+                </VBox>
+            </HBox>
+        </VBox>
+
+        <!-- Menu Section -->
+        <VBox styleClass="sidebar-menu">
+            <Button onAction="#handleDashboard" styleClass="menu-button" maxWidth="Infinity">
+                <graphic>
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label styleClass="menu-icon" text="📊"/>
+                        <Label styleClass="menu-text" text="Tableau de bord"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+            <Button onAction="#handleUsers" styleClass="menu-button" maxWidth="Infinity">
+                <graphic>
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label styleClass="menu-icon" text="👥"/>
+                        <Label styleClass="menu-text" text="Utilisateurs"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+            <Button onAction="#handleVehicles" styleClass="menu-button" maxWidth="Infinity">
+                <graphic>
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label styleClass="menu-icon" text="🚗"/>
+                        <Label styleClass="menu-text" text="Gérer les véhicules"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+            <Button onAction="#handleOrders" styleClass="menu-button" maxWidth="Infinity">
+                <graphic>
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label styleClass="menu-icon" text="📦"/>
+                        <Label styleClass="menu-text" text="Gérer les commandes"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+            <Button onAction="#handleRecruitment" styleClass="menu-button" maxWidth="Infinity">
+                <graphic>
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label styleClass="menu-icon" text="👔"/>
+                        <Label styleClass="menu-text" text="Recrutement"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+            <Button onAction="#handleSupport" styleClass="menu-button" maxWidth="Infinity">
+                <graphic>
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label styleClass="menu-icon" text="💬"/>
+                        <Label styleClass="menu-text" text="Support"/>
+                    </HBox>
+                </graphic>
+            </Button>
+        </VBox>
+
+        <!-- Spacer -->
+        <Region VBox.vgrow="ALWAYS"/>
+
+        <!-- Logout Section -->
+        <VBox styleClass="logout-section">
+            <Button onAction="#handleLogout" styleClass="logout-button" maxWidth="Infinity">
+                <graphic>
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label styleClass="logout-icon" text="🚪"/>
+                        <Label styleClass="menu-text" text="Déconnexion"/>
+                    </HBox>
+                </graphic>
+            </Button>
+        </VBox>
+    </VBox>
+
+    <!-- Main Content Area -->
+    <VBox HBox.hgrow="ALWAYS" styleClass="main-content">
+        <!-- Top Navigation Bar -->
+        <HBox styleClass="navbar">
+            <padding>
+                <Insets top="15" right="30" bottom="15" left="30"/>
+            </padding>
+            <Label fx:id="pageTitle" styleClass="page-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+        </HBox>
+
+        <!-- Content Area -->
+        <StackPane fx:id="contentArea" VBox.vgrow="ALWAYS" styleClass="content-area"/>
+    </VBox>
+
+</HBox>
