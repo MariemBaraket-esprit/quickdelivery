@@ -1,39 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="tn.controllers.MainController"
-      prefHeight="600.0" prefWidth="800.0"
-      spacing="10" alignment="CENTER">
-
-    <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
-    </padding>
-
-    <Label text="Gestion des Produits" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
-
-    <HBox spacing="10" alignment="CENTER">
-        <Button fx:id="btnAddProduit" text="Ajouter Produit" onAction="#handleAddProduit" />
-        <Button fx:id="btnRefresh" text="Actualiser" onAction="#handleRefresh" />
-        <TextField fx:id="searchField" promptText="Rechercher par nom..." />
-        <Button text="Rechercher" onAction="#handleSearch"/>
-    </HBox>
-
-    <TableView fx:id="produitTable" VBox.vgrow="ALWAYS">
-        <columns>
-            <TableColumn fx:id="colId" text="ID" prefWidth="50" />
-            <TableColumn fx:id="colNom" text="Nom" prefWidth="150" />
-            <TableColumn fx:id="colDescription" text="Description" prefWidth="150" />
-            <TableColumn fx:id="colCategorie" text="Catégorie" prefWidth="100" />
-            <TableColumn fx:id="colPrix" text="Prix" prefWidth="100" />
-            <TableColumn fx:id="colStock" text="Stock" prefWidth="100" />
-            <TableColumn fx:id="colActions" text="Actions" prefWidth="150" />
-        </columns>
-    </TableView>
-
-    <Label fx:id="statusLabel" text="Total produits: 0" />
-</VBox>
+<BorderPane fx:id="mainContainer" prefHeight="700.0" prefWidth="1000.0" stylesheets="@../styles/application.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.controllers.MainController">
+    <top>
+        <VBox styleClass="header" BorderPane.alignment="CENTER">
+            <children>
+                <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header-label" text="Système de Gestion des Produits et Commandes">
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                    <padding>
+                        <Insets bottom="15.0" top="15.0" />
+                    </padding>
+                </Label>
+                <HBox alignment="CENTER" spacing="20.0" styleClass="nav-bar">
+                    <children>
+                        <Button fx:id="btnProduits" mnemonicParsing="false" onAction="#handleProduits" prefHeight="40.0" prefWidth="150.0" styleClass="nav-button" text="Produits" />
+                        <Button fx:id="btnCommandes" mnemonicParsing="false" onAction="#handleCommandes" prefHeight="40.0" prefWidth="150.0" styleClass="nav-button nav-button-commandes" text="Commandes" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+    <center>
+        <VBox styleClass="content" BorderPane.alignment="CENTER">
+            <children>
+                <Label styleClass="title" text="Gestion des Produits" />
+                <HBox styleClass="toolbar">
+                    <children>
+                        <Button fx:id="btnAddProduit" mnemonicParsing="false" onAction="#handleAddProduit" styleClass="button button-add" text="Ajouter Produit" />
+                        <Button fx:id="btnRefresh" mnemonicParsing="false" onAction="#handleRefresh" styleClass="button button-refresh" text="Actualiser" />
+                        <TextField fx:id="searchField" promptText="Rechercher par nom..." styleClass="search-field" HBox.hgrow="ALWAYS">
+                            <HBox.margin>
+                                <Insets left="10.0" right="10.0" />
+                            </HBox.margin>
+                        </TextField>
+                        <Button mnemonicParsing="false" onAction="#handleSearch" styleClass="button button-search" text="Rechercher" />
+                    </children>
+                </HBox>
+                <ListView fx:id="produitListView" styleClass="card-list-view" VBox.vgrow="ALWAYS">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </ListView>
+                <Label fx:id="statusLabel" styleClass="status-label" text="Total produits: 0" />
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

@@ -10,10 +10,11 @@ public class Produit {
     private double prix;
     private int stock;
     private LocalDate dateAjout;
+    private int taille; // Taille comme entier
 
     public Produit() {}
 
-    public Produit(int id, String nom, String description, String categorie, double prix, int stock, LocalDate dateAjout) {
+    public Produit(int id, String nom, String description, String categorie, double prix, int stock, LocalDate dateAjout, int taille) {
         this.id = id;
         this.nom = nom;
         this.description = description;
@@ -21,6 +22,7 @@ public class Produit {
         this.prix = prix;
         this.stock = stock;
         this.dateAjout = dateAjout;
+        this.taille = taille;
     }
 
     // Getters et Setters
@@ -81,16 +83,16 @@ public class Produit {
         this.dateAjout = dateAjout;
     }
 
+    public int getTaille() {
+        return taille;
+    }
+
+    public void setTaille(int taille) {
+        this.taille = taille;
+    }
+
     @Override
     public String toString() {
-        return "Produit{" +
-                "id=" + id +
-                ", nom='" + nom + '\'' +
-                ", description='" + description + '\'' +
-                ", categorie='" + categorie + '\'' +
-                ", prix=" + prix +
-                ", stock=" + stock +
-                ", dateAjout=" + dateAjout +
-                '}';
+        return nom + " - " + prix + " DT - Taille: " + taille;
     }
 }

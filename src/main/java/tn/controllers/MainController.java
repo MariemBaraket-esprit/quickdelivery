@@ -7,47 +7,38 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import tn.entities.Produit;
 import tn.services.ProduitDao;
+import tn.entities.Produit;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class MainController {
 
     @FXML
-    private TableView<Produit> produitTable;
+    private BorderPane mainContainer;
 
     @FXML
-    private TableColumn<Produit, Integer> colId;
-
-    @FXML
-    private TableColumn<Produit, String> colNom;
-
-    @FXML
-    private TableColumn<Produit, String> colDescription;
-
-    @FXML
-    private TableColumn<Produit, String> colCategorie;
-
-    @FXML
-    private TableColumn<Produit, Double> colPrix;
-
-    @FXML
-    private TableColumn<Produit, Integer> colStock;
-
-    @FXML
-    private TableColumn<Produit, Void> colActions;
+    private ListView<Produit> produitListView;
 
     @FXML
     private TextField searchField;
 
     @FXML
     private Label statusLabel;
+
+    @FXML
+    private Button btnProduits;
+
+    @FXML
+    private Button btnCommandes;
+
+    @FXML
+    private Button btnAddProduit;
 
     private ProduitDao produitDao;
     private ObservableList<Produit> produitsList = FXCollections.observableArrayList();
@@ -56,53 +47,41 @@ public class MainController {
     private void initialize() {
         produitDao = new ProduitDao();
 
-        // Configurer les colonnes
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
-        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-        colCategorie.setCellValueFactory(new PropertyValueFactory<>("categorie"));
-        colPrix.setCellValueFactory(new PropertyValueFactory<>("prix"));
-        colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        // Configuration de la ListView
+        produitListView.setItems(produitsList);
 
-        // Configurer la colonne d'actions
-        setupActionsColumn();
+        // Utiliser notre cellule personnalisée pour afficher les produits sous forme de cartes
+        produitListView.setCellFactory(lv -> new ProduitListCell(this));
+
+        // Définir une hauteur fixe pour chaque cellule
+        produitListView.setFixedCellSize(200);
 
         // Charger les produits
         loadProduits();
     }
 
-    private void setupActionsColumn() {
-        colActions.setCellFactory(param -> new TableCell<Produit, Void>() {
-            private final Button btnEdit = new Button("Modifier");
-            private final Button btnDelete = new Button("Supprimer");
-            private final HBox pane = new HBox(5, btnEdit, btnDelete);
+    // Cette méthode est maintenant publique pour être accessible depuis ProduitListCell
+    public void showProduitDetails(Produit produit) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Détails du produit");
+        alert.setHeaderText(produit.getNom());
 
-            {
-                btnEdit.setOnAction(event -> {
-                    Produit produit = getTableView().getItems().get(getIndex());
-                    handleEditProduit(produit);
-                });
+        String details = "ID: " + produit.getId() + "\n" +
+                "Description: " + produit.getDescription() + "\n" +
+                "Catégorie: " + produit.getCategorie() + "\n" +
+                "Prix: " + produit.getPrix() + " DT\n" +
+                "Taille: " + produit.getTaille() + "\n" +
+                "Stock: " + produit.getStock() + "\n" +
+                "Date d'ajout: " + produit.getDateAjout();
 
-                btnDelete.setOnAction(event -> {
-                    Produit produit = getTableView().getItems().get(getIndex());
-                    handleDeleteProduit(produit);
-                });
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                setGraphic(empty ? null : pane);
-            }
-        });
+        alert.setContentText(details);
+        alert.showAndWait();
     }
 
     private void loadProduits() {
         try {
-            // Utiliser la méthode getAll() de ProduitDao
             List<Produit> produits = produitDao.getAll();
             produitsList.setAll(produits);
-            produitTable.setItems(produitsList);
             statusLabel.setText("Total produits: " + produits.size());
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
@@ -112,9 +91,26 @@ public class MainController {
     }
 
     @FXML
+    private void handleProduits() {
+        // Cette méthode est déjà active car nous sommes dans la vue des produits
+    }
+
+    @FXML
+    private void handleCommandes() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/commande-view.fxml"));
+            Parent commandeView = loader.load();
+            mainContainer.setCenter(commandeView);
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
+                    "Impossible de charger la vue des commandes: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private void handleAddProduit() {
         try {
-            // Ajustez le chemin selon votre structure de projet
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/produit-add-view.fxml"));
             Parent root = loader.load();
 
@@ -133,9 +129,9 @@ public class MainController {
         }
     }
 
-    private void handleEditProduit(Produit produit) {
+    // Cette méthode est maintenant publique pour être accessible depuis ProduitListCell
+    public void handleEditProduit(Produit produit) {
         try {
-            // Ajustez le chemin selon votre structure de projet
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/produit-edit-view.fxml"));
             Parent root = loader.load();
 
@@ -157,31 +153,31 @@ public class MainController {
         }
     }
 
-    private void handleDeleteProduit(Produit produit) {
+    // Cette méthode est maintenant publique pour être accessible depuis ProduitListCell
+    public void handleDeleteProduit(Produit produit) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation de suppression");
         alert.setHeaderText("Supprimer le produit");
         alert.setContentText("Êtes-vous sûr de vouloir supprimer le produit: " + produit.getNom() + " ?");
 
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                try {
-                    boolean success = produitDao.delete(produit.getId());
-                    if (success) {
-                        loadProduits();
-                        showAlert(Alert.AlertType.INFORMATION, "Succès", "Suppression réussie",
-                                "Le produit a été supprimé avec succès.");
-                    } else {
-                        showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de suppression",
-                                "Impossible de supprimer le produit.");
-                    }
-                } catch (SQLException e) {
-                    showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Erreur de suppression",
-                            e.getMessage());
-                    e.printStackTrace();
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                boolean success = produitDao.delete(produit.getId());
+                if (success) {
+                    loadProduits();
+                    showAlert(Alert.AlertType.INFORMATION, "Succès", "Suppression réussie",
+                            "Le produit a été supprimé avec succès.");
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de suppression",
+                            "Impossible de supprimer le produit.");
                 }
+            } catch (SQLException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Erreur de suppression",
+                        e.getMessage());
+                e.printStackTrace();
             }
-        });
+        }
     }
 
     @FXML
@@ -210,7 +206,7 @@ public class MainController {
         }
     }
 
-    private void showAlert(Alert.AlertType alertType, String title, String header, String content) {
+    public void showAlert(Alert.AlertType alertType, String title, String header, String content) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(header);

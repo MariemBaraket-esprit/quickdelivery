@@ -22,7 +22,7 @@ public class ProduitDao {
      * @throws SQLException En cas d'erreur SQL
      */
     public boolean insert(Produit produit) throws SQLException {
-        String query = "INSERT INTO produits (nom, description, categorie, prix, stock, date_ajout) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO produits (nom, description, categorie, prix, stock, date_ajout, taille) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, produit.getNom());
             ps.setString(2, produit.getDescription());
@@ -30,6 +30,7 @@ public class ProduitDao {
             ps.setDouble(4, produit.getPrix());
             ps.setInt(5, produit.getStock());
             ps.setDate(6, Date.valueOf(produit.getDateAjout()));
+            ps.setInt(7, produit.getTaille());
 
             int affectedRows = ps.executeUpdate();
             if (affectedRows == 0) {
@@ -54,14 +55,15 @@ public class ProduitDao {
      * @throws SQLException En cas d'erreur SQL
      */
     public boolean update(Produit produit) throws SQLException {
-        String query = "UPDATE produits SET nom = ?, description = ?, categorie = ?, prix = ?, stock = ? WHERE id = ?";
+        String query = "UPDATE produits SET nom = ?, description = ?, categorie = ?, prix = ?, stock = ?, taille = ? WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, produit.getNom());
             ps.setString(2, produit.getDescription());
             ps.setString(3, produit.getCategorie());
             ps.setDouble(4, produit.getPrix());
             ps.setInt(5, produit.getStock());
-            ps.setInt(6, produit.getId());
+            ps.setInt(6, produit.getTaille());
+            ps.setInt(7, produit.getId());
 
             return ps.executeUpdate() > 0;
         }
@@ -220,6 +222,15 @@ public class ProduitDao {
         produit.setPrix(rs.getDouble("prix"));
         produit.setStock(rs.getInt("stock"));
         produit.setDateAjout(rs.getDate("date_ajout").toLocalDate());
+
+        // Récupérer la taille comme un entier
+        try {
+            produit.setTaille(rs.getInt("taille"));
+        } catch (SQLException e) {
+            // Si la colonne taille n'est pas un entier ou est NULL
+            produit.setTaille(0);
+        }
+
         return produit;
     }
 }

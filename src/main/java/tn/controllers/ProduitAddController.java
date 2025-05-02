@@ -30,6 +30,9 @@ public class ProduitAddController {
     private TextField txtStock;
 
     @FXML
+    private TextField txtTaille;
+
+    @FXML
     private Button btnSauvegarder;
 
     @FXML
@@ -40,6 +43,14 @@ public class ProduitAddController {
     @FXML
     private void initialize() {
         produitDao = new ProduitDao();
+
+        // Définir des valeurs par défaut pour faciliter les tests
+        txtNom.setText("Nouveau produit");
+        txtDescription.setText("Description du produit");
+        txtCategorie.setText("Catégorie");
+        txtPrix.setText("100.0");
+        txtStock.setText("10");
+        txtTaille.setText("42");
     }
 
     @FXML
@@ -51,6 +62,7 @@ public class ProduitAddController {
                 String categorie = txtCategorie.getText();
                 double prix = Double.parseDouble(txtPrix.getText());
                 int stock = Integer.parseInt(txtStock.getText());
+                int taille = Integer.parseInt(txtTaille.getText());
 
                 Produit nouveauProduit = new Produit();
                 nouveauProduit.setNom(nom);
@@ -58,6 +70,7 @@ public class ProduitAddController {
                 nouveauProduit.setCategorie(categorie);
                 nouveauProduit.setPrix(prix);
                 nouveauProduit.setStock(stock);
+                nouveauProduit.setTaille(taille);
                 nouveauProduit.setDateAjout(LocalDate.now());
 
                 boolean success = produitDao.insert(nouveauProduit);
@@ -69,9 +82,11 @@ public class ProduitAddController {
                     showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur d'ajout", "Impossible d'ajouter le produit.");
                 }
             } catch (NumberFormatException e) {
-                showAlert(Alert.AlertType.ERROR, "Erreur de format", "Format invalide", "Veuillez entrer des valeurs numériques valides pour le prix et le stock.");
+                showAlert(Alert.AlertType.ERROR, "Erreur de format", "Format invalide", "Veuillez entrer des valeurs numériques valides pour le prix, le stock et la taille.");
+                e.printStackTrace();
             } catch (SQLException e) {
                 showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Erreur d'ajout", e.getMessage());
+                e.printStackTrace();
             }
         }
     }
@@ -108,6 +123,15 @@ public class ProduitAddController {
             }
         } catch (NumberFormatException e) {
             errorMessage.append("Le stock doit être un nombre entier valide.\n");
+        }
+
+        try {
+            int taille = Integer.parseInt(txtTaille.getText());
+            if (taille <= 0) {
+                errorMessage.append("La taille doit être supérieure à 0.\n");
+            }
+        } catch (NumberFormatException e) {
+            errorMessage.append("La taille doit être un nombre entier valide.\n");
         }
 
         if (errorMessage.length() > 0) {

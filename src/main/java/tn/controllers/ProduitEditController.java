@@ -29,6 +29,9 @@ public class ProduitEditController {
     private TextField txtStock;
 
     @FXML
+    private TextField txtTaille;
+
+    @FXML
     private Button btnSauvegarder;
 
     @FXML
@@ -54,6 +57,7 @@ public class ProduitEditController {
             txtCategorie.setText(produit.getCategorie());
             txtPrix.setText(String.valueOf(produit.getPrix()));
             txtStock.setText(String.valueOf(produit.getStock()));
+            txtTaille.setText(String.valueOf(produit.getTaille()));
         }
     }
 
@@ -66,6 +70,7 @@ public class ProduitEditController {
                 produit.setCategorie(txtCategorie.getText());
                 produit.setPrix(Double.parseDouble(txtPrix.getText()));
                 produit.setStock(Integer.parseInt(txtStock.getText()));
+                produit.setTaille(Integer.parseInt(txtTaille.getText()));
 
                 boolean success = produitDao.update(produit);
 
@@ -76,7 +81,7 @@ public class ProduitEditController {
                     showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de modification", "Impossible de modifier le produit.");
                 }
             } catch (NumberFormatException e) {
-                showAlert(Alert.AlertType.ERROR, "Erreur de format", "Format invalide", "Veuillez entrer des valeurs numériques valides pour le prix et le stock.");
+                showAlert(Alert.AlertType.ERROR, "Erreur de format", "Format invalide", "Veuillez entrer des valeurs numériques valides pour le prix, le stock et la taille.");
             } catch (SQLException e) {
                 showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Erreur de modification", e.getMessage());
             }
@@ -115,6 +120,15 @@ public class ProduitEditController {
             }
         } catch (NumberFormatException e) {
             errorMessage.append("Le stock doit être un nombre entier valide.\n");
+        }
+
+        try {
+            int taille = Integer.parseInt(txtTaille.getText());
+            if (taille <= 0) {
+                errorMessage.append("La taille doit être supérieure à 0.\n");
+            }
+        } catch (NumberFormatException e) {
+            errorMessage.append("La taille doit être un nombre entier valide.\n");
         }
 
         if (errorMessage.length() > 0) {
