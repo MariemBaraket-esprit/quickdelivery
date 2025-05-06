@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="Controllers.LoginController"
+      styleClass="login-container"
+      alignment="CENTER"
+      spacing="20"
+      stylesheets="@../styles/styles.css">
+
+    <padding>
+        <Insets top="40" right="40" bottom="40" left="40"/>
+    </padding>
+
+    <VBox styleClass="login-form" maxWidth="400" spacing="30">
+        <Text text="Connexion" styleClass="login-title"/>
+
+        <VBox spacing="20">
+            <VBox styleClass="form-group">
+                <Label text="Email" styleClass="form-label"/>
+                <TextField fx:id="emailField" styleClass="text-field-custom" promptText="Entrez votre email"/>
+                <Label fx:id="emailError" styleClass="error-label"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Mot de passe" styleClass="form-label"/>
+                <HBox spacing="5" alignment="CENTER_LEFT">
+                    <PasswordField fx:id="passwordField"
+                                   styleClass="text-field-custom"
+                                   promptText="Entrez votre mot de passe"
+                                   HBox.hgrow="ALWAYS"/>
+                    <TextField fx:id="passwordTextField"
+                               styleClass="text-field-custom"
+                               promptText="Entrez votre mot de passe"
+                               managed="false"
+                               visible="false"
+                               HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="togglePasswordButton"
+                            onAction="#togglePasswordVisibility"
+                            styleClass="toggle-password-button"
+                            text="👁"/>
+                </HBox>
+                <Label fx:id="passwordError" styleClass="error-label"/>
+            </VBox>
+
+            <Button text="Se connecter" onAction="#handleLogin" styleClass="button-primary" maxWidth="Infinity"/>
+
+            <HBox alignment="CENTER" spacing="10">
+                <Label text="Pas encore de compte ?"/>
+                <Hyperlink text="S'inscrire" onAction="#handleSignupLink"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</VBox>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15" styleClass="form-container" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="Controllers.CommandeEditController"
+      prefWidth="500" prefHeight="500">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Modifier la commande" styleClass="form-title"/>
+
+    <GridPane hgap="15" vgap="15">
+        <columnConstraints>
+            <ColumnConstraints minWidth="100" prefWidth="150"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <!-- Produit -->
+        <Label text="Produit:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="cbProduit" styleClass="form-field" GridPane.rowIndex="0" GridPane.columnIndex="1" maxWidth="Infinity"/>
+
+        <!-- Quantité -->
+        <Label text="Quantité:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <Spinner fx:id="spinnerQuantite" styleClass="form-field" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <!-- Adresse -->
+        <Label text="Adresse:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtAdresse" styleClass="form-field" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+        <!-- Instructions -->
+        <Label text="Instructions:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <TextArea fx:id="txtInstructions" styleClass="form-field" prefHeight="80" wrapText="true"
+                  GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+        <!-- Total -->
+        <Label text="Total:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+        <Label fx:id="lblTotal" text="Total: 0.00 DT" styleClass="total-price" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <Region VBox.vgrow="ALWAYS"/>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="btnCancel" text="Annuler" onAction="#handleCancel" styleClass="cancel-button"/>
+        <Button fx:id="btnSave" text="Enregistrer" onAction="#handleSave" styleClass="save-button"/>
+    </HBox>
+</VBox>

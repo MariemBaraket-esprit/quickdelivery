@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.controllers.ProduitViewController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ProduitViewController">
     <top>
         <Label alignment="CENTER" maxWidth="1.7976931348623157E308" style="-fx-background-color: #4a90e2;" text="Liste des Produits" textFill="WHITE" BorderPane.alignment="CENTER">
             <font>
