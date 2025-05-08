@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="mainContainer" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.ClientController"
+            stylesheets="@../styles/client-styles.css">
+
+    <!-- Top Navigation Bar -->
+    <top>
+        <VBox styleClass="header-container">
+            <!-- Main Header with Logo and User Info -->
+            <HBox styleClass="main-header">
+                <!-- Logo and App Name -->
+                <HBox styleClass="logo-container" alignment="CENTER_LEFT" spacing="15">
+                    <Label text="🚚" styleClass="logo-icon"/>
+                    <Label text="QuickDelivery" styleClass="app-name"/>
+                </HBox>
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <!-- User Profile Section -->
+                <HBox styleClass="user-profile" alignment="CENTER" spacing="15">
+                    <!-- User Info with Dropdown -->
+                    <MenuButton fx:id="userMenuButton" styleClass="user-menu-button">
+                        <graphic>
+                            <HBox spacing="10" alignment="CENTER">
+                                <StackPane styleClass="avatar-container">
+                                    <Circle fx:id="userAvatar" radius="18" styleClass="user-avatar"/>
+                                    <Circle fx:id="userStatusIndicator" radius="5" styleClass="status-indicator"
+                                            translateX="12" translateY="12"/>
+                                </StackPane>
+                                <Label fx:id="userNameLabel" styleClass="user-name" text="Nom d'utilisateur"/>
+                            </HBox>
+                        </graphic>
+                        <items>
+                            <MenuItem text="Mon profil" onAction="#handleProfile"/>
+
+                            <SeparatorMenuItem />
+                            <MenuItem text="Déconnexion" onAction="#handleLogout"/>
+                        </items>
+                    </MenuButton>
+                </HBox>
+            </HBox>
+
+            <!-- Navigation Menu -->
+            <HBox styleClass="nav-menu">
+                <Button text="Produits" onAction="#handleProduits" styleClass="nav-button"/>
+                <Button text="Mes commandes" onAction="#handleCommandes" styleClass="nav-button"/>
+
+
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- Le contenu principal sera chargé dynamiquement ici -->
+    <center>
+        <!-- Contenu par défaut -->
+        <StackPane styleClass="content-container">
+            <Label text="Chargement..." styleClass="loading-text"/>
+        </StackPane>
+    </center>
+
+    <bottom>
+        <HBox styleClass="status-bar">
+            <Label text="© 2023 QuickDelivery - Tous droits réservés" styleClass="copyright-text"/>
+        </HBox>
+    </bottom>
+</BorderPane>

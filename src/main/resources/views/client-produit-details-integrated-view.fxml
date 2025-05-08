@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="20" styleClass="product-details-container" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="Controllers.ClientProduitDetailsIntegratedController"
+      prefWidth="800" prefHeight="600">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <!-- En-tête avec bouton de retour -->
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Button fx:id="btnRetour" text="Retour aux produits" onAction="#handleRetour"
+                styleClass="back-button"/>
+        <Label text="Détails du Produit" styleClass="section-title">
+            <font>
+                <Font name="System Bold" size="20.0"/>
+            </font>
+        </Label>
+    </HBox>
+
+    <!-- Contenu principal -->
+    <HBox spacing="30" VBox.vgrow="ALWAYS">
+        <!-- Image du produit -->
+        <VBox alignment="TOP_CENTER" spacing="10" styleClass="product-image-container">
+            <ImageView fx:id="imgProduit" fitWidth="300" fitHeight="300" preserveRatio="true"
+                       styleClass="product-image"/>
+        </VBox>
+
+        <!-- Informations du produit -->
+        <VBox spacing="15" styleClass="product-info" HBox.hgrow="ALWAYS" maxWidth="500">
+            <Label fx:id="lblNomProduit" styleClass="product-title">
+                <font>
+                    <Font name="System Bold" size="24.0"/>
+                </font>
+            </Label>
+
+            <HBox spacing="10">
+                <Label fx:id="lblCategorie" styleClass="category-badge"/>
+            </HBox>
+
+            <Label text="Description:" styleClass="info-label">
+                <font>
+                    <Font name="System Bold" size="14.0"/>
+                </font>
+            </Label>
+            <Label fx:id="lblDescription" styleClass="description-text" wrapText="true"/>
+
+            <GridPane hgap="15" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints minWidth="100" prefWidth="150"/>
+                    <ColumnConstraints hgrow="ALWAYS"/>
+                </columnConstraints>
+
+                <Label text="Prix:" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="info-label"/>
+                <Label fx:id="lblPrix" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="price-value"/>
+
+                <Label text="Taille:" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="info-label"/>
+                <Label fx:id="lblTaille" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <Label text="Stock:" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="info-label"/>
+                <Label fx:id="lblStock" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Label text="Date d'ajout:" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="info-label"/>
+                <Label fx:id="lblDateAjout" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+            </GridPane>
+        </VBox>
+
+        <!-- Panneau de commande -->
+        <VBox spacing="15" styleClass="order-panel" alignment="TOP_CENTER" minWidth="250">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <Label text="Commander" styleClass="order-title">
+                <font>
+                    <Font name="System Bold" size="18.0"/>
+                </font>
+            </Label>
+
+            <VBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Quantité:" styleClass="info-label"/>
+                <Spinner fx:id="spinnerQuantite" editable="true" styleClass="quantity-spinner"/>
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <Button fx:id="btnCommander" text="Commander" onAction="#handleCommander"
+                    styleClass="order-button" maxWidth="Infinity"/>
+        </VBox>
+    </HBox>
+</VBox>

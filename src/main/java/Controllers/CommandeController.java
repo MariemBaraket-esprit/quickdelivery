@@ -11,7 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import models.Commande;
 import services.CommandeDao;
@@ -26,31 +26,7 @@ import java.util.Optional;
 public class CommandeController {
 
     @FXML
-    private TableView<Commande> commandesTable;
-
-    @FXML
-    private TableColumn<Commande, Integer> idColumn;
-
-    @FXML
-    private TableColumn<Commande, LocalDate> dateColumn;
-
-    @FXML
-    private TableColumn<Commande, String> clientColumn;
-
-    @FXML
-    private TableColumn<Commande, String> produitColumn;
-
-    @FXML
-    private TableColumn<Commande, Integer> quantiteColumn;
-
-    @FXML
-    private TableColumn<Commande, Double> totalColumn;
-
-    @FXML
-    private TableColumn<Commande, String> adresseColumn;
-
-    @FXML
-    private TableColumn<Commande, Void> actionsColumn;
+    private ListView<Commande> commandesListView;
 
     @FXML
     private TextField searchField;
@@ -67,97 +43,26 @@ public class CommandeController {
 
     @FXML
     private void initialize() {
-        commandeDao = new CommandeDao();
+        try {
+            commandeDao = new CommandeDao();
+            System.out.println("Initialisation du contrôleur des commandes");
 
-        // Configuration des colonnes
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+            // Configuration de la ListView
+            commandesListView.setItems(commandesList);
+            commandesListView.setCellFactory(lv -> new CommandeListCell(this));
 
-        dateColumn.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getDateCommande()));
-        dateColumn.setCellFactory(column -> new TableCell<Commande, LocalDate>() {
-            @Override
-            protected void updateItem(LocalDate date, boolean empty) {
-                super.updateItem(date, empty);
-                if (empty || date == null) {
-                    setText(null);
-                } else {
-                    setText(dateFormatter.format(date));
-                }
-            }
-        });
+            // Définir une hauteur fixe pour chaque cellule
+            commandesListView.setFixedCellSize(180);
 
-        clientColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getClientNom()));
-
-        produitColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getProduitNom()));
-
-        quantiteColumn.setCellValueFactory(cellData ->
-                new SimpleIntegerProperty(cellData.getValue().getQuantite()).asObject());
-
-        totalColumn.setCellValueFactory(cellData ->
-                new SimpleDoubleProperty(cellData.getValue().getTotal()).asObject());
-        totalColumn.setCellFactory(column -> new TableCell<Commande, Double>() {
-            @Override
-            protected void updateItem(Double total, boolean empty) {
-                super.updateItem(total, empty);
-                if (empty || total == null) {
-                    setText(null);
-                } else {
-                    setText(String.format("%.2f DT", total));
-                }
-            }
-        });
-
-        adresseColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getAdresse()));
-
-        // Configuration de la colonne d'actions
-        actionsColumn.setCellFactory(param -> new TableCell<Commande, Void>() {
-            private final Button btnEdit = new Button("Modifier");
-            private final Button btnDelete = new Button("Supprimer");
-            private final Button btnDetails = new Button("Détails");
-
-            {
-                btnEdit.getStyleClass().add("button-edit");
-                btnDelete.getStyleClass().add("button-delete");
-                btnDetails.getStyleClass().add("button-details");
-
-                btnEdit.setOnAction(event -> {
-                    Commande commande = getTableView().getItems().get(getIndex());
-                    handleEditCommande(commande);
-                });
-
-                btnDelete.setOnAction(event -> {
-                    Commande commande = getTableView().getItems().get(getIndex());
-                    handleDeleteCommande(commande);
-                });
-
-                btnDetails.setOnAction(event -> {
-                    Commande commande = getTableView().getItems().get(getIndex());
-                    handleCommandeDetails(commande);
-                });
-            }
-
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    // Créer un conteneur pour les boutons
-                    javafx.scene.layout.HBox buttons = new javafx.scene.layout.HBox(5);
-                    buttons.getChildren().addAll(btnDetails, btnEdit, btnDelete);
-                    setGraphic(buttons);
-                }
-            }
-        });
-
-        // Configuration de la TableView
-        commandesTable.setItems(commandesList);
-
-        // Charger les commandes
-        loadCommandes();
+            // Charger les commandes
+            loadCommandes();
+        } catch (Exception e) {
+            System.err.println("Erreur lors de l'initialisation du contrôleur des commandes: " + e.getMessage());
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur d'initialisation",
+                    "Erreur lors de l'initialisation de la vue des commandes",
+                    "Détails: " + e.getMessage());
+        }
     }
 
     private void loadCommandes() {
@@ -166,9 +71,10 @@ public class CommandeController {
             commandesList.setAll(commandes);
             statusLabel.setText("Total commandes: " + commandes.size());
         } catch (SQLException e) {
+            System.err.println("Erreur SQL lors du chargement des commandes: " + e.getMessage());
+            e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
                     "Impossible de charger les commandes: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -204,7 +110,7 @@ public class CommandeController {
         }
     }
 
-    private void handleEditCommande(Commande commande) {
+    public void handleEditCommande(Commande commande) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/commande-edit-view.fxml"));
             Parent root = loader.load();
@@ -221,13 +127,14 @@ public class CommandeController {
 
             stage.showAndWait();
         } catch (IOException e) {
+            System.err.println("Erreur lors de l'ouverture de la fenêtre de modification: " + e.getMessage());
+            e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur d'affichage",
                     "Impossible d'ouvrir la fenêtre de modification: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
-    private void handleDeleteCommande(Commande commande) {
+    public void handleDeleteCommande(Commande commande) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation de suppression");
         alert.setHeaderText("Supprimer la commande");
@@ -247,14 +154,15 @@ public class CommandeController {
                             "Impossible de supprimer la commande.");
                 }
             } catch (SQLException e) {
+                System.err.println("Erreur SQL lors de la suppression: " + e.getMessage());
+                e.printStackTrace();
                 showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Erreur de suppression",
                         e.getMessage());
-                e.printStackTrace();
             }
         }
     }
 
-    private void handleCommandeDetails(Commande commande) {
+    public void handleCommandeDetails(Commande commande) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Détails de la commande");
         alert.setHeaderText("Commande #" + commande.getId());

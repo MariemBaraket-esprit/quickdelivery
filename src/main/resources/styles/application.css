@@ -350,3 +350,147 @@
     -fx-spacing: 5;
     -fx-alignment: center;
 }
+/* Ajoutez ces styles à votre fichier CSS existant */
+
+/* Styles pour la ListView des commandes */
+.commandes-list-view {
+    -fx-background-color: transparent;
+    -fx-padding: 5px;
+}
+
+.commandes-list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 5px 0;
+}
+
+.commandes-list-view .list-cell:filled:selected {
+    -fx-background-color: transparent;
+}
+
+/* Styles pour les cartes de commande */
+.commande-card {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 3);
+    -fx-border-radius: 8px;
+}
+
+.commande-header {
+    -fx-border-color: #f0f0f0;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 0 0 10 0;
+}
+
+.commande-id {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-text-fill: #2c3e50;
+}
+
+.commande-date {
+    -fx-font-style: italic;
+    -fx-text-fill: #7f8c8d;
+}
+
+.commande-main-info {
+    -fx-padding: 5 0;
+}
+
+.commande-client, .commande-produit, .commande-quantite, .commande-total, .commande-adresse, .commande-details {
+    -fx-font-size: 14px;
+}
+
+.commande-total {
+    -fx-font-weight: bold;
+    -fx-text-fill: #2980b9;
+}
+
+/* Styles pour les boutons d'action */
+.action-buttons-container {
+    -fx-spacing: 10;
+    -fx-alignment: center-right;
+}
+
+.button-details {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-min-width: 80px;
+    -fx-cursor: hand;
+    -fx-background-radius: 4px;
+    -fx-padding: 8px 15px;
+}
+
+.button-details:hover {
+    -fx-background-color: #2980b9;
+}
+
+.button-edit {
+    -fx-background-color: #f39c12;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-min-width: 80px;
+    -fx-cursor: hand;
+    -fx-background-radius: 4px;
+    -fx-padding: 8px 15px;
+}
+
+.button-edit:hover {
+    -fx-background-color: #d35400;
+}
+
+.button-delete {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-min-width: 80px;
+    -fx-cursor: hand;
+    -fx-background-radius: 4px;
+    -fx-padding: 8px 15px;
+}
+
+.button-delete:hover {
+    -fx-background-color: #c0392b;
+}
+
+/* Styles pour la barre de navigation */
+.nav-bar {
+    -fx-background-color: #34495e;
+    -fx-padding: 10px;
+}
+
+.nav-button {
+    -fx-background-color: #2c3e50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 4px;
+}
+
+.nav-button:hover {
+    -fx-background-color: #3498db;
+}
+
+.nav-button-commandes {
+    -fx-background-color: #3498db;
+}
+/* Ajoutez ces styles à votre fichier CSS existant */
+
+/* Styles pour la barre utilisateur */
+.user-bar {
+    -fx-background-color: #2c3e50;
+    -fx-padding: 5px 15px;
+}
+
+.button-logout {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 4px;
+    -fx-padding: 5px 10px;
+}
+
+.button-logout:hover {
+    -fx-background-color: #c0392b;
+}

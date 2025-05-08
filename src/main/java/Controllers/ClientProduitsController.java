@@ -6,18 +6,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import models.Utilisateur;
 import services.ProduitDao;
 import models.Produit;
+import utils.ImageUtils;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -38,6 +39,9 @@ public class ClientProduitsController {
     @FXML
     private Label statusLabel;
 
+    @FXML
+    private BorderPane mainContainer;
+
     private ProduitDao produitDao;
     private ClientController clientController;
     private Utilisateur utilisateur;
@@ -47,9 +51,6 @@ public class ClientProduitsController {
     private void initialize() {
         produitDao = new ProduitDao();
         System.out.println("Initialisation de ClientProduitsController");
-
-        // Charger les produits
-        loadProduits();
     }
 
     public void setClientController(ClientController clientController) {
@@ -58,9 +59,11 @@ public class ClientProduitsController {
 
     public void setUtilisateur(Utilisateur utilisateur) {
         this.utilisateur = utilisateur;
+        // Charger les produits une fois que l'utilisateur est défini
+        loadProduits();
     }
 
-    private void loadProduits() {
+    public void loadProduits() {
         try {
             allProduits = produitDao.getAll();
             System.out.println("Produits chargés: " + allProduits.size());
@@ -106,9 +109,24 @@ public class ClientProduitsController {
     private VBox createProduitCard(Produit produit) {
         VBox card = new VBox(10);
         card.setPrefWidth(220);
-        card.setPrefHeight(300);
+        card.setPrefHeight(350); // Increased height for image
         card.setPadding(new Insets(15));
-        card.setStyle("-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 5; -fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);");
+        card.setStyle("-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 5; -fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); -fx-cursor: hand;");
+
+        // Product Image
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(190);
+        imageView.setFitHeight(150);
+        imageView.setPreserveRatio(true);
+
+        // Load image from path or use default
+        Image productImage = ImageUtils.loadProductImage(produit.getImagePath());
+        imageView.setImage(productImage);
+
+        // Center the image and add a border
+        StackPane imageContainer = new StackPane(imageView);
+        imageContainer.setStyle("-fx-background-color: #f8f9fa; -fx-border-color: #e0e0e0; -fx-border-radius: 3; -fx-background-radius: 3;");
+        imageContainer.setPadding(new Insets(5));
 
         // En-tête de la carte
         Label nomLabel = new Label(produit.getNom());
@@ -146,55 +164,45 @@ public class ClientProduitsController {
         // Description (limitée)
         Label descriptionLabel = new Label(produit.getDescription());
         descriptionLabel.setWrapText(true);
-        descriptionLabel.setMaxHeight(60);
+        descriptionLabel.setMaxHeight(40); // Reduced height for description
         descriptionLabel.setStyle("-fx-text-fill: #7f8c8d;");
 
-        // Boutons d'action
-        HBox actionBox = new HBox(10);
-        actionBox.setAlignment(Pos.CENTER);
-
-        Button detailsButton = new Button("Détails");
-        detailsButton.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white;");
-        detailsButton.setOnAction(e -> showProduitDetails(produit));
-
-        Button commanderButton = new Button("Commander");
-        commanderButton.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white;");
-        commanderButton.setOnAction(e -> commanderProduit(produit));
-        commanderButton.setDisable(produit.getStock() <= 0);
-
-        actionBox.getChildren().addAll(detailsButton, commanderButton);
-
         // Ajouter tous les éléments à la carte
-        card.getChildren().addAll(nomLabel, categorieLabel, prixLabel, tailleLabel, stockBox, descriptionLabel, actionBox);
+        card.getChildren().addAll(imageContainer, nomLabel, categorieLabel, prixLabel, tailleLabel, stockBox, descriptionLabel);
+
+        // Ajouter un gestionnaire d'événements pour afficher les détails au clic
+        card.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/client-produit-details-integrated-view.fxml"));
+                Parent detailsView = loader.load();
+
+                ClientProduitDetailsIntegratedController controller = loader.getController();
+                controller.setProduit(produit);
+                controller.setUtilisateur(utilisateur);
+                controller.setClientController(clientController);
+                controller.setProduitsController(this);
+
+                // Remplacer le contenu principal par les détails du produit
+                if (mainContainer != null) {
+                    mainContainer.setCenter(detailsView);
+                } else {
+                    // Si mainContainer n'est pas disponible, utiliser une approche alternative
+                    BorderPane parent = (BorderPane) produitsContainer.getScene().getRoot();
+                    parent.setCenter(detailsView);
+                }
+            } catch (IOException e) {
+                System.err.println("Erreur lors de l'affichage des détails du produit: " + e.getMessage());
+                e.printStackTrace();
+                clientController.showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur d'affichage",
+                        "Impossible d'afficher les détails du produit: " + e.getMessage());
+            }
+        });
+
+        // Effet de survol
+        card.setOnMouseEntered(e -> card.setStyle("-fx-background-color: #f8f9fa; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(52,152,219,0.3), 10, 0, 0, 5); -fx-cursor: hand;"));
+        card.setOnMouseExited(e -> card.setStyle("-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-radius: 5; -fx-background-radius: 5; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); -fx-cursor: hand;"));
 
         return card;
-    }
-
-    private void commanderProduit(Produit produit) {
-        showProduitDetails(produit); // Afficher la page de détails avec le bouton Commander
-    }
-
-    private void showProduitDetails(Produit produit) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/client-produit-details-view.fxml"));
-            Parent root = loader.load();
-
-            ClientProduitDetailsController controller = loader.getController();
-            controller.setProduit(produit);
-            controller.setUtilisateur(utilisateur);
-            controller.setClientController(clientController);
-
-            Stage stage = new Stage();
-            stage.setTitle("Détails du produit");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-        } catch (IOException e) {
-            System.err.println("Erreur lors de l'affichage des détails du produit: " + e.getMessage());
-            e.printStackTrace();
-            clientController.showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur d'affichage",
-                    "Impossible d'ouvrir la fenêtre de détails: " + e.getMessage());
-        }
     }
 
     @FXML
@@ -213,5 +221,15 @@ public class ClientProduitsController {
                 .collect(Collectors.toList());
 
         displayProduits(filteredProduits);
+    }
+
+    // Méthode pour revenir à la liste des produits
+    public void retourListeProduits() {
+        if (mainContainer != null) {
+            mainContainer.setCenter(produitsContainer);
+        } else if (produitsContainer.getScene() != null) {
+            BorderPane parent = (BorderPane) produitsContainer.getScene().getRoot();
+            parent.setCenter(produitsContainer);
+        }
     }
 }

@@ -3,24 +3,22 @@ package Controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import models.Utilisateur;
 import models.Produit;
+import utils.ImageUtils;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
-public class ClientProduitDetailsController {
+public class ClientProduitDetailsIntegratedController {
 
     @FXML
     private Label lblNomProduit;
-
-    // Utilisez le nom qui existe réellement dans votre FXML
-    @FXML
-    private Button btnAddToCart;  // Gardez le nom original qui est dans le FXML
 
     @FXML
     private Label lblCategorie;
@@ -43,13 +41,23 @@ public class ClientProduitDetailsController {
     @FXML
     private Spinner<Integer> spinnerQuantite;
 
+    @FXML
+    private Button btnCommander;
+
+    @FXML
+    private Button btnRetour;
+
+    @FXML
+    private ImageView imgProduit;
+
     private Produit produit;
     private Utilisateur utilisateur;
     private ClientController clientController;
+    private ClientProduitsController produitsController;
 
     @FXML
     private void initialize() {
-        System.out.println("Initialisation de ClientProduitDetailsController");
+        System.out.println("Initialisation de ClientProduitDetailsIntegratedController");
     }
 
     public void setProduit(Produit produit) {
@@ -65,6 +73,10 @@ public class ClientProduitDetailsController {
         this.clientController = clientController;
     }
 
+    public void setProduitsController(ClientProduitsController produitsController) {
+        this.produitsController = produitsController;
+    }
+
     private void populateFields() {
         lblNomProduit.setText(produit.getNom());
         lblCategorie.setText(produit.getCategorie());
@@ -76,20 +88,20 @@ public class ClientProduitDetailsController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         lblDateAjout.setText(produit.getDateAjout().format(formatter));
 
+        // Load and display product image
+        Image productImage = ImageUtils.loadProductImage(produit.getImagePath());
+        imgProduit.setImage(productImage);
+        imgProduit.setFitWidth(300);
+        imgProduit.setFitHeight(300);
+        imgProduit.setPreserveRatio(true);
+
         // Configurer le spinner de quantité
         SpinnerValueFactory<Integer> valueFactory =
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(1, produit.getStock(), 1);
         spinnerQuantite.setValueFactory(valueFactory);
 
         // Désactiver le bouton si le stock est épuisé
-        btnAddToCart.setDisable(produit.getStock() <= 0);
-        btnAddToCart.setText("Commander"); // Changer le texte du bouton à "Commander"
-    }
-
-    @FXML
-    private void handleAddToCart() {  // Gardez le nom de la méthode qui est dans le FXML
-        // Cette méthode sera appelée quand le bouton est cliqué
-        handleCommander();
+        btnCommander.setDisable(produit.getStock() <= 0);
     }
 
     @FXML
@@ -109,26 +121,19 @@ public class ClientProduitDetailsController {
         }
 
         try {
-            // Fermer la fenêtre de détails du produit
-            Stage currentStage = (Stage) lblNomProduit.getScene().getWindow();
-            currentStage.close();
+            // Charger le formulaire de commande intégré
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/client-commande-form-integrated-view.fxml"));
+            Parent commandeForm = loader.load();
 
-            // Ouvrir le formulaire de commande
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/client-commande-form-view.fxml"));
-            Parent root = loader.load();
-
-            ClientCommandeFormController controller = loader.getController();
+            ClientCommandeFormIntegratedController controller = loader.getController();
             controller.setClientController(clientController);
             controller.setUtilisateur(utilisateur);
-
-            // Passer le produit et la quantité au formulaire de commande
             controller.setProduitCommande(produit, quantite);
+            controller.setProduitsController(produitsController);
 
-            Stage stage = new Stage();
-            stage.setTitle("Formulaire de commande");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
+            // Remplacer le contenu principal par le formulaire de commande
+            BorderPane mainContainer = (BorderPane) btnCommander.getScene().getRoot();
+            mainContainer.setCenter(commandeForm);
 
         } catch (IOException e) {
             System.err.println("Erreur lors de l'ouverture du formulaire de commande: " + e.getMessage());
@@ -139,8 +144,10 @@ public class ClientProduitDetailsController {
     }
 
     @FXML
-    private void handleClose() {
-        Stage stage = (Stage) lblNomProduit.getScene().getWindow();
-        stage.close();
+    private void handleRetour() {
+        // Revenir à la liste des produits
+        if (produitsController != null) {
+            produitsController.retourListeProduits();
+        }
     }
 }

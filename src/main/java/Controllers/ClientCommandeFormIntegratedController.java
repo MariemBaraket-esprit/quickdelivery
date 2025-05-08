@@ -1,22 +1,25 @@
 package Controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.scene.layout.BorderPane;
 import models.Produit;
 import models.Utilisateur;
 import services.CommandeDao;
 import services.UtilisateurService;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 
-public class ClientCommandeFormController {
+public class ClientCommandeFormIntegratedController {
 
     @FXML
     private TextField txtNom;
@@ -40,9 +43,13 @@ public class ClientCommandeFormController {
     private Button btnConfirmer;
 
     @FXML
+    private Button btnRetour;
+
+    @FXML
     private CheckBox chkUtiliserAdresseParDefaut;
 
     private ClientController clientController;
+    private ClientProduitsController produitsController;
     private Utilisateur utilisateur;
     private CommandeDao commandeDao;
     private DecimalFormat df = new DecimalFormat("0.00");
@@ -55,7 +62,7 @@ public class ClientCommandeFormController {
         try {
             commandeDao = new CommandeDao();
             utilisateurService = new UtilisateurService();
-            System.out.println("Initialisation du formulaire de commande");
+            System.out.println("Initialisation du formulaire de commande intégré");
 
             // Ajouter un écouteur pour la case à cocher
             if (chkUtiliserAdresseParDefaut != null) {
@@ -79,6 +86,10 @@ public class ClientCommandeFormController {
 
     public void setClientController(ClientController clientController) {
         this.clientController = clientController;
+    }
+
+    public void setProduitsController(ClientProduitsController produitsController) {
+        this.produitsController = produitsController;
     }
 
     public void setUtilisateur(Utilisateur utilisateur) {
@@ -163,7 +174,6 @@ public class ClientCommandeFormController {
 
         return true;
     }
-
     @FXML
     private void handleConfirmer() {
         System.out.println("Confirmation de commande");
@@ -193,7 +203,6 @@ public class ClientCommandeFormController {
                 if (utilisateur != null && !adresse.equals(utilisateur.getAdresse())) {
                     try {
                         utilisateur.setAdresse(adresse);
-                        // Utiliser la méthode modifierUtilisateur au lieu de updateUser
                         utilisateurService.modifierUtilisateur(utilisateur);
                         System.out.println("Adresse de l'utilisateur mise à jour");
                     } catch (Exception e) {
@@ -214,12 +223,40 @@ public class ClientCommandeFormController {
                     showAlert(Alert.AlertType.INFORMATION, "Succès", "Commande passée",
                             "Votre commande a été passée avec succès.");
 
-                    // Fermer la fenêtre
-                    closeStage();
+                    // SOLUTION DIRECTE et SIMPLIFIÉE: Charger directement la vue des produits
+                    try {
+                        System.out.println("Navigation vers la liste des produits...");
 
-                    // Rediriger vers la liste des commandes
-                    if (clientController != null) {
-                        clientController.handleCommandes();
+                        // Obtenir le container BorderPane racine
+                        BorderPane mainContainer = (BorderPane) btnConfirmer.getScene().getRoot();
+
+                        // Charger la vue des produits
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/client-produits-view.fxml"));
+                        Parent produitsView = loader.load();
+
+                        // Remplacer le contenu central du BorderPane
+                        mainContainer.setCenter(produitsView);
+
+                        // Configurer le contrôleur des produits
+                        ClientProduitsController controller = loader.getController();
+                        if (controller != null) {
+                            // Transmettre les références nécessaires
+                            if (clientController != null) {
+                                controller.setClientController(clientController);
+                            }
+                            if (utilisateur != null) {
+                                controller.setUtilisateur(utilisateur);
+                            }
+
+                            // Rafraîchir les produits
+                            controller.loadProduits();
+                        }
+                    } catch (IOException e) {
+                        System.err.println("Erreur lors du chargement de la vue des produits: " + e.getMessage());
+                        e.printStackTrace();
+                        showAlert(Alert.AlertType.ERROR, "Erreur de navigation",
+                                "Impossible de naviguer vers la liste des produits",
+                                "Détails: " + e.getMessage());
                     }
                 } else {
                     showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de commande",
@@ -254,10 +291,13 @@ public class ClientCommandeFormController {
         }
     }
 
-    private void closeStage() {
-        Stage stage = (Stage) txtNom.getScene().getWindow();
-        if (stage != null) {
-            stage.close();
+    @FXML
+    private void handleRetour() {
+        // Revenir directement à la liste des produits
+        if (produitsController != null) {
+            produitsController.retourListeProduits();
+        } else if (clientController != null) {
+            clientController.handleProduits();
         }
     }
 

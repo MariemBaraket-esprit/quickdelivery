@@ -6,27 +6,30 @@ public class Produit {
     private int id;
     private String nom;
     private String description;
-    private String categorie;
     private double prix;
+    private int taille;
     private int stock;
+    private String categorie;
     private LocalDate dateAjout;
-    private int taille; // Taille comme entier
+    private String imagePath; // New field for image path
 
-    public Produit() {}
+    public Produit() {
+        this.dateAjout = LocalDate.now();
+    }
 
-    public Produit(int id, String nom, String description, String categorie, double prix, int stock, LocalDate dateAjout, int taille) {
+    public Produit(int id, String nom, String description, double prix, int taille, int stock, String categorie, LocalDate dateAjout, String imagePath) {
         this.id = id;
         this.nom = nom;
         this.description = description;
-        this.categorie = categorie;
         this.prix = prix;
-        this.stock = stock;
-        this.dateAjout = dateAjout;
         this.taille = taille;
+        this.stock = stock;
+        this.categorie = categorie;
+        this.dateAjout = dateAjout;
+        this.imagePath = imagePath;
     }
 
-    // Getters et Setters
-
+    // Getters and setters
     public int getId() {
         return id;
     }
@@ -51,36 +54,12 @@ public class Produit {
         this.description = description;
     }
 
-    public String getCategorie() {
-        return categorie;
-    }
-
-    public void setCategorie(String categorie) {
-        this.categorie = categorie;
-    }
-
     public double getPrix() {
         return prix;
     }
 
     public void setPrix(double prix) {
         this.prix = prix;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
-
-    public LocalDate getDateAjout() {
-        return dateAjout;
-    }
-
-    public void setDateAjout(LocalDate dateAjout) {
-        this.dateAjout = dateAjout;
     }
 
     public int getTaille() {
@@ -91,8 +70,50 @@ public class Produit {
         this.taille = taille;
     }
 
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public String getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(String categorie) {
+        this.categorie = categorie;
+    }
+
+    public LocalDate getDateAjout() {
+        return dateAjout;
+    }
+
+    public void setDateAjout(LocalDate dateAjout) {
+        this.dateAjout = dateAjout;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     @Override
     public String toString() {
-        return nom + " - " + prix + " DT - Taille: " + taille;
+        return "Produit{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", description='" + description + '\'' +
+                ", prix=" + prix +
+                ", taille=" + taille +
+                ", stock=" + stock +
+                ", categorie='" + categorie + '\'' +
+                ", dateAjout=" + dateAjout +
+                ", imagePath='" + imagePath + '\'' +
+                '}';
     }
 }

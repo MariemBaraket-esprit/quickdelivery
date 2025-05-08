@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="15" styleClass="form-container" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="Controllers.ClientCommandeFormIntegratedController"
+      prefWidth="800" prefHeight="600">
+
+    <padding>
+        <Insets top="0" right="0" bottom="0" left="0"/>
+    </padding>
+
+    <!-- En-tête avec titre -->
+    <HBox styleClass="form-header">
+        <Label text="Finaliser votre commande" styleClass="form-title">
+            <font>
+                <Font name="System Bold" size="18.0"/>
+            </font>
+        </Label>
+    </HBox>
+
+    <!-- Contenu du formulaire -->
+    <VBox spacing="15" styleClass="form-content">
+        <padding>
+            <Insets top="20" right="30" bottom="20" left="30"/>
+        </padding>
+
+        <!-- Option pour utiliser l'adresse par défaut -->
+        <CheckBox fx:id="chkUtiliserAdresseParDefaut" text="Utiliser mes informations enregistrées"
+                  selected="true" styleClass="form-checkbox"/>
+
+        <GridPane hgap="15" vgap="15">
+            <columnConstraints>
+                <ColumnConstraints minWidth="100" prefWidth="150"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+
+            <!-- Nom -->
+            <Label text="Nom:" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="form-label"/>
+            <TextField fx:id="txtNom" styleClass="form-field" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <!-- Adresse -->
+            <Label text="Adresse:" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="form-label"/>
+            <TextField fx:id="txtAdresse" styleClass="form-field" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <!-- Téléphone -->
+            <Label text="Téléphone:" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="form-label"/>
+            <TextField fx:id="txtTelephone" styleClass="form-field" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <!-- Instructions -->
+            <Label text="Instructions:" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="form-label"/>
+            <TextArea fx:id="txtInstructions" styleClass="form-field" prefHeight="80" wrapText="true"
+                      GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+        </GridPane>
+
+        <!-- Récapitulatif de la commande -->
+        <VBox spacing="10" styleClass="order-summary">
+            <padding>
+                <Insets top="15" right="0" bottom="15" left="0"/>
+            </padding>
+
+            <Label text="Récapitulatif de la commande" styleClass="section-title">
+                <font>
+                    <Font name="System Bold" size="14.0"/>
+                </font>
+            </Label>
+            <Label fx:id="lblArticles" text="Article: " styleClass="order-item"/>
+            <Label fx:id="lblTotal" text="Total: " styleClass="total-price"/>
+        </VBox>
+
+        <Region VBox.vgrow="ALWAYS"/>
+
+        <!-- Boutons d'action -->
+        <HBox spacing="15" alignment="CENTER_RIGHT">
+            <Button text="Retour" fx:id="btnRetour" onAction="#handleRetour"
+                    styleClass="cancel-button"/>
+            <Button text="Confirmer la commande" fx:id="btnConfirmer" onAction="#handleConfirmer"
+                    styleClass="save-button"/>
+        </HBox>
+    </VBox>
+</VBox>
