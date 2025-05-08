@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane prefHeight="1164.0" prefWidth="453.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AjouterReclamationController">
+
+    <content>
+        <VBox alignment="CENTER" maxWidth="800" prefHeight="1087.0" prefWidth="390.0" spacing="15">
+            <padding>
+                <Insets bottom="20" left="30" right="30" top="20" />
+            </padding>
+
+            <!-- Back button -->
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Button onAction="#handleBackToSupport" styleClass="button-back" text="Retour" />
+            </HBox>
+
+            <Label styleClass="form-title" text="Ajouter une Réclamation" />
+
+            <!-- User info -->
+            <VBox prefWidth="600" spacing="10" styleClass="form-section">
+                <VBox styleClass="form-group">
+                    <Label styleClass="form-label,required-field" text="Nom" />
+                    <TextField fx:id="nomField" editable="false" promptText="Entrez le nom" styleClass="text-field-custom" />
+                    <Label fx:id="nomError" styleClass="error-label" />
+                </VBox>
+                <VBox styleClass="form-group">
+                    <Label styleClass="form-label,required-field" text="Prénom" />
+                    <TextField fx:id="prenomField" editable="false" promptText="Entrez le prénom" styleClass="text-field-custom" />
+                    <Label fx:id="prenomError" styleClass="error-label" />
+                </VBox>
+                <VBox styleClass="form-group">
+                    <Label styleClass="form-label,required-field" text="Email" />
+                    <TextField fx:id="emailField" promptText="Entrez l'email" styleClass="text-field-custom" />
+                    <Label fx:id="emailError" styleClass="error-label" />
+                </VBox>
+            </VBox>
+
+            <!-- Description -->
+            <VBox prefWidth="600" styleClass="form-group">
+                <Label styleClass="form-label" text="Description" />
+                <TextArea fx:id="descriptionField" prefHeight="100" wrapText="true" />
+                <Label fx:id="descriptionError" styleClass="error-label" />
+            </VBox>
+
+            <!-- Creation date & type -->
+            <VBox prefWidth="600" spacing="10" styleClass="form-section">
+                 <Label styleClass="form-label" text="Date de Création" />
+                <HBox spacing="10" styleClass="form-group">
+                    <TextField fx:id="creationrecField" editable="false" styleClass="text-field-custom" />
+                </HBox>
+                 <Label styleClass="form-label,required-field" text="Type" />
+                <HBox spacing="10" styleClass="form-group">
+                    <ComboBox fx:id="typeReclamationComboBox" styleClass="combo-box-custom" />
+                    <Label fx:id="typeError" styleClass="error-label" />
+                </HBox>
+            </VBox>
+
+            <!-- Image chooser -->
+            <VBox prefWidth="600" spacing="5" styleClass="form-group">
+                <Label styleClass="form-label" text="Capture d’écran (facultatif)" />
+                <HBox spacing="10">
+                    <Button fx:id="chooseImageBtn" onAction="#handleChooseImage" styleClass="button-secondary" text="Choisir une image…" />
+                    <Label fx:id="imageNameLabel" text="(aucune image)" />
+                </HBox>
+                <ImageView fx:id="screenshotView" fitHeight="85" fitWidth="300" pickOnBounds="true" preserveRatio="true" />
+            </VBox>
+
+            <!-- Actions -->
+            <HBox alignment="CENTER" spacing="10">
+                <Button onAction="#handleBackToSupport" styleClass="button-secondary" text="Annuler" />
+                <Button onAction="#handSaveReclamation" styleClass="button-primary" text="Enregistrer" />
+            </HBox>
+        </VBox>
+    </content>
+</ScrollPane>

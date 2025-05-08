@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane hbarPolicy="NEVER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="737.0" prefWidth="1083.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ModifierReclamationController">
+   <content>
+      <VBox alignment="CENTER" prefHeight="926.0" prefWidth="1082.0" styleClass="main-container">
+         <children>
+            <VBox alignment="CENTER" maxWidth="800" spacing="15" styleClass="form-container" stylesheets="@../styles/styles.css">
+               <padding>
+                  <Insets bottom="20" left="30" right="30" top="20" />
+               </padding>
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="10">
+                     <children>
+                        <Button fx:id="retourButton" onAction="#handleBackToSupport" styleClass="button-back" text="Retour" />
+                     </children>
+                  </HBox>
+                  <Label styleClass="form-title" text="Modifier Reclamation" />
+                  <GridPane hgap="10" styleClass="grid-pane" vgap="15">
+                     <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                     </rowConstraints>
+                     <children>
+                        <Label styleClass="form-label" text="Nom" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="nomField" editable="false" styleClass="text-field-custom" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Label styleClass="form-label" text="Prénom" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <TextField fx:id="prenomField" editable="false" styleClass="text-field-custom" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Label styleClass="form-label" text="Date de Création" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="dateCreationField" editable="false" styleClass="text-field-custom" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Label styleClass="form-label" text="Date de Modification" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <TextField fx:id="dateModificationField" editable="false" styleClass="text-field-custom" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Label styleClass="form-label" text="Description" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="4" />
+                        <TextArea fx:id="descriptionField" prefRowCount="2" styleClass="text-field-custom" wrapText="true" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="5" />
+                        <Label styleClass="form-label" text="Type" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <ComboBox fx:id="typeComboBox" prefHeight="47.0" prefWidth="300.0" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                        <Label styleClass="form-label" text="Réponse" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                        <TextField fx:id="responseField" editable="false" styleClass="text-field-custom" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                        <Label fx:id="errorMessage" styleClass="error-label" text="" GridPane.columnIndex="2" GridPane.rowIndex="8">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </GridPane>
+                  <VBox prefWidth="600" spacing="5" styleClass="form-group">
+                     <children>
+                        <Label styleClass="form-label" text="Capture d’écran (facultatif)" />
+                        <HBox spacing="10">
+                           <children>
+                              <Button fx:id="chooseImageButton" onAction="#handleChooseImage" styleClass="button-secondary" text="Choisir une image…" />
+                              <Label fx:id="imageNameLabel" text="(aucune image)" />
+                           </children>
+                        </HBox>
+                        <ImageView fx:id="screenshotView" fitHeight="85" fitWidth="300" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </VBox>
+                  <Label fx:id="feedbackLabel" alignment="CENTER" prefHeight="20.0" prefWidth="150.0" styleClass="feedback-label" textFill="#2aa83b">
+                     <font>
+                        <Font name="Harrington" size="24.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="OPEN_HAND" />
+                     </cursor>
+                  </Label>
+                  <HBox alignment="CENTER" spacing="10">
+                     <children>
+                        <Button fx:id="annulerButton" onAction="#handleAnnulerButtonClick" styleClass="button-secondary" text="Annuler" />
+                        <Button fx:id="enregistrerButton" onAction="#handleSaveButtonClick" styleClass="button-primary" text="Enregistrer" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>
