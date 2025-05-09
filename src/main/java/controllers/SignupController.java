@@ -294,142 +294,6 @@ public class SignupController {
         return isValid;
     }
 
-    private void updateFieldStyle(TextField field, boolean hasError) {
-        if (hasError) {
-            field.getStyleClass().add("field-error");
-        } else {
-            field.getStyleClass().remove("field-error");
-        }
-    }
-
-    @FXML
-    private void handleSignup() {
-        clearErrorMessages();
-        
-        if (!validateInput()) {
-            return;
-        }
-        
-        try {
-            // Vérifier si l'email existe déjà
-            if (utilisateurService.emailExists(emailField.getText().trim())) {
-                emailError.setText("Cet email est déjà utilisé");
-                return;
-            }
-            
-            // Vérifier si le téléphone existe déjà
-            if (utilisateurService.telephoneExists(telephoneField.getText().trim())) {
-                telephoneError.setText("Ce numéro de téléphone est déjà utilisé");
-                return;
-            }
-            
-            // Créer l'utilisateur
-            Utilisateur utilisateur = new Utilisateur();
-            utilisateur.setNom(nomField.getText().trim());
-            utilisateur.setPrenom(prenomField.getText().trim());
-            utilisateur.setEmail(emailField.getText().trim());
-            utilisateur.setTelephone(telephoneField.getText().trim());
-            utilisateur.setAdresse(adresseField.getText().trim());
-            utilisateur.setPassword(passwordField.getText());
-            utilisateur.setTypeUtilisateur("CLIENT");
-            utilisateur.setStatut("ACTIF");
-            utilisateur.setDateDebutContrat(LocalDate.now());
-            
-            // Enregistrer l'utilisateur
-            utilisateurService.ajouterUtilisateur(utilisateur);
-            
-            // Afficher un message de succès
-            showSuccess("Inscription réussie", "Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.");
-            
-            // Rediriger vers la page de connexion
-            handleLoginLink();
-            
-        } catch (SQLException e) {
-            showError("Erreur", "Erreur lors de l'inscription: " + e.getMessage());
-        }
-    }
-
-    private boolean validateInput() {
-        boolean isValid = true;
-        
-        // Validation du nom
-        if (nomField.getText().trim().isEmpty()) {
-            nomError.setText("Le nom est requis");
-            isValid = false;
-        }
-        
-        // Validation du prénom
-        if (prenomField.getText().trim().isEmpty()) {
-            prenomError.setText("Le prénom est requis");
-            isValid = false;
-        }
-        
-        // Validation de l'email
-        String email = emailField.getText().trim();
-        if (email.isEmpty()) {
-            emailError.setText("L'email est requis");
-            isValid = false;
-        } else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            emailError.setText("Format d'email invalide");
-            isValid = false;
-        }
-        
-        // Validation du téléphone
-        String telephone = telephoneField.getText().trim();
-        if (telephone.isEmpty()) {
-            telephoneError.setText("Le téléphone est requis");
-            isValid = false;
-        } else if (!telephone.matches("^[0-9]{8}$")) {
-            telephoneError.setText("Le numéro doit contenir 8 chiffres");
-            isValid = false;
-        }
-        
-        // Validation de l'adresse
-        if (adresseField.getText().trim().isEmpty()) {
-            adresseError.setText("L'adresse est requise");
-            isValid = false;
-        }
-        
-        // Validation du mot de passe
-        String password = passwordField.getText();
-        if (password.isEmpty()) {
-            passwordError.setText("Le mot de passe est requis");
-            isValid = false;
-        } else if (password.length() < 6) {
-            passwordError.setText("Le mot de passe doit contenir au moins 6 caractères");
-            isValid = false;
-        } else if (!password.matches(".*[A-Z].*") || !password.matches(".*[a-z].*") || !password.matches(".*[0-9].*")) {
-            passwordError.setText("Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre");
-            isValid = false;
-        }
-        
-        // Validation de la confirmation du mot de passe
-        if (!confirmPasswordField.getText().equals(password)) {
-            confirmPasswordError.setText("Les mots de passe ne correspondent pas");
-            isValid = false;
-        }
-        
-        return isValid;
-    }
-
-    private void clearErrorMessages() {
-        nomError.setVisible(false);
-        prenomError.setVisible(false);
-        emailError.setVisible(false);
-        telephoneError.setVisible(false);
-        adresseError.setVisible(false);
-        passwordError.setVisible(false);
-        confirmPasswordError.setVisible(false);
-        
-        nomField.getStyleClass().remove("field-error");
-        prenomField.getStyleClass().remove("field-error");
-        emailField.getStyleClass().remove("field-error");
-        telephoneField.getStyleClass().remove("field-error");
-        adresseField.getStyleClass().remove("field-error");
-        passwordField.getStyleClass().remove("field-error");
-        confirmPasswordField.getStyleClass().remove("field-error");
-    }
-
     private boolean validateEmail() {
         String email = emailField.getText().trim();
         boolean isValid = true;
@@ -549,6 +413,93 @@ public class SignupController {
         return isValid;
     }
 
+    private void updateFieldStyle(TextField field, boolean hasError) {
+        if (hasError) {
+            field.getStyleClass().add("field-error");
+        } else {
+            field.getStyleClass().remove("field-error");
+        }
+    }
+
+    @FXML
+    private void handleSignup() {
+        // Don't clear error messages to ensure they remain visible
+        
+        if (!validateInput()) {
+            return;
+        }
+        
+        try {
+            // Vérifier si l'email existe déjà
+            if (utilisateurService.emailExists(emailField.getText().trim())) {
+                emailError.setText("Cet email est déjà utilisé");
+                emailError.setVisible(true);
+                emailField.getStyleClass().add("field-error");
+                return;
+            }
+            
+            // Vérifier si le téléphone existe déjà
+            if (utilisateurService.telephoneExists(telephoneField.getText().trim())) {
+                telephoneError.setText("Ce numéro de téléphone est déjà utilisé");
+                telephoneError.setVisible(true);
+                telephoneField.getStyleClass().add("field-error");
+                return;
+            }
+            
+            // Créer l'utilisateur
+            Utilisateur utilisateur = new Utilisateur();
+            utilisateur.setNom(nomField.getText().trim());
+            utilisateur.setPrenom(prenomField.getText().trim());
+            utilisateur.setEmail(emailField.getText().trim());
+            utilisateur.setTelephone(telephoneField.getText().trim());
+            utilisateur.setAdresse(adresseField.getText().trim());
+            utilisateur.setPassword(passwordField.getText());
+            utilisateur.setTypeUtilisateur("CLIENT");
+            utilisateur.setStatut("ACTIF");
+            utilisateur.setDateDebutContrat(LocalDate.now());
+            
+            // Enregistrer l'utilisateur
+            utilisateurService.ajouterUtilisateur(utilisateur);
+            
+            // Afficher un message de succès
+            showSuccess("Inscription réussie", "Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter.");
+            
+            // Rediriger vers la page de connexion
+            handleLoginLink();
+            
+        } catch (SQLException e) {
+            showError("Erreur", "Erreur lors de l'inscription: " + e.getMessage());
+        }
+    }
+
+    private boolean validateInput() {
+        boolean isValid = true;
+        
+        // Reset visibility (not necessary anymore as we set it in the individual validations)
+        // nomError.setVisible(false);
+        // prenomError.setVisible(false);
+        // emailError.setVisible(false);
+        // telephoneError.setVisible(false);
+        // adresseError.setVisible(false);
+        // passwordError.setVisible(false);
+        // confirmPasswordError.setVisible(false);
+        
+        // Apply all validations and combine results
+        boolean isNomValid = validateNom();
+        boolean isPrenomValid = validatePrenom();
+        boolean isEmailValid = validateEmail();
+        boolean isPhoneValid = validatePhone();
+        boolean isAddressValid = validateAddress();
+        boolean isPasswordValid = validatePassword();
+        boolean isConfirmPasswordValid = validateConfirmPassword();
+        
+        // Determine if the form is valid
+        isValid = isNomValid && isPrenomValid && isEmailValid && isPhoneValid 
+                && isAddressValid && isPasswordValid && isConfirmPasswordValid;
+        
+        return isValid;
+    }
+
     @FXML
     private void handleLoginLink() {
         try {
@@ -600,26 +551,34 @@ public class SignupController {
     }
 
     private void applyTheme(String theme) {
-        Scene scene = emailField.getScene();
-        System.out.println("[ThemeToggle] applyTheme called. Scene is " + (scene == null ? "null" : "not null") + ", theme=" + theme);
-        if (scene == null) {
-            // Retry after a short delay
-            javafx.application.Platform.runLater(() -> applyTheme(theme));
-            return;
+        try {
+            Scene scene = rootPane.getScene();
+            if (scene == null) {
+                // Retry after a short delay if scene is not yet available
+                Platform.runLater(() -> applyTheme(theme));
+                return;
+            }
+            
+            // Supprimer tous les styles existants
+            scene.getStylesheets().clear();
+            
+            // Ajouter le style de base
+            String baseStylesheet = getClass().getResource("/styles/styles.css").toExternalForm();
+            scene.getStylesheets().add(baseStylesheet);
+            
+            // Ajouter le thème sombre si nécessaire
+            if (THEME_DARK.equals(theme)) {
+                String darkStylesheet = getClass().getResource("/styles/dark-theme.css").toExternalForm();
+                scene.getStylesheets().add(darkStylesheet);
+            }
+            
+            // Sauvegarder le thème dans les préférences
+            prefs.put(PREF_THEME, theme);
+            
+        } catch (Exception e) {
+            System.err.println("Erreur lors de l'application du thème: " + e.getMessage());
+            e.printStackTrace();
         }
-        
-        // Supprimer tous les styles existants
-        scene.getStylesheets().clear();
-        
-        // Ajouter le style de base
-        scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());
-        
-        // Ajouter le thème sombre si nécessaire
-        if (THEME_DARK.equals(theme)) {
-            scene.getStylesheets().add(getClass().getResource("/styles/dark-theme.css").toExternalForm());
-        }
-        
-        System.out.println("[ThemeToggle] Theme applied: " + theme);
     }
 
     private void setupImageAndCard() {

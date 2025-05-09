@@ -332,104 +332,101 @@ public class GestionPerformancesController implements Initializable {
 
     private void updatePerformanceChart(Long userId, int year, int month) {
         try {
-            performanceChart.getData().clear();
-
-            // Créer une seule série pour les heures travaillées
-            XYChart.Series<String, Number> heuresSeries = new XYChart.Series<>();
-            heuresSeries.setName("Heures travaillées");
-
-            // Récupérer les pointages du mois sélectionné
-            List<Pointage> pointages = pointageService.getPointagesUtilisateur(userId).stream()
+            // Récupérer tous les pointages de l'utilisateur
+            List<Pointage> allPointages = pointageService.getPointagesUtilisateur(userId);
+            
+            // Filtrer les pointages pour le mois et l'année sélectionnés
+            YearMonth yearMonth = YearMonth.of(year, month);
+            List<Pointage> pointages = allPointages.stream()
                 .filter(p -> {
                     LocalDate date = p.getDatePointage();
                     return date.getYear() == year && date.getMonthValue() == month;
                 })
                 .toList();
-
-            // Créer un ensemble de tous les jours du mois
-            YearMonth yearMonth = YearMonth.of(year, month);
-            int daysInMonth = yearMonth.lengthOfMonth();
             
-            // Grouper les heures par jour
-            Map<Integer, Double> heuresParJour = new TreeMap<>();
+            // Créer une map pour stocker les heures travaillées par jour
+            Map<LocalDate, Double> heuresTravaillees = new TreeMap<>();
             
-            // Remplir les heures travaillées par jour
-            for (Pointage p : pointages) {
-                int jour = p.getDatePointage().getDayOfMonth();
-                double heures = p.getDureeTravailHeures();
-                if (heures > 0) {
-                    heuresParJour.merge(jour, heures, Double::sum);
+            // Initialiser tous les jours du mois avec 0 heures
+            for (int i = 1; i <= yearMonth.lengthOfMonth(); i++) {
+                heuresTravaillees.put(yearMonth.atDay(i), 0.0);
+            }
+            
+            // Calculer les heures travaillées pour chaque jour
+            for (Pointage pointage : pointages) {
+                if (pointage.getHeureEntree() != null && pointage.getHeureSortie() != null) {
+                    LocalDate date = pointage.getDatePointage();
+                    double heures = pointage.getDureeTravailHeures();
+                    // S'assurer que les heures ne sont pas négatives
+                    heures = Math.max(0, heures);
+                    heuresTravaillees.put(date, heures);
                 }
             }
-
-            // Ajouter les données au graphique pour chaque jour du mois
-            for (int jour = 1; jour <= daysInMonth; jour++) {
-                String jourStr = String.format("%02d", jour);
-                double heures = heuresParJour.getOrDefault(jour, 0.0);
-                
-                // Ajouter le point avec le format "Jour\nHeures" ou juste "Jour" si pas d'heures
-                String label = heures > 0 ? 
-                    String.format("%d\n%.1fh", jour, heures) : 
-                    String.valueOf(jour);
-                
-                heuresSeries.getData().add(new XYChart.Data<>(label, heures));
+            
+            // Effacer les anciennes données
+            performanceChart.getData().clear();
+            
+            // Créer la série de données
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            series.setName("Heures travaillées");
+            
+            // Formatter pour les dates
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd");
+            
+            // Ajouter les données à la série
+            for (Map.Entry<LocalDate, Double> entry : heuresTravaillees.entrySet()) {
+                // Utiliser uniquement le jour pour l'axe X
+                String dateStr = entry.getKey().format(formatter);
+                series.getData().add(new XYChart.Data<>(dateStr, entry.getValue()));
             }
-
-            performanceChart.getData().add(heuresSeries);
-
-            // Styliser le graphique
-            heuresSeries.getNode().setStyle("-fx-stroke: #2196f3; -fx-stroke-width: 2px;");
-
-            // Styliser les points de données
-            for (XYChart.Data<String, Number> data : heuresSeries.getData()) {
-                if (data.getNode() != null) {
-                    double heures = data.getYValue().doubleValue();
-                    String style;
-                    
-                    if (heures > 0) {
-                        // Point bleu pour les jours travaillés
-                        style = "-fx-background-color: #2196f3, white; " +
-                               "-fx-background-insets: 0, 2; " +
-                               "-fx-background-radius: 5px; " +
-                               "-fx-padding: 5px;";
-                    } else {
-                        // Point gris clair pour les jours sans travail
-                        style = "-fx-background-color: #e0e0e0, white; " +
-                               "-fx-background-insets: 0, 2; " +
-                               "-fx-background-radius: 5px; " +
-                               "-fx-padding: 5px;";
-                    }
-                    
-                    data.getNode().setStyle(style);
-
-                    // Ajouter un tooltip
-                    String jour = data.getXValue().split("\n")[0];
-                    String tooltipText = heures > 0 ?
-                        String.format("Jour %s\nHeures travaillées: %.1f", jour, heures) :
-                        String.format("Jour %s\nAucune heure travaillée", jour);
-                    
-                    Tooltip tooltip = new Tooltip(tooltipText);
-                    Tooltip.install(data.getNode(), tooltip);
-                }
-            }
-
-            // Configurer l'axe X pour une meilleure lisibilité
-            CategoryAxis xAxis = (CategoryAxis) performanceChart.getXAxis();
-            xAxis.setTickLabelRotation(0);
-            xAxis.setTickLabelGap(5);
-            xAxis.setStyle("-fx-tick-label-font-size: 10px;");
-
-            // Configurer l'axe Y
+            
+            // Ajouter la série au graphique
+            performanceChart.getData().add(series);
+            
+            // Configurer l'axe Y pour ne pas permettre de valeurs négatives
             NumberAxis yAxis = (NumberAxis) performanceChart.getYAxis();
-            yAxis.setAutoRanging(false);
-            yAxis.setLowerBound(0);  // Commencer à 0
-            yAxis.setUpperBound(Math.max(12, heuresParJour.values().stream()
-                .mapToDouble(Double::doubleValue)
-                .max()
-                .orElse(12.0) + 1));
-            yAxis.setTickUnit(1);
-
-        } catch (Exception e) {
+            yAxis.setLowerBound(0);
+            yAxis.setTickUnit(1); // Incrément de 1 heure
+            yAxis.setLabel("Heures travaillées");
+            
+            // Configurer l'axe X
+            CategoryAxis xAxis = (CategoryAxis) performanceChart.getXAxis();
+            xAxis.setLabel("Jour du mois");
+            xAxis.setTickLabelRotation(0); // Labels horizontaux
+            xAxis.setTickLabelGap(5); // Espace entre les labels
+            
+            // Style des labels de l'axe X
+            xAxis.setStyle("-fx-tick-label-font-size: 10px;");
+            
+            // Ajouter des tooltips pour chaque point avec la date complète
+            DateTimeFormatter tooltipFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            for (XYChart.Data<String, Number> data : series.getData()) {
+                // Trouver la date correspondante
+                LocalDate date = yearMonth.atDay(Integer.parseInt(data.getXValue()));
+                Tooltip tooltip = new Tooltip(
+                    String.format("Date: %s\nHeures: %.2f", date.format(tooltipFormatter), data.getYValue())
+                );
+                Tooltip.install(data.getNode(), tooltip);
+                
+                // Style du point
+                if (data.getNode() != null) {
+                    // Point plus visible
+                    data.getNode().setStyle(
+                        "-fx-background-color: #4CAF50; " +
+                        "-fx-background-radius: 5px; " +
+                        "-fx-padding: 5px;"
+                    );
+                }
+            }
+            
+            // Style de la ligne
+            series.getNode().setStyle("-fx-stroke: #4CAF50; -fx-stroke-width: 2px;");
+            
+            // Ajuster la taille du graphique
+            performanceChart.setMinHeight(400);
+            performanceChart.setAnimated(false); // Désactiver les animations pour une meilleure performance
+            
+        } catch (SQLException e) {
             e.printStackTrace();
             showError("Erreur", "Erreur lors de la mise à jour du graphique: " + e.getMessage());
         }
