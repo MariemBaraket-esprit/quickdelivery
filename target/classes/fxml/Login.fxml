@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.shape.Rectangle?>
+
+<StackPane fx:id="rootPane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.LoginController"
+           maxWidth="Infinity" maxHeight="Infinity" styleClass="root">
+    <StackPane alignment="CENTER" prefHeight="Infinity" prefWidth="Infinity">
+        <HBox styleClass="login-main-card" alignment="CENTER" spacing="100" maxWidth="1100" maxHeight="Infinity">
+            <padding>
+                <Insets top="48" right="48" bottom="48" left="48"/>
+            </padding>
+
+            <!-- Login Form -->
+            <VBox fx:id="loginCard" styleClass="login-form" maxWidth="420" maxHeight="650" prefHeight="650" spacing="32" alignment="CENTER">
+                <HBox alignment="TOP_RIGHT" spacing="10" style="-fx-padding: 10 10 0 0;" maxWidth="Infinity">
+                    <ToggleButton fx:id="themeToggle" text="🌙 Mode Sombre" />
+                </HBox>
+                <VBox alignment="CENTER" spacing="16">
+                    <ImageView fitWidth="64" fitHeight="64" preserveRatio="true">
+                        <image>
+                            <Image url="@../images/login-logo.png"/>
+                        </image>
+                    </ImageView>
+                    <Text text="Bienvenue sur Rached !" styleClass="welcome-title"/>
+                    <Text text="Connectez-vous pour accéder à votre espace personnel et profiter de tous nos services modernes." styleClass="welcome-subtitle" wrappingWidth="340"/>
+                </VBox>
+                <Text text="Connexion à votre compte" styleClass="login-title"/>
+                <VBox spacing="24">
+                    <VBox styleClass="form-group">
+                        <Label text="Email" styleClass="form-label"/>
+                        <TextField fx:id="emailField" styleClass="text-field-custom" promptText="Entrez votre email"/>
+                        <Label fx:id="emailError" styleClass="error-label"/>
+                    </VBox>
+
+                    <VBox styleClass="form-group">
+                        <Label text="Mot de passe" styleClass="form-label"/>
+                        <HBox spacing="5" alignment="CENTER_LEFT">
+                            <PasswordField fx:id="passwordField" 
+                                         styleClass="text-field-custom" 
+                                         promptText="Entrez votre mot de passe"
+                                         HBox.hgrow="ALWAYS"/>
+                            <Button fx:id="togglePasswordButton" 
+                                    onAction="#togglePasswordVisibility"
+                                    styleClass="toggle-password-button">
+                                <graphic>
+                                    <Label text="👁" />
+                                </graphic>
+                            </Button>
+                        </HBox>
+                        <Label fx:id="passwordError" styleClass="error-label"/>
+                    </VBox>
+
+                    <Button text="Se connecter" onAction="#handleLogin" styleClass="button-primary" maxWidth="Infinity"/>
+                    
+                    <HBox alignment="CENTER" spacing="10">
+                        <Label text="Pas encore de compte ?"/>
+                        <Hyperlink text="S'inscrire" onAction="#handleSignupLink"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+
+            <!-- Login Image with rounded corners -->
+            <StackPane alignment="CENTER" styleClass="image-card">
+                <ImageView fx:id="loginImageView" fitWidth="400" fitHeight="650" preserveRatio="false" styleClass="image-card-image">
+                    <image>
+                        <Image url="@../images/login-image.png"/>
+                    </image>
+                </ImageView>
+            </StackPane>
+        </HBox>
+    </StackPane>
+</StackPane> 

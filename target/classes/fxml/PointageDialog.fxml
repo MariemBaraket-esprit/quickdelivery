@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.PointageDialogController"
+      spacing="15" styleClass="dialog-content">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Pointage de présence" styleClass="dialog-title"/>
+
+    <!-- Sélection de l'utilisateur -->
+    <VBox spacing="5">
+        <Label text="Personnel"/>
+        <ComboBox fx:id="userComboBox" promptText="Sélectionner un personnel" maxWidth="Infinity"/>
+    </VBox>
+
+    <!-- Type de pointage -->
+    <VBox spacing="5">
+        <Label text="Type de pointage"/>
+        <HBox spacing="10">
+            <RadioButton fx:id="entreeRadio" text="Entrée" selected="true">
+                <toggleGroup>
+                    <ToggleGroup fx:id="typePointage"/>
+                </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="sortieRadio" text="Sortie" toggleGroup="$typePointage"/>
+        </HBox>
+    </VBox>
+
+    <!-- Option de saisie manuelle -->
+    <VBox spacing="5">
+        <CheckBox fx:id="saisieManuelleCheck" text="Saisie manuelle de la date et l'heure"/>
+    </VBox>
+
+    <!-- Date et heure -->
+    <VBox spacing="5">
+        <Label text="Date et heure"/>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <DatePicker fx:id="datePicker" promptText="Date"/>
+            <TextField fx:id="heureField" promptText="HH:mm" prefWidth="100"/>
+            <Button fx:id="actualiserButton" text="Actualiser" onAction="#handleActualiser" 
+                    styleClass="button-secondary">
+                <tooltip>
+                    <Tooltip text="Actualiser avec la date et l'heure actuelles"/>
+                </tooltip>
+            </Button>
+        </HBox>
+    </VBox>
+
+    <!-- Boutons -->
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Annuler" onAction="#handleCancel" styleClass="button-secondary"/>
+        <Button text="Valider" onAction="#handleSubmit" styleClass="button-primary" defaultButton="true"/>
+    </HBox>
+
+</VBox> 

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.PieChart?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      spacing="32" styleClass="dashboard-stats-section"
+      stylesheets="@../styles/styles.css">
+    <HBox alignment="CENTER" spacing="32">
+        <!-- Personnel Section -->
+        <VBox alignment="CENTER" spacing="20">
+            <VBox fx:id="statTotalPersonnelCard" styleClass="stat-card stat-total" alignment="CENTER" spacing="4">
+                <Label text="TOTAL PERSONNEL" styleClass="stat-title"/>
+                <Label fx:id="statTotalPersonnelCount" styleClass="stat-count" text="0"/>
+            </VBox>
+            <VBox styleClass="chart-card" alignment="CENTER" spacing="12">
+                <Label text="Personnel" styleClass="chart-card-title"/>
+                <PieChart fx:id="statPieChart" prefWidth="600" prefHeight="400" styleClass="stat-pie-chart"/>
+            </VBox>
+        </VBox>
+
+        <!-- Clients Section -->
+        <VBox alignment="CENTER" spacing="20">
+            <VBox fx:id="statTotalClientsCard" styleClass="stat-card stat-total-clients" alignment="CENTER" spacing="4">
+                <Label text="TOTAL CLIENTS" styleClass="stat-title"/>
+                <Label fx:id="statTotalClientsCount" styleClass="stat-count" text="0"/>
+            </VBox>
+            <VBox styleClass="chart-card" alignment="CENTER" spacing="12">
+                <Label text="Clients" styleClass="chart-card-title"/>
+                <PieChart fx:id="clientStatPieChart" prefWidth="600" prefHeight="400" styleClass="stat-pie-chart"/>
+            </VBox>
+        </VBox>
+    </HBox>
+</VBox> 

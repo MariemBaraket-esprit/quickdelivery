@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.image.ImageView?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="controllers.AjouterResponsableController"
+           fitToWidth="true"
+           styleClass="form-container"
+           stylesheets="@../styles/styles.css">
+    
+    <VBox spacing="15"
+          maxWidth="800"
+          alignment="CENTER">
+
+        <padding>
+            <Insets top="20" right="30" bottom="20" left="30"/>
+        </padding>
+
+        <!-- Back button at the top -->
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Button text="Retour" onAction="#handleBack" styleClass="button-back"/>
+        </HBox>
+
+        <Label text="Ajouter un Responsable" styleClass="form-title"/>
+
+        <!-- Profile Photo Section -->
+        <VBox alignment="CENTER" spacing="10">
+            <StackPane>
+                <Circle fx:id="photoCircle" radius="50" styleClass="profile-photo"/>
+                <ImageView fx:id="photoImageView" fitWidth="100" fitHeight="100" preserveRatio="true"/>
+            </StackPane>
+            <Button text="Choisir une photo" onAction="#handleChangePhoto" styleClass="button-secondary"/>
+        </VBox>
+
+        <!-- Informations personnelles -->
+        <VBox styleClass="form-section" spacing="10">
+            <VBox styleClass="form-group">
+                <Label text="Nom *" styleClass="form-label"/>
+                <TextField fx:id="nomField" styleClass="text-field-custom" promptText="Entrez le nom"/>
+                <Label fx:id="nomError" styleClass="error-label"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Prénom *" styleClass="form-label"/>
+                <TextField fx:id="prenomField" styleClass="text-field-custom" promptText="Entrez le prénom"/>
+                <Label fx:id="prenomError" styleClass="error-label"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Email *" styleClass="form-label"/>
+                <TextField fx:id="emailField" styleClass="text-field-custom" promptText="Entrez l'email"/>
+                <Label fx:id="emailError" styleClass="error-label"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Téléphone *" styleClass="form-label"/>
+                <TextField fx:id="telephoneField" styleClass="text-field-custom" promptText="Entrez le numéro de téléphone"/>
+                <Label fx:id="telephoneError" styleClass="error-label"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Adresse" styleClass="form-label"/>
+                <TextArea fx:id="adresseField" styleClass="text-field-custom" promptText="Entrez l'adresse" prefRowCount="2" wrapText="true"/>
+                <Label fx:id="adresseError" styleClass="error-label"/>
+            </VBox>
+        </VBox>
+
+        <!-- Dates -->
+        <VBox styleClass="form-section" spacing="10">
+            <VBox styleClass="form-group">
+                <Label text="Date de Naissance *" styleClass="form-label"/>
+                <DatePicker fx:id="dateNaissanceField" styleClass="date-picker-custom" promptText="Sélectionnez la date"/>
+                <Label fx:id="dateNaissanceError" styleClass="error-label"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Date Début Contrat" styleClass="form-label"/>
+                <DatePicker fx:id="dateDebutContratField" styleClass="date-picker-custom" promptText="Sélectionnez la date"/>
+                <Label fx:id="dateDebutContratError" styleClass="error-label"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Date Fin Contrat" styleClass="form-label"/>
+                <DatePicker fx:id="dateFinContratField" styleClass="date-picker-custom" promptText="Sélectionnez la date"/>
+                <Label fx:id="dateFinContratError" styleClass="error-label"/>
+            </VBox>
+        </VBox>
+
+        <!-- Informations professionnelles -->
+        <VBox styleClass="form-section" spacing="10">
+            <VBox styleClass="form-group">
+                <Label text="Salaire *" styleClass="form-label"/>
+                <TextField fx:id="salaireField" styleClass="text-field-custom" promptText="Entrez le salaire"/>
+                <Label fx:id="salaireError" styleClass="error-label"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Statut *" styleClass="form-label"/>
+                <ComboBox fx:id="statutComboBox" styleClass="combo-box-custom"/>
+                <Label fx:id="statutError" styleClass="error-label"/>
+            </VBox>
+        </VBox>
+
+        <!-- Sécurité -->
+        <VBox styleClass="form-section" spacing="10">
+            <VBox styleClass="form-group">
+                <Label text="Mot de passe *" styleClass="form-label"/>
+                <PasswordField fx:id="passwordField" styleClass="text-field-custom" promptText="Entrez le mot de passe"/>
+                <Label fx:id="passwordError" styleClass="error-label"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Confirmer mot de passe *" styleClass="form-label"/>
+                <PasswordField fx:id="confirmPasswordField" styleClass="text-field-custom" promptText="Confirmez le mot de passe"/>
+                <Label fx:id="confirmPasswordError" styleClass="error-label"/>
+            </VBox>
+        </VBox>
+
+        <!-- Error Messages -->
+        <Label fx:id="errorMessage" styleClass="error-label" visible="false"/>
+
+        <!-- Buttons -->
+        <HBox spacing="10" alignment="CENTER">
+            <Button text="Annuler" onAction="#handleCancel" styleClass="button-secondary"/>
+            <Button text="Enregistrer" onAction="#handleSave" styleClass="button-primary"/>
+        </HBox>
+    </VBox>
+</ScrollPane> 

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.shape.Rectangle?>
+
+<StackPane fx:id="rootPane"
+          xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="controllers.SignupController"
+          styleClass="root"
+          stylesheets="@../styles/styles.css">
+          
+    <ScrollPane styleClass="form-scroll-pane"
+                fitToWidth="true"
+                fitToHeight="true"
+                hbarPolicy="NEVER"
+                vbarPolicy="AS_NEEDED">
+                
+        <StackPane>
+            <HBox styleClass="login-container"
+                  alignment="CENTER"
+                  spacing="300"
+                  maxWidth="1400">
+                <padding>
+                    <Insets top="30" right="30" bottom="30" left="100"/>
+                </padding>
+
+                <!-- Signup Image with Rounded Corners -->
+                <StackPane fx:id="imageCard" styleClass="image-card">
+                    <ImageView fx:id="signupImage" 
+                             fitWidth="620" 
+                             fitHeight="650"
+                             preserveRatio="false">
+                        <image>
+                            <Image url="@../images/signup-image.png"/>
+                        </image>
+                    </ImageView>
+                </StackPane>
+
+                <!-- Signup Form -->
+                <VBox fx:id="signupForm" styleClass="login-form signup-form" maxWidth="400" spacing="20">
+                    <padding>
+                        <Insets left="100"/>
+                    </padding>
+                    <Text text="Inscription" styleClass="login-title"/>
+
+                    <HBox alignment="TOP_RIGHT" spacing="10" style="-fx-padding: 10 10 0 0;" maxWidth="Infinity">
+                        <ToggleButton fx:id="themeToggle" text="🌙 Mode Sombre" styleClass="theme-toggle" />
+                    </HBox>
+
+                    <VBox spacing="15">
+                        <VBox styleClass="form-group">
+                            <Label text="Nom *" styleClass="form-label"/>
+                            <TextField fx:id="nomField" 
+                                     styleClass="text-field-custom" 
+                                     promptText="Entrez votre nom"/>
+                            <Label fx:id="nomError" styleClass="error-label"/>
+                            <Text styleClass="helper-text" text="Votre nom de famille"/>
+                        </VBox>
+
+                        <VBox styleClass="form-group">
+                            <Label text="Prénom *" styleClass="form-label"/>
+                            <TextField fx:id="prenomField" 
+                                     styleClass="text-field-custom" 
+                                     promptText="Entrez votre prénom"/>
+                            <Label fx:id="prenomError" styleClass="error-label"/>
+                            <Text styleClass="helper-text" text="Votre prénom"/>
+                        </VBox>
+
+                        <VBox styleClass="form-group">
+                            <Label text="Email *" styleClass="form-label"/>
+                            <TextField fx:id="emailField" 
+                                     styleClass="text-field-custom" 
+                                     promptText="Entrez votre email"/>
+                            <Label fx:id="emailError" styleClass="error-label"/>
+                            <Text styleClass="helper-text" text="Format attendu: exemple@domaine.com"/>
+                        </VBox>
+
+                        <VBox styleClass="form-group">
+                            <Label text="Téléphone *" styleClass="form-label"/>
+                            <TextField fx:id="telephoneField" 
+                                     styleClass="text-field-custom" 
+                                     promptText="Entrez votre numéro de téléphone"/>
+                            <Label fx:id="telephoneError" styleClass="error-label"/>
+                            <Text styleClass="helper-text" text="Exemple: 12345678 (8 chiffres)"/>
+                        </VBox>
+
+                        <VBox styleClass="form-group">
+                            <Label text="Adresse *" styleClass="form-label"/>
+                            <TextField fx:id="adresseField" 
+                                     styleClass="text-field-custom" 
+                                     promptText="Entrez votre adresse"/>
+                            <Label fx:id="adresseError" styleClass="error-label"/>
+                            <Text styleClass="helper-text" text="Exemple: Rue, Ville, Code postal"/>
+                        </VBox>
+
+                        <VBox styleClass="form-group">
+                            <Label text="Mot de passe *" styleClass="form-label"/>
+                            <HBox spacing="5" alignment="CENTER_LEFT">
+                                <PasswordField fx:id="passwordField" 
+                                             styleClass="text-field-custom" 
+                                             promptText="Entrez votre mot de passe"
+                                             HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="togglePasswordButton" 
+                                        onAction="#togglePasswordVisibility"
+                                        styleClass="toggle-password-button"
+                                        text="👁"/>
+                            </HBox>
+                            <Label fx:id="passwordError" styleClass="error-label"/>
+                            <Text styleClass="helper-text" text="Le mot de passe doit contenir au moins 6 caractères, une lettre majuscule, une lettre minuscule et un chiffre"/>
+                        </VBox>
+
+                        <VBox styleClass="form-group">
+                            <Label text="Confirmer le mot de passe *" styleClass="form-label"/>
+                            <HBox spacing="5" alignment="CENTER_LEFT">
+                                <PasswordField fx:id="confirmPasswordField" 
+                                             styleClass="text-field-custom" 
+                                             promptText="Confirmez votre mot de passe"
+                                             HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="toggleConfirmPasswordButton" 
+                                        onAction="#toggleConfirmPasswordVisibility"
+                                        styleClass="toggle-password-button"
+                                        text="👁"/>
+                            </HBox>
+                            <Label fx:id="confirmPasswordError" styleClass="error-label"/>
+                            <Text styleClass="helper-text" text="Doit être identique au mot de passe"/>
+                        </VBox>
+
+                        <Text styleClass="required-field-note" text="* Champs obligatoires" fill="#FF0000"/>
+
+                        <Button text="S'inscrire" 
+                                onAction="#handleSignup" 
+                                styleClass="button-primary" 
+                                maxWidth="Infinity"/>
+                        
+                        <HBox alignment="CENTER" spacing="5">
+                            <Label text="Déjà inscrit ?"/>
+                            <Hyperlink text="Se connecter"
+                                       onAction="#handleLoginLink"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </HBox>
+        </StackPane>
+    </ScrollPane>
+</StackPane> 

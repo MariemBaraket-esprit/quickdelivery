@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="controllers.AjouterUtilisateurController"
+           fitToWidth="true"
+           styleClass="form-container"
+           stylesheets="@../styles/styles.css">
+    
+    <VBox spacing="15"
+          maxWidth="800"
+          alignment="CENTER">
+
+        <padding>
+            <Insets top="20" right="30" bottom="20" left="30"/>
+        </padding>
+
+        <!-- Back button at the top -->
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Button text="Retour" onAction="#handleBack" styleClass="button-back"/>
+        </HBox>
+
+        <Label text="Ajouter un Employé" styleClass="form-title"/>
+
+        <VBox styleClass="form-section" spacing="10">
+            <VBox styleClass="form-group">
+                <Label text="Nom *" styleClass="form-label"/>
+                <TextField fx:id="nomField" styleClass="text-field-custom" promptText="Entrez le nom"/>
+                <Label fx:id="nomError" styleClass="error-label"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Prénom *" styleClass="form-label"/>
+                <TextField fx:id="prenomField" styleClass="text-field-custom" promptText="Entrez le prénom"/>
+                <Label fx:id="prenomError" styleClass="error-label"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Téléphone *" styleClass="form-label"/>
+                <TextField fx:id="telephoneField" styleClass="text-field-custom" promptText="Entrez le numéro de téléphone"/>
+                <Label fx:id="telephoneError" styleClass="error-label"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Adresse" styleClass="form-label"/>
+                <TextField fx:id="adresseField" styleClass="text-field-custom" promptText="Entrez l'adresse"/>
+            </VBox>
+        </VBox>
+
+        <VBox styleClass="form-section" spacing="10">
+            <VBox styleClass="form-group">
+                <Label text="Date de Naissance *" styleClass="form-label"/>
+                <DatePicker fx:id="dateNaissancePicker" styleClass="date-picker-custom" promptText="Sélectionnez la date"/>
+                <Label fx:id="dateNaissanceError" styleClass="error-label"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Date Début Contrat *" styleClass="form-label"/>
+                <DatePicker fx:id="dateDebutContratPicker" styleClass="date-picker-custom" promptText="Sélectionnez la date"/>
+                <Label fx:id="dateDebutContratError" styleClass="error-label"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Date Fin Contrat" styleClass="form-label"/>
+                <DatePicker fx:id="dateFinContratPicker" styleClass="date-picker-custom" promptText="Sélectionnez la date"/>
+            </VBox>
+        </VBox>
+
+        <VBox styleClass="form-section" spacing="10">
+            <VBox styleClass="form-group">
+                <Label text="Salaire *" styleClass="form-label"/>
+                <TextField fx:id="salaireField" styleClass="text-field-custom" promptText="Entrez le salaire"/>
+                <Label fx:id="salaireError" styleClass="error-label"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Type Employé *" styleClass="form-label"/>
+                <ComboBox fx:id="typeUtilisateurComboBox" styleClass="combo-box-custom"/>
+                <Label fx:id="typeError" styleClass="error-label"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Statut *" styleClass="form-label"/>
+                <ComboBox fx:id="statutComboBox" styleClass="combo-box-custom"/>
+                <Label fx:id="statutError" styleClass="error-label"/>
+            </VBox>
+        </VBox>
+
+        <HBox spacing="10" alignment="CENTER">
+            <Button text="Annuler" onAction="#handleAnnuler" styleClass="button-secondary"/>
+            <Button text="Enregistrer" onAction="#handleEnregistrer" styleClass="button-primary"/>
+        </HBox>
+    </VBox>
+</ScrollPane> 

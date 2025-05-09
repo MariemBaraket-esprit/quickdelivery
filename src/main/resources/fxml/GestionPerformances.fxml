@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.GestionPerformancesController"
+      spacing="20" styleClass="main-container"
+      stylesheets="@../styles/styles.css">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <!-- En-tête avec bouton uniquement -->
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Pointer Présence" onAction="#handlePointage" styleClass="button-primary"/>
+    </HBox>
+
+    <!-- TabPane pour organiser les différentes sections -->
+    <TabPane VBox.vgrow="ALWAYS" styleClass="tab-pane-custom">
+        <!-- Onglet Pointage -->
+        <Tab text="Pointage" closable="false">
+            <VBox spacing="15">
+                <!-- Barre d'outils avec filtres -->
+                <VBox spacing="10">
+                    <!-- Champ de recherche -->
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <TextField fx:id="searchField" promptText="Rechercher (nom, prénom, type, date...)" HBox.hgrow="ALWAYS">
+                            <tooltip>
+                                <Tooltip text="Entrez n'importe quel terme pour rechercher (nom, prénom, type utilisateur, date...)"/>
+                            </tooltip>
+                        </TextField>
+                        <Button fx:id="clearSearchButton" text="✕" styleClass="button-clear">
+                            <tooltip>
+                                <Tooltip text="Effacer la recherche"/>
+                            </tooltip>
+                        </Button>
+                    </HBox>
+
+                    <!-- Options de filtrage -->
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <RadioButton fx:id="filterByMonthRadio" text="Filtrer par mois" selected="true">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="filterTypeGroup"/>
+                            </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="filterByDayRadio" text="Filtrer par jour" toggleGroup="$filterTypeGroup"/>
+                    </HBox>
+                    
+                    <!-- Contrôles de date -->
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <!-- Filtrage par mois -->
+                        <HBox fx:id="monthFilterBox" spacing="10">
+                            <ComboBox fx:id="monthComboBox" promptText="Mois"/>
+                            <ComboBox fx:id="yearComboBox" promptText="Année"/>
+                        </HBox>
+                        
+                        <!-- Filtrage par jour -->
+                        <DatePicker fx:id="pointageDatePicker" promptText="Sélectionner une date"/>
+                        
+                        <Button text="Pointer Présence" onAction="#handlePointageDialog" styleClass="button-primary"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Tableau des pointages -->
+                <TableView fx:id="pointageTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="pointageNomColumn" text="Nom"/>
+                        <TableColumn fx:id="pointageTypeColumn" text="Type"/>
+                        <TableColumn fx:id="dateColumn" text="Date"/>
+                        <TableColumn fx:id="heureArriveeColumn" text="Heure d'arrivée"/>
+                        <TableColumn fx:id="heureDepartColumn" text="Heure de départ"/>
+                        <TableColumn fx:id="tempsTravailColumn" text="Temps de travail"/>
+                        <TableColumn fx:id="statutColumn" text="Statut"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </Tab>
+
+        <!-- Onglet Performances -->
+        <Tab text="Performances" closable="false">
+            <VBox spacing="15">
+                <!-- Barre d'outils -->
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <ComboBox fx:id="performanceUserCombo" promptText="Sélectionner un utilisateur"/>
+                    <ComboBox fx:id="performanceMonthCombo" promptText="Mois"/>
+                    <ComboBox fx:id="performanceYearCombo" promptText="Année"/>
+                </HBox>
+
+                <!-- Statistiques de performance -->
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <VBox styleClass="stat-card" alignment="CENTER">
+                        <Label text="Score Performance" styleClass="stat-title"/>
+                        <Label fx:id="scorePerformanceLabel" styleClass="stat-value" text="0%"/>
+                    </VBox>
+                    <VBox styleClass="stat-card" alignment="CENTER">
+                        <Label text="Jours Présent" styleClass="stat-title"/>
+                        <Label fx:id="joursPresentsLabel" styleClass="stat-value" text="0"/>
+                    </VBox>
+                    <VBox styleClass="stat-card" alignment="CENTER">
+                        <Label text="Heures Travaillées" styleClass="stat-title"/>
+                        <Label fx:id="heuresTravailleesLabel" styleClass="stat-value" text="0h"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Graphique de performance -->
+                <LineChart fx:id="performanceChart" VBox.vgrow="ALWAYS">
+                    <xAxis>
+                        <CategoryAxis label="Mois"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis label="Heures de présence"/>
+                    </yAxis>
+                </LineChart>
+            </VBox>
+        </Tab>
+
+        <!-- Onglet Congés -->
+        <Tab text="Congés" closable="false">
+            <VBox spacing="15">
+                <!-- Barre d'outils -->
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <ComboBox fx:id="congeMonthCombo" promptText="Mois"/>
+                    <ComboBox fx:id="congeYearCombo" promptText="Année"/>
+                    <Button text="Passer un congé" onAction="#handleDemandeConge" styleClass="button-primary"/>
+                </HBox>
+
+                <!-- Tableau des congés -->
+                <TableView fx:id="congesTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="congeNomColumn" text="Nom"/>
+                        <TableColumn fx:id="congeTypeColumn" text="Type"/>
+                        <TableColumn fx:id="dateDebutColumn" text="Date début"/>
+                        <TableColumn fx:id="dateFinColumn" text="Date fin"/>
+                        <TableColumn fx:id="typeCongeColumn" text="Type congé"/>
+                        <TableColumn fx:id="statutCongeColumn" text="Statut"/>
+                        <TableColumn fx:id="descriptionCongeColumn" text="Description"/>
+                        <TableColumn fx:id="actionsCongeColumn" text="Actions"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </Tab>
+    </TabPane>
+</VBox> 

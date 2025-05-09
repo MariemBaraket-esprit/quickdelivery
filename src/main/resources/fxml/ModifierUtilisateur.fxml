@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="controllers.ModifierUtilisateurController"
+           fitToWidth="true"
+           styleClass="form-container"
+           stylesheets="@../styles/styles.css">
+    
+    <VBox spacing="15"
+          maxWidth="800"
+          alignment="CENTER">
+
+        <padding>
+            <Insets top="20" right="30" bottom="20" left="30"/>
+        </padding>
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Button text="Retour" onAction="#handleRetour" styleClass="button-back"/>
+        </HBox>
+        
+        <Label text="Modifier l'Utilisateur" styleClass="form-title"/>
+
+        <VBox styleClass="form-section" spacing="10">
+            
+            <VBox styleClass="form-group" spacing="10">
+                <Label text="Nom *" styleClass="form-label"/>
+                <TextField fx:id="nomField" styleClass="text-field-custom" promptText="Entrez le nom"/>
+                <Label fx:id="nomError" styleClass="error-label" managed="false" visible="false"/>
+            </VBox>
+
+            <VBox styleClass="form-group" spacing="10">
+                <Label text="Prénom *" styleClass="form-label"/>
+                <TextField fx:id="prenomField" styleClass="text-field-custom"  promptText="Entrez le prénom"/>
+                <Label fx:id="prenomError" styleClass="error-label" managed="false" visible="false"/>
+            </VBox>
+
+            <VBox styleClass="form-group" spacing="10">
+                <Label text="Email *" styleClass="form-label"/>
+                <TextField fx:id="emailField" styleClass="text-field-custom"  promptText="Entrez l'email"/>
+                <Label fx:id="emailError" styleClass="error-label" managed="false" visible="false"/>
+            </VBox>
+
+            <VBox styleClass="form-group" spacing="10">
+                <Label text="Téléphone *" styleClass="form-label"/>
+                <TextField fx:id="telephoneField" styleClass="text-field-custom"  promptText="Entrez le numéro de téléphone"/>
+                <Label fx:id="telephoneError" styleClass="error-label" managed="false" visible="false"/>
+            </VBox>
+
+            <VBox styleClass="form-group" spacing="10">
+                <Label text="Adresse" styleClass="form-label"/>
+                <TextField fx:id="adresseField" styleClass="text-field-custom"  promptText="Entrez l'adresse"/>
+                <Label fx:id="adresseError" styleClass="error-label" managed="false" visible="false"/>
+            </VBox>
+        </VBox>
+
+        <VBox styleClass="form-section" spacing="10">
+            
+            <VBox styleClass="form-group">
+                <Label text="Date de Naissance" styleClass="form-label"/>
+                <DatePicker fx:id="dateNaissancePicker" styleClass="date-picker-custom"  promptText="Sélectionnez la date"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Date Début Contrat" styleClass="form-label"/>
+                <DatePicker fx:id="dateDebutContratPicker" styleClass="date-picker-custom"  promptText="Sélectionnez la date"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Date Fin Contrat" styleClass="form-label"/>
+                <DatePicker fx:id="dateFinContratPicker" styleClass="date-picker-custom"  promptText="Sélectionnez la date"/>
+            </VBox>
+        </VBox>
+
+        <VBox styleClass="form-section" spacing="10">
+            
+            <VBox styleClass="form-group">
+                <Label text="Mot de passe" styleClass="form-label"/>
+                <HBox spacing="5" alignment="CENTER_LEFT">
+                    <PasswordField fx:id="passwordField" styleClass="text-field-custom"  promptText="Entrez le mot de passe" HBox.hgrow="ALWAYS"/>
+                    <TextField fx:id="visiblePasswordField" styleClass="text-field-custom" promptText="Entrez le mot de passe" visible="false" managed="false" HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="togglePasswordButton" text="👁" styleClass="toggle-password-button"/>
+                </HBox>
+                <Label styleClass="helper-text" text="Laissez vide pour conserver le mot de passe actuel"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Salaire" styleClass="form-label"/>
+                <TextField fx:id="salaireField" styleClass="text-field-custom"  promptText="Entrez le salaire"/>
+                <Label fx:id="generalError" styleClass="error-label" managed="false" visible="false"/>
+            </VBox>
+
+            <VBox styleClass="form-group" >
+                <Label text="Type Utilisateur *" styleClass="form-label"/>
+                <ComboBox fx:id="typeUtilisateurComboBox" styleClass="combo-box-custom" />
+                <Label fx:id="typeError" styleClass="error-label" managed="false" visible="false"/>
+            </VBox>
+
+            <VBox styleClass="form-group">
+                <Label text="Statut *" styleClass="form-label"/>
+                <ComboBox fx:id="statutComboBox" styleClass="combo-box-custom" />
+                <Label fx:id="statutError" styleClass="error-label" managed="false" visible="false"/>
+            </VBox>
+        </VBox>
+
+        <HBox spacing="15" alignment="CENTER" styleClass="button-container">
+            <Button text="Annuler" onAction="#handleAnnuler" styleClass="button-secondary"/>
+            <Button text="Enregistrer" fx:id="enregistrerButton" onAction="#handleEnregistrer" styleClass="button-primary"/>
+        </HBox>
+
+    </VBox>
+</ScrollPane> 

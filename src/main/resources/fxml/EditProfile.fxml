@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.image.ImageView?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="controllers.EditProfileController"
+           fitToWidth="true"
+           styleClass="form-scroll-pane"
+           maxHeight="600">
+    
+    <VBox styleClass="form-container"
+          spacing="15"
+          maxWidth="800"
+          alignment="CENTER"
+          stylesheets="@../styles/styles.css">
+        
+        <padding>
+            <Insets top="20" right="30" bottom="20" left="30"/>
+        </padding>
+
+        <!-- Back button -->
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Button text="Retour" onAction="#handleBack" styleClass="button-back"/>
+        </HBox>
+
+        <!-- Title -->
+        <Label text="Modifier Profil" styleClass="form-title"/>
+
+        <!-- Profile Photo Section -->
+        <VBox alignment="CENTER" spacing="10">
+            <StackPane>
+                <Circle fx:id="photoCircle" radius="50" styleClass="profile-photo"/>
+                <ImageView fx:id="photoImageView" fitWidth="100" fitHeight="100" preserveRatio="true"/>
+            </StackPane>
+            <Button text="Changer la photo" onAction="#handleChangePhoto" styleClass="button-secondary"/>
+        </VBox>
+
+        <!-- Form Fields -->
+        <GridPane styleClass="grid-pane" vgap="15" hgap="10">
+            <!-- Nom -->
+            <Label text="Nom" styleClass="form-label" 
+                   GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="nomField" styleClass="text-field-custom"
+                      GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            
+            <!-- Prénom -->
+            <Label text="Prénom" styleClass="form-label"
+                   GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <TextField fx:id="prenomField" styleClass="text-field-custom"
+                      GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            
+            <!-- Email -->
+            <Label text="Email" styleClass="form-label"
+                   GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <TextField fx:id="emailField" styleClass="text-field-custom"
+                      GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            
+            <!-- Téléphone -->
+            <Label text="Téléphone" styleClass="form-label"
+                   GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <TextField fx:id="telephoneField" styleClass="text-field-custom"
+                      GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+            
+            <!-- Adresse -->
+            <Label text="Adresse" styleClass="form-label"
+                   GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.columnSpan="2"/>
+            <TextArea fx:id="adresseField" styleClass="text-field-custom"
+                     GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.columnSpan="2"
+                     prefRowCount="2" wrapText="true"/>
+            
+            <!-- Ancien mot de passe -->
+            <Label text="Ancien mot de passe" styleClass="form-label"
+                   GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.columnSpan="2"/>
+            <PasswordField fx:id="oldPasswordField" styleClass="text-field-custom"
+                          GridPane.columnIndex="0" GridPane.rowIndex="7" GridPane.columnSpan="2"/>
+            
+            <!-- Nouveau mot de passe -->
+            <Label text="Nouveau mot de passe" styleClass="form-label"
+                   GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+            <PasswordField fx:id="passwordField" styleClass="text-field-custom"
+                          GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+            
+            <!-- Confirmer mot de passe -->
+            <Label text="Confirmer mot de passe" styleClass="form-label"
+                   GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+            <PasswordField fx:id="confirmPasswordField" styleClass="text-field-custom"
+                          GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+        </GridPane>
+
+        <!-- Error Messages -->
+        <Label fx:id="errorMessage" styleClass="error-label" visible="false"/>
+
+        <!-- Buttons -->
+        <HBox spacing="10" alignment="CENTER">
+            <Button text="Annuler" onAction="#handleCancel" styleClass="button-secondary"/>
+            <Button text="Enregistrer" onAction="#handleSave" styleClass="button-primary"/>
+        </HBox>
+
+    </VBox>
+</ScrollPane> 
