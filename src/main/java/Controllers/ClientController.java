@@ -3,10 +3,9 @@ package Controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.shape.Circle;
 import models.Utilisateur;
 
 import java.io.IOException;
@@ -20,7 +19,13 @@ public class ClientController {
     private Label lblClientInfo;
 
     @FXML
-    private Label lblClientStatus;
+    private Circle userAvatar;
+
+    @FXML
+    private Circle userStatusIndicator;
+
+    @FXML
+    private MenuButton userMenuButton;
 
     @FXML
     private Button btnProduits;
@@ -63,14 +68,12 @@ public class ClientController {
                 if (lblClientInfo != null) {
                     String prenom = utilisateur.getPrenom() != null ? utilisateur.getPrenom() : "";
                     String nom = utilisateur.getNom() != null ? utilisateur.getNom() : "";
-                    lblClientInfo.setText(prenom + " " + nom + " - Client");
+                    lblClientInfo.setText(prenom + " " + nom);
                 }
 
-                if (lblClientStatus != null) {
+                if (userStatusIndicator != null) {
                     String statut = utilisateur.getStatut() != null ? utilisateur.getStatut() : "Actif";
-                    lblClientStatus.setText(statut);
-                    lblClientStatus.getStyleClass().clear();
-                    lblClientStatus.getStyleClass().add("Actif".equals(statut) ? "client-status-active" : "client-status-inactive");
+                    userStatusIndicator.setStyle("-fx-fill: " + ("Actif".equals(statut) ? "#2ecc71" : "#e74c3c"));
                 }
             }
         } catch (Exception e) {
@@ -80,7 +83,7 @@ public class ClientController {
     }
 
     @FXML
-    private void handleProduits() {
+    void handleProduits() {
         if (!isUIInitialized()) {
             System.out.println("UI non initialisée, impossible de charger les produits");
             return;
@@ -103,6 +106,7 @@ public class ClientController {
                     "Impossible de charger la vue des produits: " + e.getMessage());
         }
     }
+
     @FXML
     public void handleCommandes() {
         try {
@@ -114,6 +118,9 @@ public class ClientController {
             controller.setClientController(this);
             controller.setUtilisateur(utilisateur);
 
+            // Assurez-vous que le contrôleur charge les commandes
+            controller.loadCommandes();
+
             mainContainer.setCenter(commandesView);
             System.out.println("Vue des commandes client chargée avec succès");
         } catch (IOException e) {
@@ -122,6 +129,20 @@ public class ClientController {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de chargement",
                     "Impossible de charger la vue des commandes: " + e.getMessage());
         }
+    }
+
+    @FXML
+    private void handleProfile() {
+        // Implémenter la gestion du profil utilisateur
+        showAlert(Alert.AlertType.INFORMATION, "Profil", "Profil utilisateur",
+                "Fonctionnalité de profil à implémenter.");
+    }
+
+    @FXML
+    private void handleLogout() {
+        // Implémenter la déconnexion
+        showAlert(Alert.AlertType.INFORMATION, "Déconnexion", "Déconnexion",
+                "Fonctionnalité de déconnexion à implémenter.");
     }
 
     public void showAlert(Alert.AlertType alertType, String title, String header, String content) {
