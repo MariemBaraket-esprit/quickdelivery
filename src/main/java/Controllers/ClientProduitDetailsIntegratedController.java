@@ -3,18 +3,24 @@ package Controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import models.Utilisateur;
 import models.Produit;
+
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 
-public class ClientProduitDetailsIntegratedController {
+public class ClientProduitDetailsController {
 
     @FXML
     private Label lblNomProduit;
+
+    // Utilisez le nom qui existe réellement dans votre FXML
+    @FXML
+    private Button btnAddToCart;  // Gardez le nom original qui est dans le FXML
 
     @FXML
     private Label lblCategorie;
@@ -37,20 +43,13 @@ public class ClientProduitDetailsIntegratedController {
     @FXML
     private Spinner<Integer> spinnerQuantite;
 
-    @FXML
-    private Button btnCommander;
-
-    @FXML
-    private Button btnRetour;
-
     private Produit produit;
     private Utilisateur utilisateur;
     private ClientController clientController;
-    private ClientProduitsController produitsController;
 
     @FXML
     private void initialize() {
-        System.out.println("Initialisation de ClientProduitDetailsIntegratedController");
+        System.out.println("Initialisation de ClientProduitDetailsController");
     }
 
     public void setProduit(Produit produit) {
@@ -64,10 +63,6 @@ public class ClientProduitDetailsIntegratedController {
 
     public void setClientController(ClientController clientController) {
         this.clientController = clientController;
-    }
-
-    public void setProduitsController(ClientProduitsController produitsController) {
-        this.produitsController = produitsController;
     }
 
     private void populateFields() {
@@ -87,7 +82,14 @@ public class ClientProduitDetailsIntegratedController {
         spinnerQuantite.setValueFactory(valueFactory);
 
         // Désactiver le bouton si le stock est épuisé
-        btnCommander.setDisable(produit.getStock() <= 0);
+        btnAddToCart.setDisable(produit.getStock() <= 0);
+        btnAddToCart.setText("Commander"); // Changer le texte du bouton à "Commander"
+    }
+
+    @FXML
+    private void handleAddToCart() {  // Gardez le nom de la méthode qui est dans le FXML
+        // Cette méthode sera appelée quand le bouton est cliqué
+        handleCommander();
     }
 
     @FXML
@@ -107,19 +109,26 @@ public class ClientProduitDetailsIntegratedController {
         }
 
         try {
-            // Charger le formulaire de commande intégré
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/client-commande-form-integrated-view.fxml"));
-            Parent commandeForm = loader.load();
+            // Fermer la fenêtre de détails du produit
+            Stage currentStage = (Stage) lblNomProduit.getScene().getWindow();
+            currentStage.close();
 
-            ClientCommandeFormIntegratedController controller = loader.getController();
+            // Ouvrir le formulaire de commande
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/client-commande-form-view.fxml"));
+            Parent root = loader.load();
+
+            ClientCommandeFormController controller = loader.getController();
             controller.setClientController(clientController);
             controller.setUtilisateur(utilisateur);
-            controller.setProduitCommande(produit, quantite);
-            controller.setProduitsController(produitsController);
 
-            // Remplacer le contenu principal par le formulaire de commande
-            BorderPane mainContainer = (BorderPane) btnCommander.getScene().getRoot();
-            mainContainer.setCenter(commandeForm);
+            // Passer le produit et la quantité au formulaire de commande
+            controller.setProduitCommande(produit, quantite);
+
+            Stage stage = new Stage();
+            stage.setTitle("Formulaire de commande");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
 
         } catch (IOException e) {
             System.err.println("Erreur lors de l'ouverture du formulaire de commande: " + e.getMessage());
@@ -130,10 +139,8 @@ public class ClientProduitDetailsIntegratedController {
     }
 
     @FXML
-    private void handleRetour() {
-        // Revenir à la liste des produits
-        if (produitsController != null) {
-            produitsController.retourListeProduits();
-        }
+    private void handleClose() {
+        Stage stage = (Stage) lblNomProduit.getScene().getWindow();
+        stage.close();
     }
 }
