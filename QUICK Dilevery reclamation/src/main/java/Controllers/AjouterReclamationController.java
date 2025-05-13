@@ -17,13 +17,10 @@ import services.DataBaseConnection;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.LocalDateTime;
 
 public class AjouterReclamationController {
@@ -97,17 +94,11 @@ public class AjouterReclamationController {
     private void handSaveReclamation() {
         clearErrors();
 
-        String nom         = nomField.getText().trim();
-        String prenom      = prenomField.getText().trim();
-        String email       = emailField.getText().trim();
         String type        = typeReclamationComboBox.getValue();
         String description = descriptionField.getText().trim();
 
         boolean valid = true;
-        if (nom.isEmpty())         { nomError.setText("Champ requis."); valid = false; }
-        if (prenom.isEmpty())      { prenomError.setText("Champ requis."); valid = false; }
-        if (email.isEmpty() || !email.contains("@")) { emailError.setText("Email invalide."); valid = false; }
-        if (type == null)          { typeError.setText("Sélectionnez un type."); valid = false; }
+        if (type == null)          { typeError.setText("Sélectionnez un type.");      valid = false; }
         if (description.isEmpty()) { descriptionError.setText("Description requise."); valid = false; }
         if (!valid) return;
 
@@ -121,23 +112,41 @@ public class AjouterReclamationController {
                 imagePath = target.toString();
             }
 
-            // 2) Insert using the correct column name:
+            // 2) Insert the new reclamation (no 'response' column here)
             String sql = """
             INSERT INTO reclamations
-              (id_utilisateur, type, status, description, date_creation, response, priority, image_reclamation_path)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+              (id_utilisateur, type, status, description, date_creation, priority, image_reclamation_path)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         """;
-            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            int newReclamationId;
+            try (PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 int uid = MainDashboardController.getInstance().currentUser.getIdUser();
-                stmt.setInt   (1, uid);
-                stmt.setString(2, type);
-                stmt.setString(3, "NEW");
-                stmt.setString(4, description);
+                stmt.setInt      (1, uid);
+                stmt.setString   (2, type);
+                stmt.setString   (3, "NEW");
+                stmt.setString   (4, description);
                 stmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
-                stmt.setString(6, "No response yet");
-                stmt.setString(7, "MEDIUM");
-                stmt.setString(8, imagePath);
+                stmt.setString   (6, "MEDIUM");
+                stmt.setString   (7, imagePath);
                 stmt.executeUpdate();
+
+                // get the generated id
+                try (ResultSet keys = stmt.getGeneratedKeys()) {
+                    if (keys.next()) newReclamationId = keys.getInt(1);
+                    else throw new SQLException("Failed to retrieve new reclamation ID");
+                }
+            }
+
+            // 3) (Optional) insert an initial "no response" row into reclamations_response:
+            //    -- comment out if you prefer to show "No response yet" in the UI
+            String respSql = """
+            INSERT INTO reclamations_response
+              (id_reclamation, responder_id, response, response_date)
+            VALUES (?, NULL, 'No response yet', NOW())
+        """;
+            try (PreparedStatement respStmt = conn.prepareStatement(respSql)) {
+                respStmt.setInt(1, newReclamationId);
+                respStmt.executeUpdate();
             }
 
             showSuccess("Réclamation ajoutée.");
@@ -148,7 +157,6 @@ public class AjouterReclamationController {
             showError("Erreur lors de l'ajout : " + ex.getMessage());
         }
     }
-
 
     @FXML
     private void handleBackToSupport() {

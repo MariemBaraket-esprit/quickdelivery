@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="700.0" prefWidth="600.0" stylesheets="@../styles/chatbot.css" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ChatbotController">
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="600.0" styleClass="chat-header" BorderPane.alignment="CENTER">
+            <children>
+                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/assistant-avatar.png" />
+                    </image>
+                    <HBox.margin>
+                        <Insets left="15.0" right="15.0" />
+                    </HBox.margin>
+                </ImageView>
+                <VBox>
+                    <children>
+                        <Label styleClass="header-title" text="QuickDelivery Assistant">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                        </Label>
+                        <Label styleClass="header-subtitle" text="Votre assistant pour les réclamations">
+                            <font>
+                                <Font size="12.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+                <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Button fx:id="clearButton" mnemonicParsing="false" onAction="#handleClearChat" styleClass="clear-button" text="Effacer">
+                            <HBox.margin>
+                                <Insets right="15.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </HBox>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="chat-scroll-pane" BorderPane.alignment="CENTER">
+            <content>
+                <VBox fx:id="messagesContainer" prefWidth="598.0" spacing="15.0" styleClass="messages-container">
+                    <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                    </padding>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+    <bottom>
+        <AnchorPane prefHeight="70.0" styleClass="input-container" BorderPane.alignment="CENTER">
+            <children>
+                <TextField fx:id="messageInput" layoutX="15.0" layoutY="15.0" onAction="#handleSendMessage" prefHeight="40.0" prefWidth="510.0" promptText="Écrivez votre message..." styleClass="message-input" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="15.0" />
+                <Button fx:id="sendButton" layoutX="535.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleSendMessage" prefHeight="40.0" prefWidth="40.0" styleClass="send-button" text="➤" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
+            </children>
+        </AnchorPane>
+    </bottom>
+</BorderPane>

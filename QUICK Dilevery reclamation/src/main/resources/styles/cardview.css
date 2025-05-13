@@ -49,20 +49,20 @@
     -fx-background-color: #fff;           /* var(--c-white) */
     -fx-border-radius: 16px;
     -fx-background-radius: 16px;
-    -fx-padding: 1.5rem;                  /* 24px */
+    -fx-padding: 24px;                  /* 24px */
     -fx-effect: dropshadow(three-pass-box, rgba(65,51,183, 0.25), 30, 0, 0, 2);
     -fx-spacing: 12px;
 }
 
 .reclamation-card .card-title {
-    -fx-font-size: 1.5rem;                /* 24px */
+    -fx-font-size: 24px;                /* 24px */
     -fx-text-fill: #141b22;               /* var(--c-void) */
     -fx-font-weight: 600;
 }
 
 .reclamation-card-text {
     -fx-text-fill: #a0a0a0;               /* var(--c-charcoal) */
-    -fx-font-size: 1rem;
+    -fx-font-size: 16px;
 }
 
 .date-text {

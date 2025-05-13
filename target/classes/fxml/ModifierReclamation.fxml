@@ -1,0 +1,51 @@
+<ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1">
+    <content>
+        <VBox alignment="CENTER" spacing="20" styleClass="form-container">
+            <padding>
+                <Insets bottom="20" left="30" right="30" top="20" />
+            </padding>
+
+            <Label styleClass="form-title" text="Modifier une réclamation">
+                <font>
+                    <Font name="System Bold" size="24.0" />
+                </font>
+            </Label>
+
+            <GridPane fx:id="formGrid" hgap="10" vgap="10">
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+                <children>
+                    <Label styleClass="form-label" text="Nom" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="nomField" styleClass="text-field-custom" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label styleClass="form-label" text="Prénom" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="prenomField" styleClass="text-field-custom" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label styleClass="form-label" text="Date de création" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="dateCreationField" styleClass="text-field-custom" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Label styleClass="form-label" text="Date de modification" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <TextField fx:id="dateModificationField" styleClass="text-field-custom" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label styleClass="form-label" text="Type" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <ComboBox fx:id="typeComboBox" styleClass="combo-box-custom" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Label styleClass="form-label" text="Description" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                    <TextArea fx:id="descriptionField" styleClass="text-area-custom" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <Label styleClass="form-label" text="Réponse" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                    <TextField fx:id="responseField" editable="false" styleClass="text-field-custom" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                    <Label fx:id="errorMessage" styleClass="error-label" text="" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                        <font>
+                            <Font size="10.0" />
+                        </font>
+                    </Label>
+                </children>
+            </GridPane>
+
+            <Label fx:id="feedbackLabel" alignment="CENTER" prefHeight="20.0" prefWidth="150.0" styleClass="feedback-label" textFill="#2aa83b">
+                <font>
+                    <Font name="Harrington" size="24.0" />
+                </font>
+                <cursor>
+                    <Cursor fx:constant="OPEN_HAND" />
+                </cursor>
+            </Label>
+        </VBox>
+    </content>
+</ScrollPane> 

@@ -215,14 +215,23 @@ public class MainDashboardController {
 
     @FXML
     private void handleRecruitment() {
-        pageTitle.setText("Recrutement");
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Recrutement.fxml"));
-            Parent content = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ChatBot.fxml"));
+            Parent chatbotContent = loader.load();
+
+            ChatbotController chatbotController = loader.getController();
+            chatbotController.setContentArea(contentArea); // Pass contentArea reference
+
             contentArea.getChildren().clear();
-            contentArea.getChildren().add(content);
+            contentArea.getChildren().add(chatbotContent);
+
+            // Set the page title
+            pageTitle.setText("ChatBot");
+
         } catch (IOException e) {
-            showError("Erreur", "Erreur lors du chargement du recrutement: " + e.getMessage());
+            // Handle any errors that occur during loading
+            showError("Error", "Failed to load ChatBot page: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

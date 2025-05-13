@@ -58,18 +58,29 @@ public class ModifierReclamationController {
             recStmt.setInt(1, reclamationId);
             ResultSet rs = recStmt.executeQuery();
 
+            // Populate ComboBox options FIRST
+            typeComboBox.getItems().setAll(
+                    "Application Bug", "Application Problem", "Payment Issue", "Delivery Delay", "Other"
+            );
+
             if (rs.next()) {
                 nomField.setText(rs.getString("nom"));
                 prenomField.setText(rs.getString("prenom"));
                 descriptionField.setText(rs.getString("description"));
-                responseField.setText(rs.getString("response"));
+
+                // Set responseField to empty
+                responseField.setText("");
+
+                // Set typeComboBox to current type
                 typeComboBox.setValue(rs.getString("type"));
+
+                // Set dateCreationField from DB
                 dateCreationField.setText(rs.getTimestamp("date_creation").toString());
 
-                if (rs.getTimestamp("date_update") != null) {
-                    dateModificationField.setText(rs.getTimestamp("date_update").toString());
-                }
+                // Set dateModificationField to current system date/time
+                dateModificationField.setText(java.time.LocalDateTime.now().toString());
 
+                // Set image if available
                 String imagePath = rs.getString("image_reclamation_path");
                 if (imagePath != null && !imagePath.isBlank()) {
                     chosenImageFile = new File(imagePath);
@@ -79,11 +90,6 @@ public class ModifierReclamationController {
                     }
                 }
             }
-
-            // Populate ComboBox options
-            typeComboBox.getItems().setAll(
-                    "Application Bug", "Application Problem", "Payment Issue", "Delivery Delay", "Other"
-            );
 
             feedbackLabel.setVisible(false);
             imageUpdated = false;
@@ -143,12 +149,12 @@ public class ModifierReclamationController {
                 imagePathParam = targetPath.toString().replace("\\", "/");
             }
 
+            // First, update the reclamation
             String sql = """
                 UPDATE reclamations
                 SET description = ?, 
                     type = ?, 
                     date_update = NOW(), 
-                    response = ?, 
                     priority = ?, 
                     image_reclamation_path = COALESCE(?, image_reclamation_path)
                 WHERE id_reclamation = ?
@@ -157,12 +163,38 @@ public class ModifierReclamationController {
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, desc);
                 stmt.setString(2, type);
-                stmt.setString(3, response);
-                stmt.setString(4, "MEDIUM"); // Can be made dynamic later
-                stmt.setString(5, imagePathParam);
-                stmt.setInt(6, reclamationId);
+                stmt.setString(3, "MEDIUM"); // Can be made dynamic later
+                stmt.setString(4, imagePathParam);
+                stmt.setInt(5, reclamationId);
 
                 int updated = stmt.executeUpdate();
+
+                // If response is not empty, add it to reclamations_response table
+                if (response != null && !response.trim().isEmpty()) {
+                    // Check if the table exists
+                    boolean tableExists = false;
+                    try (PreparedStatement checkStmt = conn.prepareStatement("SHOW TABLES LIKE 'reclamations_response'")) {
+                        ResultSet rs = checkStmt.executeQuery();
+                        tableExists = rs.next();
+                    }
+
+                    if (tableExists) {
+                        // Add response to reclamations_response table
+                        String responseSql = """
+                            INSERT INTO reclamations_response 
+                            (id_reclamation, responder_id, response) 
+                            VALUES (?, ?, ?)
+                        """;
+
+                        try (PreparedStatement responseStmt = conn.prepareStatement(responseSql)) {
+                            responseStmt.setInt(1, reclamationId);
+                            responseStmt.setInt(2, 1); // Assuming current user ID is 1, should be dynamic
+                            responseStmt.setString(3, response);
+                            responseStmt.executeUpdate();
+                        }
+                    }
+                }
+
                 if (updated > 0) {
                     feedbackLabel.setText("Modifié avec succès !");
                     feedbackLabel.getStyleClass().setAll("feedback-label", "feedback-success");

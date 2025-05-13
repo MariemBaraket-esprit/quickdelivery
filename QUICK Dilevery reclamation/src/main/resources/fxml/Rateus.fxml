@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" spacing="20" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 30;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.RateUsController">
+    <children>
+        <Label text="Rate us!" style="-fx-font-size: 28px; -fx-font-weight: bold;" />
+        <Label text="How would you Love this app?" style="-fx-font-size: 16px; -fx-text-fill: #555;" />
+        <HBox alignment="CENTER" spacing="10">
+            <children>
+                <Polygon fx:id="star1" points="20,0,25,14,40,15,28,24,32,38,20,30,8,38,12,24,0,15,15,14" style="-fx-fill: #cccccc; -fx-stroke: #888; -fx-stroke-width: 1;" />
+                <Polygon fx:id="star2" points="20,0,25,14,40,15,28,24,32,38,20,30,8,38,12,24,0,15,15,14" style="-fx-fill: #cccccc; -fx-stroke: #888; -fx-stroke-width: 1;" />
+                <Polygon fx:id="star3" points="20,0,25,14,40,15,28,24,32,38,20,30,8,38,12,24,0,15,15,14" style="-fx-fill: #cccccc; -fx-stroke: #888; -fx-stroke-width: 1;" />
+                <Polygon fx:id="star4" points="20,0,25,14,40,15,28,24,32,38,20,30,8,38,12,24,0,15,15,14" style="-fx-fill: #cccccc; -fx-stroke: #888; -fx-stroke-width: 1;" />
+                <Polygon fx:id="star5" points="20,0,25,14,40,15,28,24,32,38,20,30,8,38,12,24,0,15,15,14" style="-fx-fill: #cccccc; -fx-stroke: #888; -fx-stroke-width: 1;" />
+            </children>
+        </HBox>
+        <Text fx:id="noThanksText" text="No Thanks" style="-fx-fill: #1976d2; -fx-underline: true; -fx-font-size: 14px; -fx-cursor: hand;" onMouseClicked="#handleRetour" />
+    </children>
+</VBox> 

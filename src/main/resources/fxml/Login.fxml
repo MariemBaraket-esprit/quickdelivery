@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="rootPane" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginController">
+    <VBox alignment="CENTER" maxWidth="400" spacing="20" styleClass="login-container">
+        <padding>
+            <Insets bottom="20" left="30" right="30" top="20" />
+        </padding>
+
+        <Label styleClass="form-title" text="Connexion">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+
+        <VBox spacing="5" styleClass="form-group">
+            <Label styleClass="form-label" text="Email" />
+            <TextField fx:id="emailField" styleClass="text-field-custom" promptText="Entrez votre email" />
+            <Label fx:id="emailError" styleClass="error-label" text="" />
+        </VBox>
+
+        <VBox spacing="5" styleClass="form-group">
+            <Label styleClass="form-label" text="Mot de passe" />
+            <HBox spacing="10">
+                <PasswordField fx:id="passwordField" HBox.hgrow="ALWAYS" styleClass="text-field-custom" promptText="Entrez votre mot de passe" />
+                <Button fx:id="togglePasswordButton" mnemonicParsing="false" onAction="#togglePasswordVisibility" styleClass="button-secondary" text="👁" />
+            </HBox>
+            <Label fx:id="passwordError" styleClass="error-label" text="" />
+        </VBox>
+
+        <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLogin" styleClass="button-primary" text="Se connecter">
+            <VBox.margin>
+                <Insets top="10" />
+            </VBox.margin>
+        </Button>
+
+        <HBox alignment="CENTER" spacing="5">
+            <Label styleClass="form-label" text="Pas encore de compte ?" />
+            <Button mnemonicParsing="false" onAction="#handleSignupLink" styleClass="button-link" text="S'inscrire" />
+        </HBox>
+
+        <ToggleButton fx:id="themeToggle" mnemonicParsing="false" onAction="#handleThemeToggle" styleClass="theme-toggle" text="🌙 Mode Sombre" />
+    </VBox>
+</StackPane> 
