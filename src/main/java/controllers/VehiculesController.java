@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 import models.Reservation;
 import models.Vehicule;
 import models.Utilisateur;
-import services.DataBaseConnection;
+import utils.DatabaseConnection;
 import javafx.scene.control.Label;
 import utils.Session;
 import javafx.scene.control.TextField;
@@ -117,7 +117,7 @@ public class VehiculesController {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            conn = DataBaseConnection.getConnection();
+            conn = DatabaseConnection.getConnection();
             stmt = conn.prepareStatement(sql);
             rs = stmt.executeQuery();
             while (rs.next()) {
@@ -323,7 +323,7 @@ public class VehiculesController {
         }
 
         String sql = "INSERT INTO vehicule (immatriculation, marque, modele, statut, type, longueur, hauteur, largeur, poids, dateEntretien, dateVisiteTechnique, dateVidange, dateAssurance, dateVignette) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = DataBaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, v.getImmatriculation());
             stmt.setString(2, v.getMarque());
@@ -359,7 +359,7 @@ public class VehiculesController {
         }
 
         String sql = "UPDATE vehicule SET marque = ?, modele = ?, statut = ?, type = ?, longueur = ?, hauteur = ?, largeur = ?, poids = ?, dateEntretien = ?, dateVisiteTechnique = ?, dateVidange = ?, dateAssurance = ?, dateVignette = ? WHERE immatriculation = ?";
-        try (Connection conn = DataBaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, v.getMarque());
             stmt.setString(2, v.getModele());
@@ -401,7 +401,7 @@ public class VehiculesController {
             }
 
             String sql = "DELETE FROM vehicule WHERE immatriculation = ?";
-            try (Connection conn = DataBaseConnection.getConnection();
+            try (Connection conn = DatabaseConnection.getConnection();
                  PreparedStatement stmt = conn.prepareStatement(sql)) {
                 stmt.setString(1, v.getImmatriculation());
                 int affected = stmt.executeUpdate();
@@ -420,7 +420,7 @@ public class VehiculesController {
 
     private boolean hasReservations(String immatriculation) {
         String sql = "SELECT COUNT(*) FROM reservation WHERE vehicule = ? AND date_fin > CURRENT_TIMESTAMP";
-        try (Connection conn = DataBaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, immatriculation);
             ResultSet rs = stmt.executeQuery();

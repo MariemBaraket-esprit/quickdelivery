@@ -14,7 +14,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import models.Reservation;
-import services.DataBaseConnection;
+import utils.DatabaseConnection;
 
 import java.net.URL;
 import java.sql.*;
@@ -37,7 +37,7 @@ public class TableauDeBordController implements Initializable {
             Map<String, Integer> counts = new HashMap<>();
             int total = 0;
 
-            try (Connection conn = DataBaseConnection.getConnection();
+            try (Connection conn = DatabaseConnection.getConnection();
                  Statement stmt = conn.createStatement();
                  ResultSet rs = stmt.executeQuery(
                          "SELECT v.type, COUNT(*) AS total " +

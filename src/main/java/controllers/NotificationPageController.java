@@ -65,7 +65,7 @@ public class NotificationPageController {
     private List<Vehicule> getAllVehiculesFromDB() {
         List<Vehicule> vehicules = new java.util.ArrayList<>();
         String sql = "SELECT * FROM vehicule";
-        try (Connection conn = services.DataBaseConnection.getConnection();
+        try (Connection conn = utils.DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {

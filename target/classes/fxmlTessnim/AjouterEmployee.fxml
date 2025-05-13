@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<VBox alignment="TOP_CENTER" maxWidth="600" minWidth="500" prefWidth="550" spacing="20" style="-fx-background-color: linear-gradient(to bottom right, #f0f8ff, #ffffff); -fx-padding: 30; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterEmployee">
+    <effect>
+        <DropShadow color="#00000040" radius="10" />
+    </effect>
+    <children>
+        <!-- Header -->
+        <Label text="Ajouter un Employé" textFill="#2c3e50">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+
+        <Line endX="450.0" style="-fx-stroke: #3498db; -fx-stroke-width: 2;" />
+
+        <!-- Form Fields -->
+        <GridPane hgap="15" vgap="15">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="300.0" />
+            </columnConstraints>
+
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+
+            <!-- Row 0: Nom -->
+            <Label text="Nom:" textFill="#2c3e50" GridPane.rowIndex="0">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Label>
+            <TextField fx:id="tfNom" promptText="Entrez le nom" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #3498db; -fx-border-width: 1; -fx-padding: 8;" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </TextField>
+
+            <!-- Row 1: Prénom -->
+            <Label text="Prénom:" textFill="#2c3e50" GridPane.rowIndex="1">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Label>
+            <TextField fx:id="tfPrenom" promptText="Entrez le prénom" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #3498db; -fx-border-width: 1; -fx-padding: 8;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </TextField>
+
+            <!-- Row 2: Email -->
+            <Label text="E-mail:" textFill="#2c3e50" GridPane.rowIndex="2">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Label>
+            <TextField fx:id="tfEmail" promptText="Entrez l'adresse e-mail" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #3498db; -fx-border-width: 1; -fx-padding: 8;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </TextField>
+
+            <!-- Row 3: Téléphone -->
+            <Label text="Téléphone:" textFill="#2c3e50" GridPane.rowIndex="3">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Label>
+            <TextField fx:id="tfTelephone" promptText="Entrez le numéro de téléphone" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #3498db; -fx-border-width: 1; -fx-padding: 8;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </TextField>
+
+            <!-- Row 4: Date d'embauche -->
+            <Label text="Date d'embauche:" textFill="#2c3e50" GridPane.rowIndex="4">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Label>
+            <DatePicker fx:id="tfDateEmb" promptText="Sélectionnez la date" prefWidth="300" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #3498db; -fx-border-width: 1;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+            <!-- Row 5: Statut Emploi -->
+            <Label text="Statut Emploi:" textFill="#2c3e50" GridPane.rowIndex="5">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Label>
+            <ComboBox fx:id="cbStatut" prefWidth="300" promptText="Sélectionnez le statut" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #3498db; -fx-border-width: 1;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+            <!-- Row 6: Salaire -->
+            <Label text="Salaire:" textFill="#2c3e50" GridPane.rowIndex="6">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Label>
+            <TextField fx:id="tfSalaire" promptText="Entrez le salaire" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #3498db; -fx-border-width: 1; -fx-padding: 8;" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </TextField>
+
+            <!-- Row 7: CV -->
+            <Label text="CV:" textFill="#2c3e50" GridPane.rowIndex="7">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Label>
+            <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                <TextField fx:id="tfcv" promptText="Chemin du fichier CV" HBox.hgrow="ALWAYS" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #3498db; -fx-border-width: 1; -fx-padding: 8;">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </TextField>
+                <Button fx:id="browseButton" text="Parcourir" onAction="#handleBrowseButton" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-background-radius: 5;">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Button>
+            </HBox>
+
+            <!-- Row 8: Offre -->
+            <Label text="Poste:" textFill="#2c3e50" GridPane.rowIndex="8">
+                <font>
+                    <Font size="14.0" />
+                </font>
+            </Label>
+            <ComboBox fx:id="cbOffres" prefWidth="300" promptText="Sélectionnez l'offre" style="-fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #3498db; -fx-border-width: 1;" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+        </GridPane>
+
+        <Line endX="450.0" style="-fx-stroke: #e0e0e0; -fx-stroke-width: 1;" />
+
+        <!-- Buttons -->
+        <HBox alignment="CENTER" spacing="20">
+            <Button onAction="#onValiderClicked" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 5;" text="Valider">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+                <effect>
+                    <DropShadow color="#00000040" />
+                </effect>
+            </Button>
+            <Button prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5;" text="Annuler">
+                <font>
+                    <Font name="System Bold" size="14.0" />
+                </font>
+                <effect>
+                    <DropShadow color="#00000040" />
+                </effect>
+            </Button>
+        </HBox>
+    </children>
+</VBox>

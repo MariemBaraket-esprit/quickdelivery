@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.shape.Line?>
+
+<?import javafx.scene.control.ListView?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom right, #f0f8ff, #ffffff);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.GestionOffre">
+   <children>
+      <!-- Header Area -->
+      <HBox alignment="CENTER_LEFT" layoutX="0.0" layoutY="0.0" prefHeight="80.0" prefWidth="900.0" style="-fx-background-color: #2c3e50;">
+         <children>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/123.jpeg" />
+               </image>
+               <HBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </HBox.margin>
+            </ImageView>
+            <Label prefHeight="54.0" prefWidth="334.0" text="Gestion des Offres" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="36.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#onEmployeeClicked" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 20;" text="Les Employés">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="#00000040" />
+                     </effect>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets right="20.0" />
+               </padding>
+            </HBox>
+         </children>
+      </HBox>
+
+      <!-- Search Area -->
+      <HBox alignment="CENTER" layoutX="0.0" layoutY="100.0" prefHeight="60.0" prefWidth="900.0">
+         <children>
+            <TextField fx:id="searchField" prefHeight="40.0" prefWidth="500.0" promptText="Veuillez entrer le poste recherché" style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: #3498db; -fx-border-width: 1.5; -fx-padding: 5;">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <Button fx:id="searchbuttton" mnemonicParsing="false" onAction="#onsearchClicked" prefHeight="40.0" prefWidth="150.0" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-background-radius: 20;" text="Rechercher">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+               <effect>
+                  <DropShadow color="#00000040" />
+               </effect>
+            </Button>
+         </children>
+      </HBox>
+
+      <!-- Table Area -->
+      <VBox layoutX="50.0" layoutY="180.0" prefHeight="320.0" prefWidth="800.0" spacing="0">
+         <!-- Table Header -->
+         <HBox style="-fx-background-color: #3498db; -fx-border-color: #3498db; -fx-border-width: 2 2 0 2;">
+            <children>
+               <Label prefWidth="120" text="Poste" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-alignment: CENTER;"/>
+               <Label prefWidth="150" text="Description" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-alignment: CENTER;"/>
+               <Label prefWidth="120" text="Type Contrat" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-alignment: CENTER;"/>
+               <Label prefWidth="80" text="Salaire" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-alignment: CENTER;"/>
+               <Label prefWidth="80" text="Statut" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-alignment: CENTER;"/>
+               <Label prefWidth="150" text="Formulaire" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-alignment: CENTER;"/>
+               <Label prefWidth="100" text="Date Pub" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10; -fx-alignment: CENTER;"/>
+            </children>
+         </HBox>
+
+         <!-- ListView as Table -->
+         <ListView fx:id="listViewOffers" prefHeight="300.0" prefWidth="800.0"
+                   style="-fx-border-color: #3498db; -fx-border-width: 0 2 2 2;">
+         </ListView>
+      </VBox>
+
+      <!-- Details Area (Hidden by Default) -->
+      <VBox layoutX="50.0" layoutY="520.0" prefHeight="150.0" prefWidth="600.0" spacing="10.0" style="-fx-background-color: white; -fx-border-color: #3498db; -fx-border-radius: 5; -fx-background-radius: 5; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 5);">
+         <children>
+            <Label text="Détails de l'Offre Sélectionnée" style="-fx-text-fill: #2c3e50; -fx-font-weight: bold; -fx-font-size: 16px;" />
+            <Line endX="500.0" style="-fx-stroke: #e0e0e0; -fx-stroke-width: 1;" />
+            <HBox spacing="20.0">
+               <children>
+                  <VBox spacing="8.0" prefWidth="250.0">
+                     <children>
+                        <Label fx:id="colposte" text="Poste:" style="-fx-text-fill: #2c3e50; -fx-font-weight: bold;" />
+                        <Label fx:id="coldescription" text="Description:" style="-fx-text-fill: #2c3e50; -fx-font-weight: bold;" />
+                        <Label fx:id="coltypecontrat" text="Type contrat:" style="-fx-text-fill: #2c3e50; -fx-font-weight: bold;" />
+                        <Label fx:id="colsalaire" text="Salaire:" style="-fx-text-fill: #2c3e50; -fx-font-weight: bold;" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="8.0" prefWidth="250.0">
+                     <children>
+                        <Label fx:id="colformulairecondidature" text="Formulaire candidature:" style="-fx-text-fill: #2c3e50; -fx-font-weight: bold;" />
+                        <Label fx:id="colstatut" text="Statut:" style="-fx-text-fill: #2c3e50; -fx-font-weight: bold;" />
+                        <Label fx:id="coldatepub" text="Date publication:" style="-fx-text-fill: #2c3e50; -fx-font-weight: bold;" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+
+      <!-- Action Buttons -->
+      <VBox alignment="CENTER" layoutX="700.0" layoutY="520.0" prefHeight="150.0" prefWidth="150.0" spacing="15.0">
+         <children>
+            <Button fx:id="onajouterclicked" mnemonicParsing="false" onAction="#onAjouterClicked" prefHeight="40.0" prefWidth="130.0" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 5;" text="Ajouter ➕">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <effect>
+                  <DropShadow color="#00000040" />
+               </effect>
+            </Button>
+            <Button fx:id="onmodifierclicked" layoutX="772.0" layoutY="559.0" mnemonicParsing="false" onAction="#onModifierClicked" prefHeight="40.0" prefWidth="130.0" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-background-radius: 5;" text="Modifier">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <effect>
+                  <DropShadow color="#00000040" />
+               </effect>
+            </Button>
+            <Button fx:id="onsupprimerclicked" layoutX="774.0" layoutY="602.0" mnemonicParsing="false" onAction="#onSupprimerClicked" prefHeight="40.0" prefWidth="130.0" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 5;" text="Supprimer">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <effect>
+                  <DropShadow color="#00000040" />
+               </effect>
+            </Button>
+         </children>
+      </VBox>
+
+      <!-- Company Logo -->
+      <ImageView fitHeight="100.0" fitWidth="100.0" layoutX="60.0" layoutY="580.0" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/123.jpeg" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

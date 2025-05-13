@@ -2,6 +2,7 @@ module rached {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
+    requires javafx.graphics;
     requires java.sql;
     requires java.prefs;
     requires java.base;

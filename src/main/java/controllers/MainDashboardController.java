@@ -260,122 +260,15 @@ public class MainDashboardController {
 
     @FXML
     private void handleDashboard() {
-        setSelectedMenuButton(dashboardButton);
-        pageTitle.setText("Tableau de bord");
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DashboardStats.fxml"));
-            Parent statsRoot = loader.load();
-            contentArea.getChildren().clear();
-            contentArea.getChildren().add(statsRoot);
-
-            // Fetch all users
-            services.UtilisateurService utilisateurService;
-            java.util.List<models.Utilisateur> users;
-            try {
-                utilisateurService = new services.UtilisateurService();
-                users = utilisateurService.getAllUtilisateurs();
-            } catch (java.sql.SQLException e) {
-                showError("Erreur", "Erreur lors de la récupération des utilisateurs: " + e.getMessage());
-                return;
-            }
-
-            int totalPersonnel = 0;
-            int totalClients = 0;
-            int actif = 0, inactif = 0, conge = 0, absent = 0;
-            int clientsActif = 0, clientsInactif = 0;
-
-            for (models.Utilisateur user : users) {
-                String type = user.getTypeUtilisateur();
-                String statut = user.getStatut();
-                
-                if (type != null && type.equalsIgnoreCase("CLIENT")) {
-                    totalClients++;
-                    if (statut != null) {
-                        switch (statut.toUpperCase()) {
-                            case "ACTIF": clientsActif++; break;
-                            case "INACTIF": clientsInactif++; break;
-                        }
-                    }
-                } else {
-                    totalPersonnel++;
-                    if (statut != null) {
-                        switch (statut.toUpperCase()) {
-                            case "ACTIF": actif++; break;
-                            case "INACTIF": inactif++; break;
-                            case "CONGE": conge++; break;
-                            case "ABSENT": absent++; break;
-                        }
-                    }
-                }
-            }
-
-            // Update labels
-            statTotalPersonnelCount.setText(String.valueOf(totalPersonnel));
-            statTotalClientsCount.setText(String.valueOf(totalClients));
-
-            // Update Personnel PieChart
-            javafx.collections.ObservableList<javafx.scene.chart.PieChart.Data> pieChartData = javafx.collections.FXCollections.observableArrayList(
-                new javafx.scene.chart.PieChart.Data("Actif", actif),
-                new javafx.scene.chart.PieChart.Data("Inactif", inactif),
-                new javafx.scene.chart.PieChart.Data("Congé", conge),
-                new javafx.scene.chart.PieChart.Data("Absent", absent)
-            );
-            statPieChart.setData(pieChartData);
-            statPieChart.setTitle("");
-            statPieChart.setLegendVisible(true);
-            statPieChart.setLabelsVisible(true);
-
-            // Update Clients PieChart
-            javafx.collections.ObservableList<javafx.scene.chart.PieChart.Data> clientPieChartData = javafx.collections.FXCollections.observableArrayList(
-                new javafx.scene.chart.PieChart.Data("Actif", clientsActif),
-                new javafx.scene.chart.PieChart.Data("Inactif", clientsInactif)
-            );
-            clientStatPieChart.setData(clientPieChartData);
-            clientStatPieChart.setTitle("");
-            clientStatPieChart.setLegendVisible(true);
-            clientStatPieChart.setLabelsVisible(true);
-
-            // Animate charts
-            double totalPersonnelChart = actif + inactif + conge + absent;
-            animatePieChart(pieChartData, totalPersonnelChart);
-
-            double totalClientsChart = clientsActif + clientsInactif;
-            animatePieChart(clientPieChartData, totalClientsChart);
-
-            // --- Statistiques véhicules les plus utilisés ---
-            java.util.Map<String, Integer> vehiculeCounts = new java.util.HashMap<>();
-            int totalVehiculeReservations = 0;
-            try (java.sql.Connection conn = services.DataBaseConnection.getConnection();
-                 java.sql.PreparedStatement stmt = conn.prepareStatement(
-                    "SELECT vehicule, COUNT(*) as total FROM reservation GROUP BY vehicule ORDER BY total DESC LIMIT 5")) {
-                java.sql.ResultSet rs = stmt.executeQuery();
-                while (rs.next()) {
-                    String immat = rs.getString("vehicule");
-                    int count = rs.getInt("total");
-                    vehiculeCounts.put(immat, count);
-                    totalVehiculeReservations += count;
-                }
-            } catch (java.sql.SQLException e) {
-                showError("Erreur", "Erreur lors de la récupération des statistiques véhicules: " + e.getMessage());
-            }
-            statTotalVehiculesCount.setText(String.valueOf(totalVehiculeReservations));
-            javafx.collections.ObservableList<PieChart.Data> vehiculePieChartData = javafx.collections.FXCollections.observableArrayList();
-            for (java.util.Map.Entry<String, Integer> entry : vehiculeCounts.entrySet()) {
-                vehiculePieChartData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
-            }
-            vehiculeStatPieChart.setData(vehiculePieChartData);
-            vehiculeStatPieChart.setTitle("");
-            vehiculeStatPieChart.setLegendVisible(true);
-            vehiculeStatPieChart.setLabelsVisible(true);
-            animatePieChart(vehiculePieChartData, totalVehiculeReservations);
-            // Tooltips pour chaque part
-            for (PieChart.Data data : vehiculePieChartData) {
-                double percent = (totalVehiculeReservations > 0) ? (data.getPieValue() / totalVehiculeReservations * 100) : 0;
-                Tooltip.install(data.getNode(), new Tooltip(data.getName() + ": " + String.format("%.1f", percent) + "%"));
-            }
-
+            Parent dashboardContent = loader.load();
+            DashboardStatsController controller = loader.getController();
+            // Le contrôleur est déjà initialisé par JavaFX grâce à l'interface Initializable
+            changeContent(dashboardContent, "Tableau de bord");
         } catch (IOException e) {
-            showError("Erreur", "Erreur lors du chargement des statistiques du tableau de bord: " + e.getMessage());
+            e.printStackTrace();
+            showError("Erreur", "Impossible de charger le tableau de bord");
         }
     }
 
@@ -459,9 +352,16 @@ public class MainDashboardController {
     @FXML
     private void handleRecruitment() {
         setSelectedMenuButton(recruitmentButton);
-        pageTitle.setText("Recrutement");
-        // TODO: Implémenter le système de recrutement
-        contentArea.getChildren().clear();
+        pageTitle.setText("Gestion des Recrutements");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlTessnim/Offre.fxml"));
+            Parent content = loader.load();
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(content);
+        } catch (IOException e) {
+            showError("Erreur", "Erreur lors du chargement de la gestion des recrutements: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML

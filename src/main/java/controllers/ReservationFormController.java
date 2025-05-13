@@ -9,7 +9,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;
 
-import services.DataBaseConnection;
+import utils.DatabaseConnection;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import models.Reservation;
@@ -122,7 +122,7 @@ public class ReservationFormController {
             return;
         }
 
-        try (Connection conn = DataBaseConnection.getConnection()) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
             String sql = "SELECT * FROM utilisateur WHERE type_utilisateur = 'CLIENT'";
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
@@ -318,7 +318,7 @@ public class ReservationFormController {
     private void saveReservationToDB(Reservation reservation) {
         if (currentUser == null) return;
 
-        try (Connection conn = DataBaseConnection.getConnection()) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
             String query;
             PreparedStatement pstmt;
             if (currentReservation != null) {
@@ -458,7 +458,7 @@ public class ReservationFormController {
     }
 
     private boolean isVehicleAvailable(String immatriculation, LocalDateTime dateDebut, LocalDateTime dateFin) {
-        try (Connection conn = DataBaseConnection.getConnection()) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
             String query = "SELECT COUNT(*) FROM reservation WHERE vehicule = ? AND statut != 'ANNULEE' AND " +
                           "((date_debut <= ? AND date_fin >= ?) OR " +
                           "(date_debut <= ? AND date_fin >= ?) OR " +
@@ -485,7 +485,7 @@ public class ReservationFormController {
 
     // Nouvelle méthode pour trouver la prochaine date de disponibilité
     private LocalDateTime getNextAvailableDate(String immatriculation, LocalDateTime dateDebut, LocalDateTime dateFin) {
-        try (Connection conn = DataBaseConnection.getConnection()) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
             String query = "SELECT MAX(date_fin) as max_fin FROM reservation WHERE vehicule = ? AND statut != 'ANNULEE' AND " +
                           "((date_debut <= ? AND date_fin >= ?) OR " +
                           "(date_debut <= ? AND date_fin >= ?) OR " +

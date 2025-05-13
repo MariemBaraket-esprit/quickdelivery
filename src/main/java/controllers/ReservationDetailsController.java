@@ -12,7 +12,7 @@ import javafx.util.Callback;
 import models.Reservation;
 import models.Vehicule;
 import models.Utilisateur;
-import services.DataBaseConnection;
+import utils.DatabaseConnection;
 import utils.Session;
 import java.sql.*;
 import java.io.IOException;
@@ -151,7 +151,7 @@ public class ReservationDetailsController {
 
         System.out.println("Approbation appelée pour id: " + reservation.getId());
         String sql = "UPDATE reservation SET statut = 'APPROUVEE' WHERE id = ?";
-        try (Connection conn = DataBaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, reservation.getId());
             int affected = stmt.executeUpdate();
@@ -182,7 +182,7 @@ public class ReservationDetailsController {
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 String sql = "DELETE FROM reservation WHERE id = ?";
-                try (Connection conn = DataBaseConnection.getConnection();
+                try (Connection conn = DatabaseConnection.getConnection();
                      PreparedStatement stmt = conn.prepareStatement(sql)) {
                     stmt.setInt(1, reservation.getId());
                     int affected = stmt.executeUpdate();
@@ -228,7 +228,7 @@ public class ReservationDetailsController {
 
         sql += "ORDER BY r.date_debut DESC";
 
-        try (Connection conn = DataBaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             
             stmt.setString(1, vehicule.getImmatriculation());

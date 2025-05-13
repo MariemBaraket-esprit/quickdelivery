@@ -1,6 +1,8 @@
 package services;
 
 import models.Utilisateur;
+import utils.DatabaseConnection;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +12,7 @@ public class UtilisateurService {
     private Connection connection;
 
     public UtilisateurService() throws SQLException {
-        this.connection = DataBaseConnection.getConnection();
+        this.connection = DatabaseConnection.getConnection();
     }
 
     public void ajouterUtilisateur(Utilisateur utilisateur) throws SQLException {

@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import models.Utilisateur;
 import services.UtilisateurService;
-import services.DataBaseConnection;
+import utils.DatabaseConnection;
 
 public class DashboardStatsController implements Initializable {
     @FXML private Label statTotalPersonnelCount;
@@ -87,7 +87,7 @@ public class DashboardStatsController implements Initializable {
         // Statistiques véhicules les plus utilisés
         Map<String, Integer> vehiculeCounts = new HashMap<>();
         int totalVehiculeReservations = 0;
-        try (Connection conn = DataBaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              java.sql.PreparedStatement stmt = conn.prepareStatement(
                 "SELECT v.immatriculation, v.modele, COUNT(*) as total " +
                 "FROM reservation r JOIN vehicule v ON r.vehicule = v.immatriculation " +
