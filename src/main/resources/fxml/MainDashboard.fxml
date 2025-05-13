@@ -109,6 +109,15 @@
                     </HBox>
                 </graphic>
             </Button>
+
+            <Button fx:id="notificationsButton" onAction="#handleNotifications" styleClass="menu-button" maxWidth="Infinity">
+                <graphic>
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label styleClass="menu-icon" text="🔔"/>
+                        <Label styleClass="menu-text" text="Notifications"/>
+                    </HBox>
+                </graphic>
+            </Button>
         </VBox>
 
         <!-- Spacer -->

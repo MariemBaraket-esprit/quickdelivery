@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,15 @@ import javafx.stage.Stage;
 import models.Utilisateur;
 import javafx.stage.Screen;
 import utils.Session;
+import javafx.scene.control.Tooltip;
+import utils.ThemeManager;
+import javafx.stage.Window;
+import javafx.stage.Popup;
+import utils.NotificationManager;
+import utils.NotificationManager.VehicleNotification;
+import javafx.animation.Timeline;
+import javafx.animation.KeyFrame;
+import javafx.util.Duration;
 
 public class MainDashboardController {
     @FXML
@@ -51,12 +61,18 @@ public class MainDashboardController {
     @FXML private Button recruitmentButton;
     @FXML private Button supportButton;
     @FXML private Button performancesButton;
+    @FXML private Button notificationsButton;
     @FXML
     private VBox statActifCard, statInactifCard, statCongeCard, statAbsentCard;
     @FXML
     private Label statActifCount, statInactifCount, statCongeCount, statAbsentCount;
     @FXML
     private PieChart statPieChart;
+    @FXML private Label statTotalVehiculesCount;
+    @FXML private PieChart vehiculeStatPieChart;
+    @FXML private Label statTotalPersonnelCount;
+    @FXML private PieChart clientStatPieChart;
+    @FXML private Label statTotalClientsCount;
 
     private Utilisateur currentUser;
     private static MainDashboardController instance;
@@ -232,7 +248,7 @@ public class MainDashboardController {
 
     private void setSelectedMenuButton(Button selectedButton) {
         Button[] buttons = {
-            dashboardButton, usersButton, vehiclesButton, ordersButton, recruitmentButton, supportButton, performancesButton
+            dashboardButton, usersButton, vehiclesButton, ordersButton, recruitmentButton, supportButton, performancesButton, notificationsButton
         };
         for (Button btn : buttons) {
             btn.getStyleClass().remove("selected");
@@ -251,12 +267,6 @@ public class MainDashboardController {
             Parent statsRoot = loader.load();
             contentArea.getChildren().clear();
             contentArea.getChildren().add(statsRoot);
-
-            // Get references to stat cards and PieChart from the loaded FXML
-            Label statTotalPersonnelCount = (Label) statsRoot.lookup("#statTotalPersonnelCount");
-            Label statTotalClientsCount = (Label) statsRoot.lookup("#statTotalClientsCount");
-            javafx.scene.chart.PieChart statPieChart = (javafx.scene.chart.PieChart) statsRoot.lookup("#statPieChart");
-            javafx.scene.chart.PieChart clientStatPieChart = (javafx.scene.chart.PieChart) statsRoot.lookup("#clientStatPieChart");
 
             // Fetch all users
             services.UtilisateurService utilisateurService;
@@ -289,13 +299,13 @@ public class MainDashboardController {
                 } else {
                     totalPersonnel++;
                     if (statut != null) {
-                switch (statut.toUpperCase()) {
-                    case "ACTIF": actif++; break;
-                    case "INACTIF": inactif++; break;
-                    case "CONGE": conge++; break;
-                    case "ABSENT": absent++; break;
-                }
-            }
+                        switch (statut.toUpperCase()) {
+                            case "ACTIF": actif++; break;
+                            case "INACTIF": inactif++; break;
+                            case "CONGE": conge++; break;
+                            case "ABSENT": absent++; break;
+                        }
+                    }
                 }
             }
 
@@ -331,6 +341,38 @@ public class MainDashboardController {
 
             double totalClientsChart = clientsActif + clientsInactif;
             animatePieChart(clientPieChartData, totalClientsChart);
+
+            // --- Statistiques véhicules les plus utilisés ---
+            java.util.Map<String, Integer> vehiculeCounts = new java.util.HashMap<>();
+            int totalVehiculeReservations = 0;
+            try (java.sql.Connection conn = services.DataBaseConnection.getConnection();
+                 java.sql.PreparedStatement stmt = conn.prepareStatement(
+                    "SELECT vehicule, COUNT(*) as total FROM reservation GROUP BY vehicule ORDER BY total DESC LIMIT 5")) {
+                java.sql.ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    String immat = rs.getString("vehicule");
+                    int count = rs.getInt("total");
+                    vehiculeCounts.put(immat, count);
+                    totalVehiculeReservations += count;
+                }
+            } catch (java.sql.SQLException e) {
+                showError("Erreur", "Erreur lors de la récupération des statistiques véhicules: " + e.getMessage());
+            }
+            statTotalVehiculesCount.setText(String.valueOf(totalVehiculeReservations));
+            javafx.collections.ObservableList<PieChart.Data> vehiculePieChartData = javafx.collections.FXCollections.observableArrayList();
+            for (java.util.Map.Entry<String, Integer> entry : vehiculeCounts.entrySet()) {
+                vehiculePieChartData.add(new PieChart.Data(entry.getKey(), entry.getValue()));
+            }
+            vehiculeStatPieChart.setData(vehiculePieChartData);
+            vehiculeStatPieChart.setTitle("");
+            vehiculeStatPieChart.setLegendVisible(true);
+            vehiculeStatPieChart.setLabelsVisible(true);
+            animatePieChart(vehiculePieChartData, totalVehiculeReservations);
+            // Tooltips pour chaque part
+            for (PieChart.Data data : vehiculePieChartData) {
+                double percent = (totalVehiculeReservations > 0) ? (data.getPieValue() / totalVehiculeReservations * 100) : 0;
+                Tooltip.install(data.getNode(), new Tooltip(data.getName() + ": " + String.format("%.1f", percent) + "%"));
+            }
 
         } catch (IOException e) {
             showError("Erreur", "Erreur lors du chargement des statistiques du tableau de bord: " + e.getMessage());
@@ -395,8 +437,15 @@ public class MainDashboardController {
     private void handleVehicles() {
         setSelectedMenuButton(vehiclesButton);
         pageTitle.setText("Gestion des Véhicules");
-        // TODO: Implémenter la gestion des véhicules
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlZayen/Vehicules.fxml"));
+            Parent content = loader.load();
         contentArea.getChildren().clear();
+            contentArea.getChildren().add(content);
+        } catch (IOException e) {
+            showError("Erreur", "Erreur lors du chargement de la gestion des véhicules: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -616,6 +665,20 @@ public class MainDashboardController {
         }
     }
 
+    @FXML
+    private void handleNotifications() {
+        setSelectedMenuButton(notificationsButton);
+        pageTitle.setText("Notifications des Véhicules");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlZayen/NotificationPage.fxml"));
+            Parent content = loader.load();
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(content);
+        } catch (IOException e) {
+            showError("Erreur", "Erreur lors du chargement de la page des notifications : " + e.getMessage());
+        }
+    }
+
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -629,8 +692,12 @@ public class MainDashboardController {
     }
 
     public void setPageTitle(String title) {
-        if (pageTitle != null) {
             pageTitle.setText(title);
         }
+
+    public void changeContent(Parent content, String title) {
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(content);
+        setPageTitle(title);
     }
 } 

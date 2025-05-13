@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.NotificationPageController"
+      spacing="10" styleClass="notification-page" prefWidth="500" prefHeight="400">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    <Label text="Notifications des Véhicules" styleClass="notification-title"/>
+    <Separator/>
+    <ListView fx:id="notificationListView" VBox.vgrow="ALWAYS" styleClass="notification-list"/>
+</VBox> 

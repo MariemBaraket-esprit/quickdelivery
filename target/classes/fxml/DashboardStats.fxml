@@ -3,33 +3,50 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.chart.PieChart?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      spacing="32" styleClass="dashboard-stats-section"
-      stylesheets="@../styles/styles.css">
-    <HBox alignment="CENTER" spacing="32">
-        <!-- Personnel Section -->
-        <VBox alignment="CENTER" spacing="20">
-            <VBox fx:id="statTotalPersonnelCard" styleClass="stat-card stat-total" alignment="CENTER" spacing="4">
-                <Label text="TOTAL PERSONNEL" styleClass="stat-title"/>
-                <Label fx:id="statTotalPersonnelCount" styleClass="stat-count" text="0"/>
-            </VBox>
-            <VBox styleClass="chart-card" alignment="CENTER" spacing="12">
-                <Label text="Personnel" styleClass="chart-card-title"/>
-                <PieChart fx:id="statPieChart" prefWidth="600" prefHeight="400" styleClass="stat-pie-chart"/>
-            </VBox>
-        </VBox>
+<ScrollPane fx:controller="controllers.DashboardStatsController" fitToWidth="true" styleClass="dashboard-stats-scroll" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml">
+    <content>
+        <VBox xmlns="http://javafx.com/javafx"
+              xmlns:fx="http://javafx.com/fxml"
+              spacing="32" styleClass="dashboard-stats-section"
+              stylesheets="@../styles/styles.css">
+            <HBox alignment="CENTER" spacing="32">
+                <!-- Personnel Section -->
+                <VBox alignment="CENTER" spacing="20">
+                    <VBox fx:id="statTotalPersonnelCard" styleClass="stat-card stat-total" alignment="CENTER" spacing="4">
+                        <Label text="TOTAL PERSONNEL" styleClass="stat-title"/>
+                        <Label fx:id="statTotalPersonnelCount" styleClass="stat-count" text="0"/>
+                    </VBox>
+                    <VBox styleClass="chart-card" alignment="CENTER" spacing="12">
+                        <Label text="Personnel" styleClass="chart-card-title"/>
+                        <PieChart fx:id="statPieChart" prefWidth="600" prefHeight="400" styleClass="stat-pie-chart"/>
+                    </VBox>
+                </VBox>
 
-        <!-- Clients Section -->
-        <VBox alignment="CENTER" spacing="20">
-            <VBox fx:id="statTotalClientsCard" styleClass="stat-card stat-total-clients" alignment="CENTER" spacing="4">
-                <Label text="TOTAL CLIENTS" styleClass="stat-title"/>
-                <Label fx:id="statTotalClientsCount" styleClass="stat-count" text="0"/>
-            </VBox>
-            <VBox styleClass="chart-card" alignment="CENTER" spacing="12">
-                <Label text="Clients" styleClass="chart-card-title"/>
-                <PieChart fx:id="clientStatPieChart" prefWidth="600" prefHeight="400" styleClass="stat-pie-chart"/>
+                <!-- Clients Section -->
+                <VBox alignment="CENTER" spacing="20">
+                    <VBox fx:id="statTotalClientsCard" styleClass="stat-card stat-total-clients" alignment="CENTER" spacing="4">
+                        <Label text="TOTAL CLIENTS" styleClass="stat-title"/>
+                        <Label fx:id="statTotalClientsCount" styleClass="stat-count" text="0"/>
+                    </VBox>
+                    <VBox styleClass="chart-card" alignment="CENTER" spacing="12">
+                        <Label text="Clients" styleClass="chart-card-title"/>
+                        <PieChart fx:id="clientStatPieChart" prefWidth="600" prefHeight="400" styleClass="stat-pie-chart"/>
+                    </VBox>
+                </VBox>
+            </HBox>
+
+            <!-- Véhicules les plus utilisés Section -->
+            <VBox alignment="CENTER" spacing="20">
+                <VBox fx:id="statTotalVehiculesCard" styleClass="stat-card stat-total-vehicules" alignment="CENTER" spacing="4">
+                    <Label text="TOP 5 VÉHICULES LES PLUS UTILISÉS" styleClass="stat-title"/>
+                    <Label fx:id="statTotalVehiculesCount" styleClass="stat-count" text="0"/>
+                </VBox>
+                <VBox styleClass="chart-card" alignment="CENTER" spacing="12">
+                    <Label text="Véhicules les plus utilisés" styleClass="chart-card-title"/>
+                    <PieChart fx:id="vehiculeStatPieChart" prefWidth="600" prefHeight="400" maxWidth="600" maxHeight="400" styleClass="stat-pie-chart"/>
+                </VBox>
             </VBox>
         </VBox>
-    </HBox>
-</VBox> 
+    </content>
+</ScrollPane> 

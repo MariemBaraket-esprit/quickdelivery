@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.TableauDeBordController"
+            prefHeight="600.0" prefWidth="800.0">
+
+    <children>
+        <PieChart fx:id="pieChart"
+                  title="Véhicules les plus réservés"
+                  labelsVisible="true"
+                  legendVisible="true"
+                  AnchorPane.topAnchor="40.0"
+                  AnchorPane.bottomAnchor="40.0"
+                  AnchorPane.leftAnchor="60.0"
+                  AnchorPane.rightAnchor="60.0"/>
+    </children>
+</AnchorPane>

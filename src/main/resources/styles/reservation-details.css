@@ -1,0 +1,85 @@
+/* Style général */
+.root {
+    -fx-font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Style du tableau */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+}
+
+.table-view .column-header {
+    -fx-background-color: #f8f9fa;
+    -fx-padding: 10;
+    -fx-font-weight: bold;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #495057;
+}
+
+.table-view .table-row-cell {
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0 0 1 0;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #f8f9fa;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #e3f2fd;
+}
+
+/* Style des boutons d'action */
+.action-button {
+    -fx-padding: 5 10;
+    -fx-background-radius: 3;
+    -fx-cursor: hand;
+}
+
+.edit-button {
+    -fx-background-color: #2196f3;
+    -fx-text-fill: white;
+}
+
+.edit-button:hover {
+    -fx-background-color: #1976d2;
+}
+
+.delete-button {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+}
+
+.delete-button:hover {
+    -fx-background-color: #d32f2f;
+}
+
+/* Style des labels */
+#vehiculeLabel {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #212529;
+}
+
+#totalReservationsLabel {
+    -fx-font-size: 14px;
+    -fx-text-fill: #6c757d;
+}
+
+/* Style du bouton retour */
+#backButton {
+    -fx-background-color: #6c757d;
+    -fx-text-fill: white;
+    -fx-padding: 8 15;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+
+#backButton:hover {
+    -fx-background-color: #5a6268;
+} 

@@ -1,9 +1,14 @@
 module rached {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.web;
     requires java.sql;
     requires java.prefs;
     requires java.base;
+    requires java.net.http;
+    requires org.json;
+    requires java.desktop;
+    requires jdk.jsobject;
 
     opens controllers to javafx.fxml;
     opens models to javafx.base, javafx.fxml;
@@ -11,9 +16,10 @@ module rached {
     opens utils to javafx.fxml;
     opens services to javafx.fxml;
     
+
     exports com.rached;
     exports controllers;
     exports models;
     exports services;
     exports utils;
-} 
+}

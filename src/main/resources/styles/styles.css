@@ -1889,3 +1889,104 @@ ImageView {
     -fx-background-color: #357abd;
     -fx-effect: dropshadow(gaussian, rgba(74,144,226,0.4), 8, 0, 0, 2);
 } 
+
+/* Styles pour les cartes de véhicules */
+.vehicule-card {
+    -fx-background-color: white;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-padding: 15px;
+    -fx-min-width: 300px;
+    -fx-max-width: 300px;
+}
+
+.vehicule-card-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.vehicule-card-status {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666;
+}
+
+.vehicule-card-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #666;
+}
+
+.vehicule-card-value {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.dimensions-section {
+    -fx-padding: 10px;
+    -fx-background-color: #f5f5f5;
+    -fx-background-radius: 4px;
+}
+
+.section-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.button-primary {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.button-secondary {
+    -fx-background-color: #757575;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.button-danger {
+    -fx-background-color: #F44336;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.content-container {
+    -fx-background-color: #f8f9fa;
+}
+
+.edge-to-edge {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+/* Styles pour le formulaire de véhicule */
+.form-field {
+    -fx-min-width: 300px;
+    -fx-padding: 8px;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1px;
+}
+
+.close-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #666;
+    -fx-font-size: 16px;
+    -fx-padding: 4px 8px;
+}
+
+.close-button:hover {
+    -fx-text-fill: #f44336;
+}
+
+.button-back {
+    -fx-background-color: #757575;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+}
+
+.button-back:hover {
+    -fx-background-color: #616161;
+} 

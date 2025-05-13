@@ -29,6 +29,7 @@ import javafx.stage.Stage;
 import javafx.geometry.Rectangle2D;
 import models.Utilisateur;
 import services.UtilisateurService;
+import utils.ThemeManager;
 
 public class SignupController {
     @FXML
@@ -550,37 +551,6 @@ public class SignupController {
         alert.showAndWait();
     }
 
-    private void applyTheme(String theme) {
-        try {
-            Scene scene = rootPane.getScene();
-            if (scene == null) {
-                // Retry after a short delay if scene is not yet available
-                Platform.runLater(() -> applyTheme(theme));
-                return;
-            }
-            
-            // Supprimer tous les styles existants
-            scene.getStylesheets().clear();
-            
-            // Ajouter le style de base
-            String baseStylesheet = getClass().getResource("/styles/styles.css").toExternalForm();
-            scene.getStylesheets().add(baseStylesheet);
-            
-            // Ajouter le thème sombre si nécessaire
-            if (THEME_DARK.equals(theme)) {
-                String darkStylesheet = getClass().getResource("/styles/dark-theme.css").toExternalForm();
-                scene.getStylesheets().add(darkStylesheet);
-            }
-            
-            // Sauvegarder le thème dans les préférences
-            prefs.put(PREF_THEME, theme);
-            
-        } catch (Exception e) {
-            System.err.println("Erreur lors de l'application du thème: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
     private void setupImageAndCard() {
         if (signupForm != null && imageCard != null && signupImage != null) {
             try {
@@ -642,12 +612,16 @@ public class SignupController {
         if (themeToggle != null) {
             Platform.runLater(() -> {
                 String savedTheme = prefs.get(PREF_THEME, THEME_LIGHT);
-                applyTheme(savedTheme);
+                ThemeManager.setTheme(savedTheme);
+                ThemeManager.applyTheme(themeToggle.getScene());
                 themeToggle.setSelected(THEME_DARK.equals(savedTheme));
                 themeToggle.setText(themeToggle.isSelected() ? "☀️ Mode Clair" : "🌙 Mode Sombre");
                 themeToggle.selectedProperty().addListener((obs, oldVal, isDark) -> {
                     String theme = isDark ? THEME_DARK : THEME_LIGHT;
-                    applyTheme(theme);
+                    ThemeManager.setTheme(theme);
+                    for (javafx.stage.Window window : javafx.stage.Window.getWindows()) {
+                        if (window.getScene() != null) ThemeManager.applyTheme(window.getScene());
+                    }
                     prefs.put(PREF_THEME, theme);
                     themeToggle.setText(isDark ? "☀️ Mode Clair" : "🌙 Mode Sombre");
                 });

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.VehiculeFormController"
+      spacing="16" alignment="CENTER" styleClass="content-container"
+      stylesheets="@../styles/vehicules.css">
+
+    
+
+    <HBox alignment="TOP_RIGHT">
+        <Region HBox.hgrow="ALWAYS" />
+        <Button fx:id="closeButton" text="✖" onAction="#handleCancel" styleClass="close-button" />
+    </HBox>
+
+    <VBox spacing="5">
+        <Label text="Immatriculation" styleClass="form-label"/>
+        <TextField fx:id="immatriculationField" promptText="Immatriculation du véhicule" styleClass="form-field"/>
+    </VBox>
+
+    <VBox spacing="5">
+        <Label text="Marque" styleClass="form-label"/>
+        <TextField fx:id="marqueField" promptText="Marque du véhicule" styleClass="form-field"/>
+    </VBox>
+
+    <VBox spacing="5">
+        <Label text="Modèle" styleClass="form-label"/>
+        <TextField fx:id="modeleField" promptText="Modèle du véhicule" styleClass="form-field"/>
+    </VBox>
+
+    <VBox spacing="5">
+        <Label text="Statut" styleClass="form-label"/>
+        <ComboBox fx:id="statutCombo" promptText="Sélectionner le statut" styleClass="form-field"/>
+    </VBox>
+
+    <VBox spacing="5">
+        <Label text="Type" styleClass="form-label"/>
+        <ComboBox fx:id="typeCombo" promptText="Sélectionner le type" styleClass="form-field"/>
+    </VBox>
+
+    <VBox spacing="5">
+        <Label text="Dimensions (m)" styleClass="form-label"/>
+        <HBox spacing="20" alignment="CENTER_LEFT">
+            <Label text="Longueur :" />
+            <TextField fx:id="longueurField" promptText="ex: 4.20" />
+            <Label text="Hauteur :" />
+            <TextField fx:id="hauteurField" promptText="ex: 1.80" />
+            <Label text="Largeur :" />
+            <TextField fx:id="largeurField" promptText="ex: 1.75" />
+        </HBox>
+        <HBox spacing="25" alignment="CENTER_LEFT">
+            <Label text="Poids(kg) :" />
+            <TextField fx:id="poidsField" promptText="ex: 1200" />
+        </HBox>
+    </VBox>
+
+    <VBox spacing="5">
+        <Label text="Dates importantes" styleClass="form-label"/>
+        <HBox spacing="12" alignment="CENTER_LEFT">
+            <Label text="Entretien :" />
+            <DatePicker fx:id="dateEntretienPicker" promptText="Date d'entretien" />
+            <Label text="Visite technique :" />
+            <DatePicker fx:id="dateVisiteTechniquePicker" promptText="Date visite technique" />
+        </HBox>
+        <HBox spacing="12" alignment="CENTER_LEFT">
+            <Label text="Vidange :" />
+            <DatePicker fx:id="dateVidangePicker" promptText="Date vidange" />
+            <Label text="Assurance :" />
+            <DatePicker fx:id="dateAssurancePicker" promptText="Date assurance" />
+            <Label text="Vignette :" />
+            <DatePicker fx:id="dateVignettePicker" promptText="Date vignette" />
+        </HBox>
+    </VBox>
+
+    <HBox spacing="12" alignment="CENTER">
+        <Button fx:id="saveButton" text="Enregistrer" onAction="#handleSave" styleClass="button-primary"/>
+        <Button fx:id="cancelButton" text="Annuler" onAction="#handleCancel" styleClass="action-button"/>
+    </HBox>
+
+    <HBox alignment="CENTER">
+        <Button fx:id="backButton" text="Retour" onAction="#handleBack" styleClass="action-button"/>
+    </HBox>
+</VBox>

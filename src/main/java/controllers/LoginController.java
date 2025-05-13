@@ -37,6 +37,7 @@ import models.Utilisateur;
 import services.UtilisateurService;
 import utils.Session;
 import javafx.scene.control.TextArea;
+import utils.ThemeManager;
 
 public class LoginController {
     @FXML
@@ -137,12 +138,16 @@ public class LoginController {
             // Theme toggle logic
             if (themeToggle != null) {
                 String savedTheme = prefs.get(PREF_THEME, THEME_LIGHT);
-                applyTheme(savedTheme);
+                ThemeManager.setTheme(savedTheme);
+                Platform.runLater(() -> ThemeManager.applyTheme(themeToggle.getScene()));
                 themeToggle.setSelected(THEME_DARK.equals(savedTheme));
                 themeToggle.setText(themeToggle.isSelected() ? "☀️ Mode Clair" : "🌙 Mode Sombre");
                 themeToggle.selectedProperty().addListener((obs, oldVal, isDark) -> {
                     String theme = isDark ? THEME_DARK : THEME_LIGHT;
-                    applyTheme(theme);
+                    ThemeManager.setTheme(theme);
+                    for (javafx.stage.Window window : javafx.stage.Window.getWindows()) {
+                        if (window.getScene() != null) ThemeManager.applyTheme(window.getScene());
+                    }
                     prefs.put(PREF_THEME, theme);
                     themeToggle.setText(isDark ? "☀️ Mode Clair" : "🌙 Mode Sombre");
                 });
@@ -482,21 +487,5 @@ public class LoginController {
         alert.setContentText(message);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait();
-    }
-
-    private void applyTheme(String theme) {
-        Scene scene = emailField.getScene();
-        if (scene == null) return;
-
-        // Supprimer tous les styles existants
-        scene.getStylesheets().clear();
-        
-        // Ajouter le style de base
-        scene.getStylesheets().add(getClass().getResource("/styles/styles.css").toExternalForm());
-        
-        // Ajouter le thème sombre si nécessaire
-        if (THEME_DARK.equals(theme)) {
-            scene.getStylesheets().add(getClass().getResource("/styles/dark-theme.css").toExternalForm());
-        }
     }
 } 

@@ -18,6 +18,20 @@ public class Utilisateur {
     private String statut;
     private String photoUrl;
 
+    // Constructeur par défaut
+    public Utilisateur() {
+    }
+
+    // Constructeur avec les champs essentiels
+    public Utilisateur(int idUser, String nom, String prenom, String email, String telephone, String typeUtilisateur) {
+        this.idUser = idUser;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.telephone = telephone;
+        this.typeUtilisateur = typeUtilisateur;
+    }
+
     // Getters and Setters
     public int getIdUser() {
         return idUser;
@@ -133,5 +147,10 @@ public class Utilisateur {
 
     public String getFullName() {
         return (prenom != null ? prenom : "") + " " + (nom != null ? nom : "");
+    }
+
+    @Override
+    public String toString() {
+        return nom + " " + prenom;
     }
 } 

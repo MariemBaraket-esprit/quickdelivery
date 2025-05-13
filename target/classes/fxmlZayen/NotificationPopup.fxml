@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.NotificationPopupController"
+      styleClass="notification-popup"
+      maxHeight="400"
+      prefWidth="300">
+    
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <Label text="Notifications" styleClass="notification-title"/>
+    
+    <Separator/>
+    
+    <ListView fx:id="notificationList" VBox.vgrow="ALWAYS" styleClass="notification-list"/>
+    
+    <Button fx:id="clearButton" text="Effacer tout" onAction="#handleClearAll" 
+            styleClass="notification-clear-button"/>
+</VBox> 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.ReservationListController"
+      spacing="10" styleClass="form-container" prefWidth="1200" prefHeight="800">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <VBox spacing="10">
+        <Label fx:id="vehiculeLabel" styleClass="form-title" wrapText="true"/>
+        <Label fx:id="totalReservationsLabel" styleClass="info-label"/>
+    </VBox>
+
+    <TableView fx:id="reservationsTable" VBox.vgrow="ALWAYS" prefWidth="Infinity" prefHeight="Infinity"
+               style="-fx-background-color: white; -fx-table-cell-border-color: transparent;">
+        <columns>
+            <TableColumn fx:id="numeroColumn" text="Numéro" prefWidth="150" minWidth="100" resizable="true"/>
+            <TableColumn fx:id="clientColumn" text="Client" prefWidth="150" minWidth="100" resizable="true"/>
+            <TableColumn fx:id="vehiculeColumn" text="Véhicule" prefWidth="150" minWidth="100" resizable="true"/>
+            <TableColumn fx:id="dateDebutColumn" text="Date Début" prefWidth="150" minWidth="100" resizable="true"/>
+            <TableColumn fx:id="dateFinColumn" text="Date Fin" prefWidth="150" minWidth="100" resizable="true"/>
+            <TableColumn fx:id="destinationColumn" text="Destination" prefWidth="200" minWidth="150" resizable="true"/>
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TableView>
+
+    <HBox alignment="TOP_RIGHT" style="-fx-padding: 0 0 0 0;">
+        <Region HBox.hgrow="ALWAYS" />
+        <Button fx:id="closeButton" text="✖" onAction="#handleBack" styleClass="close-button" />
+    </HBox>
+</VBox> 

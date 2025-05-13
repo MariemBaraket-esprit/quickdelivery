@@ -1,0 +1,85 @@
+/* Back button style */
+.button-back {
+    -fx-background-color: transparent;
+    -fx-border-color: #1976d2;
+    -fx-text-fill: #1976d2;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+    -fx-padding: 8 32;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #1976d2, 0, 0, 0, 0);
+    -fx-transition: all 0.2s;
+}
+.button-back:hover {
+    -fx-background-color: #1976d2;
+    -fx-text-fill: white;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, #1976d2, 8, 0.2, 0, 2);
+}
+
+/* Primary button */
+.button-primary {
+    -fx-background-color: #1976d2;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-padding: 8 32;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #1976d2, 0, 0, 0, 0);
+    -fx-transition: all 0.2s;
+}
+.button-primary:hover {
+    -fx-background-color: #1565c0;
+    -fx-effect: dropshadow(gaussian, #1976d2, 8, 0.2, 0, 2);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Secondary button */
+.button-secondary {
+    -fx-background-color: #e3eafc;
+    -fx-text-fill: #1976d2;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-padding: 8 32;
+    -fx-cursor: hand;
+    -fx-border-color: #1976d2;
+    -fx-effect: dropshadow(gaussian, #1976d2, 0, 0, 0, 0);
+    -fx-transition: all 0.2s;
+}
+.button-secondary:hover {
+    -fx-background-color: #bbdefb;
+    -fx-text-fill: #0d47a1;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Danger button */
+.button-danger {
+    -fx-background-color: #e53935;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-padding: 8 32;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #e53935, 0, 0, 0, 0);
+    -fx-transition: all 0.2s;
+}
+.button-danger:hover {
+    -fx-background-color: #b71c1c;
+    -fx-effect: dropshadow(gaussian, #e53935, 8, 0.2, 0, 2);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* PieChart effect */
+.chart-pie {
+    -fx-effect: dropshadow(gaussian, #1976d2, 16, 0.2, 0, 2);
+    -fx-background-radius: 10;
+    -fx-padding: 16;
+} 

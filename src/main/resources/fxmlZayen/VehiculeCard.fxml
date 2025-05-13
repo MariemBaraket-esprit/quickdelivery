@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.VehiculeCardController"
+      spacing="15" styleClass="vehicule-card">
+
+    <!-- Header avec immatriculation et statut -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <HBox spacing="10" HBox.hgrow="ALWAYS">
+            <Label fx:id="immatriculationLabel" styleClass="vehicule-card-title" />
+            <Label fx:id="statutLabel" styleClass="vehicule-card-status" />
+        </HBox>
+        <Button fx:id="viewReservationsButton" text="Voir Réservations"
+                styleClass="button-secondary" minWidth="130" />
+    </HBox>
+
+    <!-- Image du véhicule -->
+    <ImageView fx:id="imageView" fitHeight="100" fitWidth="120" preserveRatio="true" />
+
+    <!-- Infos générales -->
+    <GridPane hgap="20" vgap="8">
+        <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="33.3" />
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="33.3" />
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="33.3" />
+        </columnConstraints>
+
+        <Label text="Marque:" styleClass="vehicule-card-label"
+               GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label fx:id="marqueLabel" styleClass="vehicule-card-value"
+               GridPane.columnIndex="0" GridPane.rowIndex="1" />
+
+        <Label text="Modèle:" styleClass="vehicule-card-label"
+               GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Label fx:id="modeleLabel" styleClass="vehicule-card-value"
+               GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label text="Type:" styleClass="vehicule-card-label"
+               GridPane.columnIndex="2" GridPane.rowIndex="0" />
+        <Label fx:id="typeLabel" styleClass="vehicule-card-value"
+               GridPane.columnIndex="2" GridPane.rowIndex="1" />
+    </GridPane>
+
+    <!-- Dimensions -->
+    <VBox spacing="10" styleClass="dimensions-section">
+        <Label text="Dimensions" styleClass="section-title"/>
+        <GridPane hgap="20" vgap="8">
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="25" />
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="25" />
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="25" />
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="25" />
+            </columnConstraints>
+
+            <Label text="Longueur:" styleClass="vehicule-card-label"
+                   GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <Label fx:id="longueurLabel" styleClass="vehicule-card-value"
+                   GridPane.columnIndex="0" GridPane.rowIndex="1" />
+
+            <Label text="Hauteur:" styleClass="vehicule-card-label"
+                   GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Label fx:id="hauteurLabel" styleClass="vehicule-card-value"
+                   GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+            <Label text="Largeur:" styleClass="vehicule-card-label"
+                   GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            <Label fx:id="largeurLabel" styleClass="vehicule-card-value"
+                   GridPane.columnIndex="2" GridPane.rowIndex="1" />
+
+            <Label text="Poids:" styleClass="vehicule-card-label"
+                   GridPane.columnIndex="3" GridPane.rowIndex="0" />
+            <Label fx:id="poidsLabel" styleClass="vehicule-card-value"
+                   GridPane.columnIndex="3" GridPane.rowIndex="1" />
+        </GridPane>
+    </VBox>
+
+    <!-- Boutons d'action -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button fx:id="deleteButton" text="Supprimer" styleClass="button-danger"
+                minWidth="100" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button fx:id="editButton" text="Modifier" styleClass="button-secondary"
+                minWidth="100" />
+        <Button fx:id="reserveButton" text="Réserver" styleClass="button-primary"
+                minWidth="100" />
+    </HBox>
+
+</VBox> 

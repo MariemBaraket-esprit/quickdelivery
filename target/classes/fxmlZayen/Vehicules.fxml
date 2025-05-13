@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="controllers.VehiculesController" 
+      spacing="20" styleClass="content-container"
+      stylesheets="@../styles/vehicules.css">
+    
+
+    
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <!-- Barre de recherche et filtres -->
+    <HBox spacing="16" alignment="CENTER_LEFT" styleClass="vehicules-filters-bar">
+        <TextField fx:id="searchField" promptText="Rechercher..." styleClass="search-field" />
+        <ComboBox fx:id="statutFilterCombo" promptText="Filtrer par statut" styleClass="filter-combo" />
+        <ComboBox fx:id="typeFilterCombo" promptText="Filtrer par type" styleClass="filter-combo" />
+    </HBox>
+
+    <HBox alignment="CENTER_RIGHT">
+        <Button fx:id="ajouterButton" text="Ajouter un véhicule" styleClass="button-primary"/>
+    </HBox>
+
+    <ScrollPane fitToWidth="true" styleClass="edge-to-edge">
+        <GridPane fx:id="vehiculesGrid" hgap="20" vgap="20" alignment="CENTER" styleClass="vehicules-grid">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+        </GridPane>
+    </ScrollPane>
+</VBox> 
