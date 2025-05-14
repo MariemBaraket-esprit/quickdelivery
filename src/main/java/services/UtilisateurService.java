@@ -1,13 +1,11 @@
 package services;
 
 import models.Utilisateur;
-import utils.DatabaseConnection;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
-
+import utils.DatabaseConnection;
 public class UtilisateurService {
     private Connection connection;
 

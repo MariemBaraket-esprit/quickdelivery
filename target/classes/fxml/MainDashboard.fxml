@@ -123,6 +123,16 @@
         <!-- Spacer -->
         <Region VBox.vgrow="ALWAYS"/>
 
+        <!-- Chatbot Button -->
+        <Button fx:id="chatbotButton" onAction="#handleChatbot" styleClass="menu-button" maxWidth="Infinity">
+            <graphic>
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Label styleClass="menu-icon" text="🤖"/>
+                    <Label styleClass="menu-text" text="Assistant IA"/>
+                </HBox>
+            </graphic>
+        </Button>
+
         <!-- Logout Section -->
         <VBox styleClass="logout-section">
             <Button onAction="#handleLogout" styleClass="logout-button" maxWidth="Infinity">

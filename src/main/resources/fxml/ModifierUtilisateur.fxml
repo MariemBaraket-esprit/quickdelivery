@@ -22,7 +22,7 @@
             <Insets top="20" right="30" bottom="20" left="30"/>
         </padding>
         <HBox alignment="CENTER_LEFT" spacing="10">
-            <Button text="Retour" onAction="#handleRetour" styleClass="button-back"/>
+            <Hyperlink text="Retour" onAction="#handleRetour" styleClass="hyperlink-back"/>
         </HBox>
         
         <Label text="Modifier l'Utilisateur" styleClass="form-title"/>

@@ -6,10 +6,8 @@ import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import models.Employee;
-import models.Offre;
 import models.Utilisateur;
 import services.ServiceEmployee;
-import services.ServiceOffre;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,17 +30,30 @@ public class PostulerOffre implements Initializable {
     @FXML
     private Button btnValider;
     @FXML
-    private Label lblOffreDetails;
+    private Label lblOffreTitre;
 
     private Utilisateur currentUser;
-    private Employee selectedOffre;
     private ServiceEmployee serviceEmployee;
-    private ServiceOffre serviceOffre;
+    private Employee selectedOffre;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         serviceEmployee = new ServiceEmployee();
-        serviceOffre = new ServiceOffre();
+        
+        // Pré-remplir les champs avec les informations de l'utilisateur
+        if (currentUser != null) {
+            tfNom.setText(currentUser.getNom());
+            tfPrenom.setText(currentUser.getPrenom());
+            tfEmail.setText(currentUser.getEmail());
+            tfTelephone.setText(currentUser.getTelephone());
+        }
+    }
+
+    public void setOffre(Employee offre) {
+        this.selectedOffre = offre;
+        if (offre != null && lblOffreTitre != null) {
+            lblOffreTitre.setText("Postuler à l'offre : " + offre.getTitre_emploi());
+        }
     }
 
     public void setCurrentUser(Utilisateur user) {
@@ -52,17 +63,6 @@ public class PostulerOffre implements Initializable {
             tfPrenom.setText(user.getPrenom());
             tfEmail.setText(user.getEmail());
             tfTelephone.setText(user.getTelephone());
-        }
-    }
-
-    public void setSelectedOffre(Employee employee) {
-        this.selectedOffre = employee;
-        if (employee != null && lblOffreDetails != null) {
-            Offre offre = serviceOffre.getOffreById(employee.getId_offre());
-            if (offre != null) {
-                lblOffreDetails.setText(String.format("Poste : %s\nType de contrat : %s", 
-                    offre.getPoste(), offre.getType_contrat()));
-            }
         }
     }
 
@@ -94,7 +94,8 @@ public class PostulerOffre implements Initializable {
                 employee.setCv_path(tfCv.getText());
                 employee.setStatut_emploi("En attente");
                 if (selectedOffre != null) {
-                    employee.setId_offre(selectedOffre.getId_offre());
+                    employee.setTitre_emploi(selectedOffre.getTitre_emploi());
+                    employee.setDescription_emploi(selectedOffre.getDescription_emploi());
                 }
                 
                 // Ajouter l'employé

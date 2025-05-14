@@ -646,10 +646,11 @@
 
 /* Form Title */
 .form-title {
-    -fx-font-size: 24px;
+    -fx-font-size: 28px;
     -fx-font-weight: bold;
     -fx-text-fill: #2c3e50;
     -fx-padding: 0 0 20 0;
+    -fx-alignment: center;
 }
 
 /* Required Field Indicator */
@@ -876,7 +877,7 @@
 
 .menu-button {
     -fx-background-color: transparent;
-    -fx-text-fill: #b8c2cc;
+    -fx-text-fill: #f2f5f7;
     -fx-font-size: 14px;
     -fx-padding: 12 20;
     -fx-cursor: hand;
@@ -1888,7 +1889,7 @@ ImageView {
 .dark-mode .button-primary:hover {
     -fx-background-color: #357abd;
     -fx-effect: dropshadow(gaussian, rgba(74,144,226,0.4), 8, 0, 0, 2);
-} 
+}
 
 /* Styles pour les cartes de véhicules */
 .vehicule-card {
@@ -1989,4 +1990,23 @@ ImageView {
 
 .button-back:hover {
     -fx-background-color: #616161;
+}
+
+.detail-value {
+    -fx-font-size: 16px;
+    -fx-text-fill: #222;
+    -fx-padding: 0 0 0 10;
+}
+
+.hyperlink-back {
+    -fx-font-size: 15px;
+    -fx-text-fill: #1976d2;
+    -fx-underline: true;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 4 12 4 0;
+}
+.hyperlink-back:hover {
+    -fx-text-fill: #0d47a1;
+    -fx-underline: true;
 } 

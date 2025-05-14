@@ -283,7 +283,7 @@ public class GestionOffre implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlTessnim/Employee.fxml"));
             Parent content = loader.load();
-            
+
             // Utiliser le MainDashboardController pour changer le contenu
             MainDashboardController mainController = MainDashboardController.getInstance();
             if (mainController != null) {

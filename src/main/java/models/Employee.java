@@ -13,12 +13,15 @@ public class Employee {
     private String statut_emploi;
     private double salaire_actuel;
     private String cv_path;
+    private String titre_emploi;
+    private String description_emploi;
 
     // Constructeurs
     public Employee() {}
 
     public Employee(int id_employe, int id_offre, String nom, String prenom, String email, String telephone,
-                    Date date_embauche, String statut_emploi, double salaire_actuel, String cv_path) {
+                    Date date_embauche, String statut_emploi, double salaire_actuel, String cv_path,
+                    String titre_emploi, String description_emploi) {
         this.id_employe = id_employe;
         this.id_offre = id_offre;
         this.nom = nom;
@@ -29,6 +32,8 @@ public class Employee {
         this.statut_emploi = statut_emploi;
         this.salaire_actuel = salaire_actuel;
         this.cv_path = cv_path;
+        this.titre_emploi = titre_emploi;
+        this.description_emploi = description_emploi;
     }
 
     // Getters & Setters
@@ -61,4 +66,10 @@ public class Employee {
 
     public String getCv_path() { return cv_path; }
     public void setCv_path(String cv_path) { this.cv_path = cv_path; }
+
+    public String getTitre_emploi() { return titre_emploi; }
+    public void setTitre_emploi(String titre_emploi) { this.titre_emploi = titre_emploi; }
+
+    public String getDescription_emploi() { return description_emploi; }
+    public void setDescription_emploi(String description_emploi) { this.description_emploi = description_emploi; }
 }

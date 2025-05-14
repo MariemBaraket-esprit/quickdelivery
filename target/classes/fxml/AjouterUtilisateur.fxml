@@ -23,7 +23,7 @@
 
         <!-- Back button at the top -->
         <HBox alignment="CENTER_LEFT" spacing="10">
-            <Button text="Retour" onAction="#handleBack" styleClass="button-back"/>
+            <Hyperlink text="Retour" onAction="#handleBack" styleClass="back-link"/>
         </HBox>
 
         <Label text="Ajouter un Employé" styleClass="form-title"/>

@@ -23,14 +23,14 @@
             </font>
         </Label>
 
-        <Line endX="450.0" style="-fx-stroke: #3498db; -fx-stroke-width: 2;" />
-
-        <!-- Détails de l'offre -->
-        <Label fx:id="lblOffreDetails" textFill="#2c3e50" wrapText="true" style="-fx-background-color: #f8f9fa; -fx-padding: 10; -fx-background-radius: 5;">
+        <!-- Offre Title -->
+        <Label fx:id="lblOffreTitre" textFill="#3498db" wrapText="true">
             <font>
-                <Font size="14.0" />
+                <Font name="System Bold" size="16.0" />
             </font>
         </Label>
+
+        <Line endX="450.0" style="-fx-stroke: #3498db; -fx-stroke-width: 2;" />
 
         <!-- Form Fields -->
         <GridPane hgap="15" vgap="15">

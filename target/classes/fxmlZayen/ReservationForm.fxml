@@ -60,6 +60,6 @@
     </HBox>
 
     <HBox alignment="CENTER" style="-fx-padding: 16 0 0 0;">
-        <Button fx:id="backButton" text="Retour" onAction="#handleBack" styleClass="button-back" maxWidth="200" />
+        <Hyperlink fx:id="backButton" text="Retour" onAction="#handleBack" styleClass="hyperlink-back" maxWidth="200" />
     </HBox>
 </VBox>

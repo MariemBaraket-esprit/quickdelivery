@@ -62,6 +62,7 @@ public class MainDashboardController {
     @FXML private Button supportButton;
     @FXML private Button performancesButton;
     @FXML private Button notificationsButton;
+    @FXML private Button chatbotButton;
     @FXML
     private VBox statActifCard, statInactifCard, statCongeCard, statAbsentCard;
     @FXML
@@ -248,7 +249,7 @@ public class MainDashboardController {
 
     private void setSelectedMenuButton(Button selectedButton) {
         Button[] buttons = {
-            dashboardButton, usersButton, vehiclesButton, ordersButton, recruitmentButton, supportButton, performancesButton, notificationsButton
+            dashboardButton, usersButton, vehiclesButton, ordersButton, recruitmentButton, supportButton, performancesButton, notificationsButton, chatbotButton
         };
         for (Button btn : buttons) {
             btn.getStyleClass().remove("selected");
@@ -356,7 +357,7 @@ public class MainDashboardController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlTessnim/Offre.fxml"));
             Parent content = loader.load();
-            contentArea.getChildren().clear();
+        contentArea.getChildren().clear();
             contentArea.getChildren().add(content);
         } catch (IOException e) {
             showError("Erreur", "Erreur lors du chargement de la gestion des recrutements: " + e.getMessage());
@@ -368,8 +369,22 @@ public class MainDashboardController {
     private void handleSupport() {
         setSelectedMenuButton(supportButton);
         pageTitle.setText("Support");
-        // TODO: Implémenter le système de support
+        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlGuezguez/Support.fxml"));
+            Parent root = loader.load();
+            
+            SupportController controller = loader.getController();
+            if (controller != null) {
+                controller.setContentArea(contentArea);
+            }
+            
         contentArea.getChildren().clear();
+            contentArea.getChildren().add(root);
+        } catch (IOException e) {
+            showError("Erreur", "Impossible de charger la page de support: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -568,14 +583,29 @@ public class MainDashboardController {
     @FXML
     private void handleNotifications() {
         setSelectedMenuButton(notificationsButton);
-        pageTitle.setText("Notifications des Véhicules");
+        setPageTitle("Notifications");
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlZayen/NotificationPage.fxml"));
             Parent content = loader.load();
-            contentArea.getChildren().clear();
-            contentArea.getChildren().add(content);
+            changeContent(content, "Notifications");
         } catch (IOException e) {
-            showError("Erreur", "Erreur lors du chargement de la page des notifications : " + e.getMessage());
+            showError("Erreur", "Impossible de charger la page des notifications.");
+        }
+    }
+
+    @FXML
+    private void handleChatbot() {
+        setSelectedMenuButton(chatbotButton);
+        setPageTitle("Assistant IA");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlGuezguez/ChatBot.fxml"));
+            Parent content = loader.load();
+            ChatbotController chatbotController = loader.getController();
+            chatbotController.setContentArea(contentArea);
+            changeContent(content, "Assistant IA");
+        } catch (IOException e) {
+            e.printStackTrace(); // Ajouter cette ligne pour voir l'erreur complète
+            showError("Erreur", "Impossible de charger l'assistant IA : " + e.getMessage());
         }
     }
 
@@ -599,5 +629,9 @@ public class MainDashboardController {
         contentArea.getChildren().clear();
         contentArea.getChildren().add(content);
         setPageTitle(title);
+    }
+
+    public Utilisateur getCurrentUser() {
+        return currentUser;
     }
 } 

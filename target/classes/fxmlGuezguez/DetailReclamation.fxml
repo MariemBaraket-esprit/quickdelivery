@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DetailReclamationController">
+    <content>
+        <VBox alignment="CENTER" spacing="30">
+            <padding>
+                <Insets top="30" bottom="30" left="30" right="30"/>
+            </padding>
+
+            <!-- Bouton retour -->
+            <HBox alignment="TOP_LEFT">
+                <Hyperlink text="Retour" onAction="#handleBack" />
+            </HBox>
+
+            <!-- Titre -->
+            <Label text="Détail de Réclamation" styleClass="form-title" />
+
+            <!-- Détails en deux colonnes -->
+            <GridPane hgap="20" vgap="20" alignment="CENTER">
+                <Label text="Type de reclamation :" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="form-label"/>
+                <Label fx:id="typeLabel" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="detail-value"/>
+
+                <Label text="Votre Déscription :" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="form-label"/>
+                <Label fx:id="descriptionLabel" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="detail-value" wrapText="true"/>
+
+                <Label text="Image soumise :" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="form-label"/>
+                <ImageView fx:id="screenshotView" fitHeight="180" fitWidth="320" preserveRatio="true" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Label text="Date de Création :" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="form-label"/>
+                <Label fx:id="dateLabel" GridPane.rowIndex="3" GridPane.columnIndex="1" styleClass="detail-value"/>
+
+                <Label text="Nom  de Répondeur :" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="form-label"/>
+                <Label fx:id="responderLabel" GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="detail-value"/>
+
+                <Label text="Réponse :" GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="form-label"/>
+                <Label fx:id="responseLabel" GridPane.rowIndex="5" GridPane.columnIndex="1" styleClass="detail-value" wrapText="true"/>
+            </GridPane>
+
+            <!-- Boutons en bas -->
+            <HBox alignment="CENTER" spacing="20">
+                <Button text="Annuler" onAction="#handleBack" styleClass="button-secondary"/>
+                <Button text="Supprimer" styleClass="button-primary"/>
+            </HBox>
+        </VBox>
+    </content>
+</ScrollPane> 

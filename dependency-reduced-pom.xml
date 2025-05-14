@@ -18,6 +18,7 @@
           <include>**/*.jpg</include>
           <include>**/*.jpeg</include>
           <include>**/*.gif</include>
+          <include>**/*.html</include>
         </includes>
       </resource>
     </resources>
@@ -37,12 +38,22 @@
         <configuration>
           <mainClass>com.rached.Main</mainClass>
           <options>
+            <option>--add-modules</option>
+            <option>javafx.controls,javafx.fxml,javafx.web,java.net.http</option>
             <option>--add-opens</option>
             <option>javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED</option>
             <option>--add-opens</option>
             <option>javafx.controls/com.sun.javafx.scene.control=ALL-UNNAMED</option>
             <option>--add-opens</option>
             <option>javafx.base/com.sun.javafx.binding=ALL-UNNAMED</option>
+            <option>--add-opens</option>
+            <option>javafx.web/com.sun.javafx.webkit=ALL-UNNAMED</option>
+            <option>--add-opens</option>
+            <option>javafx.web/javafx.scene.web=ALL-UNNAMED</option>
+            <option>--add-opens</option>
+            <option>java.net.http/java.net.http=ALL-UNNAMED</option>
+            <option>--add-opens</option>
+            <option>java.net/java.net=ALL-UNNAMED</option>
           </options>
         </configuration>
       </plugin>

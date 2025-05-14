@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox fx:id="rootVBox" spacing="8" styleClass="reclamation-card"
+      prefWidth="480" prefHeight="260"
+      xmlns="http://javafx.com/javafx/23.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.ReclamationCardController">
+    <padding><Insets top="12" right="16" bottom="12" left="16"/></padding>
+
+    <!-- Header: Type + Status -->
+    <HBox alignment="CENTER_LEFT" spacing="8">
+        <Text fx:id="typeText" styleClass="card-title"/>
+        <Text fx:id="statusText" styleClass="status-text"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button fx:id="editButton" text="Modifier" styleClass="button-secondary" onAction="#handleEdit"/>
+        <Button fx:id="viewButton" text="Voir" styleClass="button-secondary" onAction="#handleView"/>
+    </HBox>
+
+    <!-- Description -->
+    <Text fx:id="descText" styleClass="reclamation-card-text" wrappingWidth="448"/>
+
+    <!-- Image -->
+    <ImageView fx:id="imageView"
+               fitWidth="200" fitHeight="100"
+               pickOnBounds="true" preserveRatio="true"/>
+
+    <!-- Date -->
+    <Text fx:id="dateText" styleClass="date-text"/>
+
+    <!-- Response info -->
+    <Text fx:id="responderText" styleClass="responder-text"/>
+    <Text fx:id="responseText" styleClass="response-text" wrappingWidth="448"/>
+
+    <!-- Error label -->
+    <Label fx:id="errorLabel" styleClass="error-text" visible="false"/>
+</VBox>

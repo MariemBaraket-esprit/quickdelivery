@@ -69,17 +69,19 @@ public class GestionEmployee implements Initializable {
 
     private void configureAccess() {
         if (currentUser != null) {
+            boolean isAdmin = "ADMIN".equals(currentUser.getTypeUtilisateur());
             boolean isResponsable = "RESPONSABLE".equals(currentUser.getTypeUtilisateur());
             boolean isClient = "CLIENT".equals(currentUser.getTypeUtilisateur());
             
             // Configurer l'accès pour les boutons
-            if (btnAjouter != null) btnAjouter.setVisible(isResponsable);
-            if (btnModifier != null) btnModifier.setVisible(isResponsable);
-            if (btnSupprimer != null) btnSupprimer.setVisible(isResponsable);
+            if (btnAjouter != null) btnAjouter.setVisible(isAdmin || isResponsable);
+            if (btnModifier != null) btnModifier.setVisible(isAdmin || isResponsable);
+            if (btnSupprimer != null) btnSupprimer.setVisible(isAdmin || isResponsable);
             if (btnPostuler != null) btnPostuler.setVisible(isClient);
             
             // Si c'est un client, on ne montre que les offres disponibles
             if (isClient) {
+                // Filtrer la liste pour ne montrer que les offres disponibles
                 List<Employee> employees = serviceEmployee.getAll();
                 employees.removeIf(emp -> !"Disponible".equals(emp.getStatut_emploi()));
                 ObservableList<Employee> filteredList = FXCollections.observableArrayList(employees);
@@ -176,7 +178,7 @@ public class GestionEmployee implements Initializable {
     @FXML
     private void onPostulerClicked() {
         if (!"CLIENT".equals(currentUser.getTypeUtilisateur())) {
-            showAlert("Cette fonctionnalité est réservée aux clients.");
+            showAlert("Seuls les clients peuvent postuler aux offres.");
             return;
         }
 
@@ -185,7 +187,7 @@ public class GestionEmployee implements Initializable {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Attention");
             alert.setHeaderText("Aucune offre sélectionnée");
-            alert.setContentText("Veuillez sélectionner une offre à laquelle vous souhaitez postuler.");
+            alert.setContentText("Veuillez sélectionner une offre à laquelle postuler.");
             alert.showAndWait();
             return;
         }
@@ -194,10 +196,10 @@ public class GestionEmployee implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlTessnim/PostulerOffre.fxml"));
             Parent root = loader.load();
             
+            // Passer l'offre sélectionnée au contrôleur du formulaire de postulation
             PostulerOffre controller = loader.getController();
-            controller.setCurrentUser(currentUser);
-            controller.setSelectedOffre(selectedEmployee);
-            
+            controller.setOffre(selectedEmployee);
+
             Stage stage = new Stage();
             stage.setTitle("Postuler à une offre");
             stage.setScene(new Scene(root));
@@ -215,7 +217,7 @@ public class GestionEmployee implements Initializable {
 
     @FXML
     private void onAjouterClicked() {
-        if (!"RESPONSABLE".equals(currentUser.getTypeUtilisateur())) {
+        if (!"ADMIN".equals(currentUser.getTypeUtilisateur()) && !"RESPONSABLE".equals(currentUser.getTypeUtilisateur())) {
             showAlert("Vous n'avez pas les droits pour effectuer cette action.");
             return;
         }
@@ -239,7 +241,7 @@ public class GestionEmployee implements Initializable {
 
     @FXML
     private void onModifierClicked() {
-        if (!"RESPONSABLE".equals(currentUser.getTypeUtilisateur())) {
+        if (!"ADMIN".equals(currentUser.getTypeUtilisateur()) && !"RESPONSABLE".equals(currentUser.getTypeUtilisateur())) {
             showAlert("Vous n'avez pas les droits pour effectuer cette action.");
             return;
         }
@@ -258,7 +260,7 @@ public class GestionEmployee implements Initializable {
             Parent root = loader.load();
             ModifierEmployee controller = loader.getController();
             controller.setEmployee(selectedEmployee);
-            
+
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
@@ -276,7 +278,7 @@ public class GestionEmployee implements Initializable {
 
     @FXML
     void onSupprimerClicked(ActionEvent event) {
-        if (!"RESPONSABLE".equals(currentUser.getTypeUtilisateur())) {
+        if (!"ADMIN".equals(currentUser.getTypeUtilisateur()) && !"RESPONSABLE".equals(currentUser.getTypeUtilisateur())) {
             showAlert("Vous n'avez pas les droits pour effectuer cette action.");
             return;
         }
@@ -317,7 +319,7 @@ public class GestionEmployee implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlTessnim/Offre.fxml"));
             Parent content = loader.load();
-            
+
             // Utiliser le MainDashboardController pour changer le contenu
             MainDashboardController mainController = MainDashboardController.getInstance();
             if (mainController != null) {

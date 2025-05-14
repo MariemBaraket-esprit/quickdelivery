@@ -34,8 +34,7 @@
 
     <!-- Boutons -->
     <HBox alignment="CENTER_RIGHT" spacing="10">
-        <Button fx:id="backButton" text="Retour" onAction="#handleBack" 
-                style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-padding: 8 15; -fx-background-radius: 5;"/>
+        <Hyperlink fx:id="backButton" text="Retour" onAction="#handleBack" styleClass="hyperlink-back"/>
     </HBox>
 
 

@@ -15,10 +15,10 @@ public class ServiceOffre implements IService<Offre> {
     public ServiceOffre() {
         try {
             cnx = DatabaseConnection.getConnection();
-            if (cnx == null) {
-                System.out.println("Erreur: Connexion à la base de données échouée !");
-            } else {
-                System.out.println("Connexion réussie à la base de données.");
+        if (cnx == null) {
+            System.out.println("Erreur: Connexion à la base de données échouée !");
+        } else {
+            System.out.println("Connexion réussie à la base de données.");
             }
         } catch (SQLException e) {
             System.out.println("Erreur de connexion : " + e.getMessage());
