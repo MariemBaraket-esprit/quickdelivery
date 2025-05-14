@@ -1,18 +1,22 @@
 package Controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.scene.layout.BorderPane;
 import models.Produit;
 import models.Utilisateur;
 import services.CommandeDao;
 import services.UtilisateurService;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 
@@ -40,9 +44,13 @@ public class ClientCommandeFormController {
     private Button btnConfirmer;
 
     @FXML
+    private Button btnRetour;
+
+    @FXML
     private CheckBox chkUtiliserAdresseParDefaut;
 
     private ClientController clientController;
+    private ClientProduitsController produitsController;
     private Utilisateur utilisateur;
     private CommandeDao commandeDao;
     private DecimalFormat df = new DecimalFormat("0.00");
@@ -55,7 +63,7 @@ public class ClientCommandeFormController {
         try {
             commandeDao = new CommandeDao();
             utilisateurService = new UtilisateurService();
-            System.out.println("Initialisation du formulaire de commande");
+            System.out.println("Initialisation du formulaire de commande intégré");
 
             // Ajouter un écouteur pour la case à cocher
             if (chkUtiliserAdresseParDefaut != null) {
@@ -79,6 +87,10 @@ public class ClientCommandeFormController {
 
     public void setClientController(ClientController clientController) {
         this.clientController = clientController;
+    }
+
+    public void setProduitsController(ClientProduitsController produitsController) {
+        this.produitsController = produitsController;
     }
 
     public void setUtilisateur(Utilisateur utilisateur) {
@@ -163,7 +175,6 @@ public class ClientCommandeFormController {
 
         return true;
     }
-
     @FXML
     private void handleConfirmer() {
         System.out.println("Confirmation de commande");
@@ -189,19 +200,7 @@ public class ClientCommandeFormController {
                     return;
                 }
 
-                // Mettre à jour l'adresse de l'utilisateur si elle a changé
-                if (utilisateur != null && !adresse.equals(utilisateur.getAdresse())) {
-                    try {
-                        utilisateur.setAdresse(adresse);
-                        // Utiliser la méthode modifierUtilisateur au lieu de updateUser
-                        utilisateurService.modifierUtilisateur(utilisateur);
-                        System.out.println("Adresse de l'utilisateur mise à jour");
-                    } catch (Exception e) {
-                        System.err.println("Erreur lors de la mise à jour de l'adresse: " + e.getMessage());
-                        // Ne pas bloquer la commande si la mise à jour de l'adresse échoue
-                    }
-                }
-
+                // Créer la commande
                 boolean success = commandeDao.createDirectOrder(
                         utilisateur.getIdUser(),
                         produitCommande.getId(),
@@ -211,55 +210,53 @@ public class ClientCommandeFormController {
                 );
 
                 if (success) {
-                    showAlert(Alert.AlertType.INFORMATION, "Succès", "Commande passée",
-                            "Votre commande a été passée avec succès.");
-
-                    // Fermer la fenêtre
-                    closeStage();
-
-                    // Rediriger vers la liste des commandes
-                    if (clientController != null) {
-                        clientController.handleCommandes();
+                    showAlert(Alert.AlertType.INFORMATION, "Succès",
+                            "Commande créée avec succès",
+                            "Votre commande a été enregistrée.");
+                    
+                    try {
+                        // Charger le dashboard client
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ClientDashboard.fxml"));
+                        Parent dashboardView = loader.load();
+                        
+                        // Configurer le contrôleur du dashboard
+                        ClientDashboardController dashboardController = loader.getController();
+                        dashboardController.initData(utilisateur);
+                        
+                        // Obtenir la scène actuelle et remplacer son contenu
+                        Scene currentScene = btnConfirmer.getScene();
+                        currentScene.setRoot(dashboardView);
+                        
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        showAlert(Alert.AlertType.ERROR, "Erreur",
+                                "Erreur de navigation",
+                                "Impossible de retourner au dashboard.");
                     }
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur de commande",
-                            "Impossible de passer la commande. Veuillez réessayer plus tard.");
+                    showAlert(Alert.AlertType.ERROR, "Erreur",
+                            "Erreur lors de la création de la commande",
+                            "Une erreur est survenue lors de la création de la commande.");
                 }
             } catch (SQLException e) {
-                System.err.println("Erreur SQL lors de la création de la commande: " + e.getMessage());
                 e.printStackTrace();
-
-                // Message d'erreur plus convivial pour l'utilisateur
-                String errorMessage = "Une erreur est survenue lors de la création de la commande.";
-
-                // Ajouter des détails spécifiques selon le type d'erreur SQL
-                if (e.getMessage().contains("foreign key constraint")) {
-                    errorMessage += "\nErreur de référence: L'utilisateur ou le produit n'existe pas.";
-                } else if (e.getMessage().contains("duplicate")) {
-                    errorMessage += "\nUne commande identique existe déjà.";
-                } else if (e.getMessage().contains("connection")) {
-                    errorMessage += "\nProblème de connexion à la base de données. Veuillez vérifier votre connexion internet.";
-                } else {
-                    errorMessage += "\nDétails techniques: " + e.getMessage();
-                }
-
-                showAlert(Alert.AlertType.ERROR, "Erreur SQL", "Erreur de commande", errorMessage);
-            } catch (Exception e) {
-                System.err.println("Erreur inattendue lors de la création de la commande: " + e.getMessage());
-                e.printStackTrace();
-                showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur inattendue",
-                        "Une erreur inattendue s'est produite. Veuillez réessayer plus tard.\n" +
-                                "Si le problème persiste, contactez le support technique.");
+                showAlert(Alert.AlertType.ERROR, "Erreur",
+                        "Erreur lors de la création de la commande",
+                        "Une erreur est survenue: " + e.getMessage());
             }
         }
     }
 
-    private void closeStage() {
-        Stage stage = (Stage) txtNom.getScene().getWindow();
-        if (stage != null) {
-            stage.close();
+    @FXML
+    private void handleRetour() {
+        // Revenir directement à la liste des produits
+        if (produitsController != null) {
+            produitsController.retourListeProduits();
+        } else if (clientController != null) {
+            clientController.handleProduits();
         }
     }
+
 
     private void showAlert(Alert.AlertType alertType, String title, String header, String content) {
         if (clientController != null) {

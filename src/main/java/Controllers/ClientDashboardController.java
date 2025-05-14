@@ -5,8 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import models.Utilisateur;
@@ -19,21 +18,27 @@ import java.util.TimerTask;
 
 public class ClientDashboardController {
     @FXML
-    private Label userNameLabel;
+    private Label userFullName;
     @FXML
-    private Circle userAvatar;
+    private Label userType;
     @FXML
-    private Circle userStatusIndicator;
+    private Label userTypeIcon;
     @FXML
-    private Label welcomeMessage;
+    private Label userStatus;
     @FXML
-    private BorderPane contentArea;
+    private Circle profilePhoto;
     @FXML
-    private Label statusLabel;
+    private Circle statusIndicator;
+    @FXML
+    private Label pageTitle;
     @FXML
     private Label dateTimeLabel;
     @FXML
-    private VBox welcomeBanner;
+    private StackPane contentArea;
+    @FXML
+    private Button btnProducts;
+    @FXML
+    private Button btnOrders;
 
     private Utilisateur currentUser;
     private Timer timer;
@@ -62,45 +67,95 @@ public class ClientDashboardController {
             return;
         }
 
-        if (userNameLabel == null || welcomeMessage == null) {
-            System.out.println("ERREUR: Éléments UI non initialisés dans updateUserInfo");
-            return;
-        }
-
-        // Mettre à jour le nom d'utilisateur
+        // Set user's full name
         String firstName = currentUser.getPrenom() != null ? currentUser.getPrenom() : "";
         String lastName = currentUser.getNom() != null ? currentUser.getNom() : "";
 
-        System.out.println("Mise à jour des informations utilisateur: " + firstName + " " + lastName);
-
+        // Format the full name properly
+        String fullName = "";
         if (!firstName.isEmpty() || !lastName.isEmpty()) {
-            userNameLabel.setText(capitalizeFirstLetter(firstName) + " " + capitalizeFirstLetter(lastName));
-            welcomeMessage.setText("Bienvenue, " + firstName + "!");
+            fullName = String.format("%s %s",
+                    capitalizeFirstLetter(firstName),
+                    lastName.toUpperCase());
         } else {
-            // Utiliser l'email si le nom n'est pas disponible
+            // Fallback to email if name is not available
             String email = currentUser.getEmail();
             if (email != null && email.contains("@")) {
-                String username = email.substring(0, email.indexOf('@'));
-                userNameLabel.setText(username);
-                welcomeMessage.setText("Bienvenue, " + username + "!");
+                fullName = email.substring(0, email.indexOf('@'));
             } else {
-                userNameLabel.setText("Utilisateur");
-                welcomeMessage.setText("Bienvenue!");
+                fullName = "Utilisateur";
             }
         }
+        userFullName.setText(fullName);
 
-        // Définir la couleur de l'avatar et l'indicateur de statut
-        setAvatarColor();
+        // Set user type with icon and proper formatting
+        String typeIcon = getTypeIcon(currentUser.getTypeUtilisateur());
+        userTypeIcon.setText(typeIcon);
+        String formattedType = capitalizeFirstLetter(currentUser.getTypeUtilisateur().toLowerCase());
+        userType.setText(formattedType);
+
+        // Set user status with appropriate styling
+        String status = currentUser.getStatut().toLowerCase();
+        String formattedStatus = capitalizeFirstLetter(status);
+        userStatus.setText(formattedStatus);
+        userStatus.getStyleClass().removeAll("actif", "inactif", "conge", "absent");
+        userStatus.getStyleClass().add(status);
+
+        // Update status indicator
         updateStatusIndicator(currentUser.getStatut());
+
+        // Set profile photo color
+        setProfilePhotoColor();
     }
 
-    private void setAvatarColor() {
-        if (userAvatar == null) {
-            System.out.println("ERREUR: userAvatar est null dans setAvatarColor");
+    private String getTypeIcon(String type) {
+        switch (type.toUpperCase()) {
+            case "ADMIN":
+                return "👑";
+            case "RESPONSABLE":
+                return "👔";
+            case "MAGASINIER":
+                return "📦";
+            case "LIVREUR":
+                return "🚚";
+            case "CLIENT":
+                return "👤";
+            default:
+                return "👤";
+        }
+    }
+
+    private void updateStatusIndicator(String status) {
+        if (statusIndicator == null) {
+            System.out.println("ERREUR: statusIndicator est null dans updateStatusIndicator");
             return;
         }
 
-        // Générer une couleur unique basée sur le nom de l'utilisateur
+        switch (status.toUpperCase()) {
+            case "ACTIF":
+                statusIndicator.setFill(javafx.scene.paint.Color.valueOf("#2ecc71")); // Green
+                break;
+            case "INACTIF":
+                statusIndicator.setFill(javafx.scene.paint.Color.valueOf("#e74c3c")); // Red
+                break;
+            case "CONGE":
+                statusIndicator.setFill(javafx.scene.paint.Color.valueOf("#f1c40f")); // Yellow
+                break;
+            case "ABSENT":
+                statusIndicator.setFill(javafx.scene.paint.Color.valueOf("#95a5a6")); // Gray
+                break;
+            default:
+                statusIndicator.setFill(javafx.scene.paint.Color.valueOf("#3498db")); // Blue
+        }
+    }
+
+    private void setProfilePhotoColor() {
+        if (profilePhoto == null) {
+            System.out.println("ERREUR: profilePhoto est null dans setProfilePhotoColor");
+            return;
+        }
+
+        // Generate a unique color based on user's name
         String firstName = currentUser.getPrenom() != null ? currentUser.getPrenom() : "";
         String lastName = currentUser.getNom() != null ? currentUser.getNom() : "";
 
@@ -108,7 +163,7 @@ public class ClientDashboardController {
         if (!firstName.isEmpty() || !lastName.isEmpty()) {
             initials = getInitials(firstName, lastName);
         } else {
-            // Utiliser les initiales de l'email si le nom n'est pas disponible
+            // Fallback to email initials if name is not available
             String email = currentUser.getEmail();
             if (email != null && email.contains("@")) {
                 String username = email.substring(0, email.indexOf('@'));
@@ -118,40 +173,11 @@ public class ClientDashboardController {
             }
         }
 
-        // Utiliser les initiales pour générer une couleur
+        // Use the initials to generate a color
         int hash = initials.hashCode();
         double hue = Math.abs(hash % 360);
         javafx.scene.paint.Color color = javafx.scene.paint.Color.hsb(hue, 0.7, 0.8);
-        userAvatar.setFill(color);
-    }
-
-    private void updateStatusIndicator(String status) {
-        if (userStatusIndicator == null) {
-            System.out.println("ERREUR: userStatusIndicator est null dans updateStatusIndicator");
-            return;
-        }
-
-        if (status == null) {
-            userStatusIndicator.setFill(javafx.scene.paint.Color.valueOf("#3498db")); // Bleu par défaut
-            return;
-        }
-
-        switch (status.toUpperCase()) {
-            case "ACTIF":
-                userStatusIndicator.setFill(javafx.scene.paint.Color.valueOf("#2ecc71")); // Vert
-                break;
-            case "INACTIF":
-                userStatusIndicator.setFill(javafx.scene.paint.Color.valueOf("#e74c3c")); // Rouge
-                break;
-            case "CONGE":
-                userStatusIndicator.setFill(javafx.scene.paint.Color.valueOf("#f1c40f")); // Jaune
-                break;
-            case "ABSENT":
-                userStatusIndicator.setFill(javafx.scene.paint.Color.valueOf("#95a5a6")); // Gris
-                break;
-            default:
-                userStatusIndicator.setFill(javafx.scene.paint.Color.valueOf("#3498db")); // Bleu
-        }
+        profilePhoto.setFill(color);
     }
 
     private String getInitials(String firstName, String lastName) {
@@ -191,14 +217,22 @@ public class ClientDashboardController {
         }, 0, 1000);
     }
 
+    private void setActiveButton(Button activeButton) {
+        // Remove selected class from all buttons
+        btnProducts.getStyleClass().remove("selected");
+        btnOrders.getStyleClass().remove("selected");
+
+        // Add selected class to active button
+        if (activeButton != null) {
+            activeButton.getStyleClass().add("selected");
+        }
+    }
+
     @FXML
     private void handleProducts() {
         System.out.println("Chargement des produits");
-
-        if (welcomeBanner != null) {
-            // Cacher la bannière de bienvenue
-            welcomeBanner.setVisible(false);
-        }
+        pageTitle.setText("Catalogue de Produits");
+        setActiveButton(btnProducts);
 
         if (contentArea == null) {
             System.out.println("ERREUR: contentArea est null dans handleProducts");
@@ -217,11 +251,8 @@ public class ClientDashboardController {
             tempController.setUtilisateur(currentUser);
             controller.setClientController(tempController);
 
-            contentArea.setCenter(content);
-
-            if (statusLabel != null) {
-                statusLabel.setText("Catalogue de produits chargé");
-            }
+            // Replace the content in the StackPane
+            contentArea.getChildren().setAll(content);
         } catch (IOException e) {
             System.out.println("ERREUR lors du chargement des produits: " + e.getMessage());
             e.printStackTrace();
@@ -229,14 +260,12 @@ public class ClientDashboardController {
                     "Impossible de charger le catalogue de produits: " + e.getMessage());
         }
     }
+
     @FXML
     private void handleMyOrders() {
         System.out.println("Chargement des commandes");
-
-        if (welcomeBanner != null) {
-            // Cacher la bannière de bienvenue
-            welcomeBanner.setVisible(false);
-        }
+        pageTitle.setText("Mes Commandes");
+        setActiveButton(btnOrders);
 
         if (contentArea == null) {
             System.out.println("ERREUR: contentArea est null dans handleMyOrders");
@@ -269,11 +298,8 @@ public class ClientDashboardController {
 
             controller.loadCommandes();
 
-            contentArea.setCenter(content);
-
-            if (statusLabel != null) {
-                statusLabel.setText("Liste des commandes chargée");
-            }
+            // Replace the content in the StackPane
+            contentArea.getChildren().setAll(content);
         } catch (IOException e) {
             System.out.println("ERREUR lors du chargement des commandes: " + e.getMessage());
             e.printStackTrace();
@@ -285,6 +311,7 @@ public class ClientDashboardController {
     @FXML
     private void handleProfile() {
         System.out.println("Affichage du profil");
+        pageTitle.setText("Mon Profil");
 
         if (currentUser == null) {
             System.out.println("ERREUR: currentUser est null dans handleProfile");

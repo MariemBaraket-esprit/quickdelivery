@@ -1,5 +1,6 @@
 package services;
 
+import com.sun.javafx.sg.prism.NGNode;
 import models.Produit;
 import utils.MyDataBase;
 
@@ -83,6 +84,40 @@ public class ProduitDao {
 
             return ps.executeUpdate() > 0;
         }
+    }
+    public List<Produit> getAllProduits() {
+        List<Produit> produits = new ArrayList<>();
+        String query = "SELECT * FROM produits";
+
+
+        try (Connection conn = MyDataBase.getInstance().getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                Produit produit = new Produit();
+                produit.setId(rs.getInt("id"));
+                produit.setNom(rs.getString("nom"));
+                produit.setDescription(rs.getString("description"));
+                produit.setCategorie(rs.getString("categorie"));
+                produit.setPrix(rs.getDouble("prix"));
+                produit.setStock(rs.getInt("stock"));
+
+                if (rs.getDate("date_ajout") != null) {
+                    produit.setDateAjout(rs.getDate("date_ajout").toLocalDate());
+                }
+
+                produit.setTaille(rs.getInt("taille"));
+                produit.setImage(rs.getString("image"));
+
+                produits.add(produit);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return produits;
     }
 
     /**

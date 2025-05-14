@@ -1,0 +1,42 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+
+<!--<?import javafx.scene.control.*?>-->
+<!--<?import javafx.scene.layout.*?>-->
+<!--<?import javafx.scene.shape.*?>-->
+<!--<?import javafx.geometry.Insets?>-->
+
+<!--<BorderPane fx:controller="Controllers.ClientDashboardController" xmlns:fx="http://javafx.com/fxml">-->
+<!--    <top>-->
+<!--        <VBox>-->
+<!--            &lt;!&ndash; En-tête avec les informations utilisateur &ndash;&gt;-->
+<!--            <HBox spacing="10" alignment="CENTER_RIGHT" style="-fx-background-color: #2c3e50; -fx-padding: 10;">-->
+<!--                <Label fx:id="userNameLabel" style="-fx-text-fill: white;"/>-->
+<!--                <Circle fx:id="userAvatar" radius="15"/>-->
+<!--                <Circle fx:id="userStatusIndicator" radius="5"/>-->
+<!--                <Label fx:id="dateTimeLabel" style="-fx-text-fill: white;"/>-->
+<!--                <Button text="Déconnexion" onAction="#handleLogout"/>-->
+<!--            </HBox>-->
+<!--            -->
+<!--            &lt;!&ndash; Barre de navigation intégrée &ndash;&gt;-->
+<!--            <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #f0f0f0; -fx-padding: 10;">-->
+<!--                <Button fx:id="btnProduits" text="Produits" onAction="#handleProducts" styleClass="nav-button"/>-->
+<!--                <Button fx:id="btnCommandes" text="Mes Commandes" onAction="#handleMyOrders" styleClass="nav-button"/>-->
+<!--                <Region HBox.hgrow="ALWAYS" />-->
+<!--                <Label fx:id="welcomeUserName" styleClass="user-name"/>-->
+<!--            </HBox>-->
+<!--        </VBox>-->
+<!--    </top>-->
+<!--    -->
+<!--    <center>-->
+<!--        <StackPane>-->
+<!--            &lt;!&ndash; Bannière de bienvenue &ndash;&gt;-->
+<!--            <VBox fx:id="welcomeBanner" alignment="CENTER" spacing="20" style="-fx-padding: 20;">-->
+<!--                <Label fx:id="welcomeMessage" style="-fx-font-size: 24;"/>-->
+<!--                <Label fx:id="statusLabel"/>-->
+<!--            </VBox>-->
+<!--            -->
+<!--            &lt;!&ndash; Zone de contenu principal &ndash;&gt;-->
+<!--            <BorderPane fx:id="contentArea"/>-->
+<!--        </StackPane>-->
+<!--    </center>-->
+<!--</BorderPane>-->

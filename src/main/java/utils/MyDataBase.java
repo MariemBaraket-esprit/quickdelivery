@@ -9,9 +9,20 @@ public class MyDataBase {
     private static final String USER = "root";
     private static final String PASSWORD = "";
     private static Connection connection;
+    private static MyDataBase instance;
+
 
     private MyDataBase() {
         // Constructeur privé pour empêcher l'instanciation
+    }
+    // Méthode pour obtenir l'instance unique
+    public static synchronized MyDataBase getInstance() {
+        if (instance == null) {
+            instance = new MyDataBase();
+        } else if (instance.getConnection() == null) {
+            instance = new MyDataBase();
+        }
+        return instance;
     }
 
     public static Connection getConnection() {

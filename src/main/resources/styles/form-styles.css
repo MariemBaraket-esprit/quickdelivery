@@ -1,0 +1,183 @@
+/* Styles améliorés pour les formulaires */
+
+/* En-tête du formulaire */
+.form-header {
+    -fx-background-color: white;
+}
+
+.form-title-container {
+    -fx-padding: 20px 15px;
+    -fx-spacing: 15px;
+    -fx-alignment: center-left;
+}
+
+.form-icon {
+    -fx-fill: #3498db;
+    -fx-scale-x: 1.5;
+    -fx-scale-y: 1.5;
+}
+
+.form-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+/* Contenu du formulaire */
+.form-scroll {
+    -fx-background: white;
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.form-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.form-content {
+    -fx-background-color: white;
+}
+
+.form-section-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 5px 0;
+}
+
+.form-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #34495e;
+    -fx-font-weight: bold;
+}
+
+.form-field {
+    -fx-padding: 12px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #e0e0e0;
+    -fx-background-color: #f9f9f9;
+    -fx-font-size: 14px;
+}
+
+.form-field:focused {
+    -fx-border-color: #3498db;
+    -fx-background-color: white;
+}
+
+.form-field-with-icon {
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-color: #e0e0e0;
+    -fx-background-color: #f9f9f9;
+}
+
+.form-field-with-icon:focused-within {
+    -fx-border-color: #3498db;
+    -fx-background-color: white;
+}
+
+.form-field-no-border {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 12px;
+    -fx-font-size: 14px;
+}
+
+.form-field-suffix {
+    -fx-padding: 0 12px 0 0;
+    -fx-text-fill: #7f8c8d;
+}
+
+/* Zone d'upload d'image */
+.image-upload-container {
+    -fx-spacing: 20px;
+    -fx-padding: 10px;
+}
+
+.image-preview-container {
+    -fx-min-width: 200px;
+    -fx-min-height: 200px;
+    -fx-max-width: 200px;
+    -fx-max-height: 200px;
+    -fx-background-color: #f9f9f9;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.image-placeholder {
+    -fx-arc-width: 5px;
+    -fx-arc-height: 5px;
+    -fx-fill: #f9f9f9;
+    -fx-stroke: #e0e0e0;
+    -fx-stroke-width: 1px;
+}
+
+.image-icon {
+    -fx-fill: #bdc3c7;
+    -fx-scale-x: 3;
+    -fx-scale-y: 3;
+}
+
+.image-upload-actions {
+    -fx-spacing: 10px;
+}
+
+.button-upload {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 15px;
+    -fx-background-radius: 5px;
+    -fx-graphic-text-gap: 8;
+}
+
+.button-upload:hover {
+    -fx-background-color: #2980b9;
+    -fx-cursor: hand;
+}
+
+.button-icon {
+    -fx-fill: white;
+}
+
+.upload-hint {
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 12px;
+}
+
+/* Actions du formulaire */
+.form-actions {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1px 0 0 0;
+}
+
+.save-button {
+    -fx-background-color: #2ecc71;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 12px 20px;
+    -fx-background-radius: 5px;
+    -fx-graphic-text-gap: 8;
+}
+
+.save-button:hover {
+    -fx-background-color: #27ae60;
+    -fx-cursor: hand;
+}
+
+.cancel-button {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 12px 20px;
+    -fx-background-radius: 5px;
+    -fx-graphic-text-gap: 8;
+}
+
+.cancel-button:hover {
+    -fx-background-color: #c0392b;
+    -fx-cursor: hand;
+}

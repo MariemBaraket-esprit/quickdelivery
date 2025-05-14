@@ -6,84 +6,94 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Controllers.ClientDashboardController"
-            stylesheets="@../styles/client-styles.css">
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="Controllers.ClientDashboardController"
+      stylesheets="@../styles/styles.css">
 
-    <!-- Top Navigation Bar -->
-    <top>
-        <VBox styleClass="header-container">
-            <!-- Main Header with Logo and User Info -->
-            <HBox styleClass="main-header">
-                <!-- Logo and App Name -->
-                <HBox styleClass="logo-container" alignment="CENTER_LEFT" spacing="15">
-                    <Label text="🚚" styleClass="logo-icon"/>
-                    <Label text="QuickDelivery" styleClass="app-name"/>
-                </HBox>
+    <!-- Sidebar -->
+    <VBox styleClass="sidebar">
+        <!-- Profile Section -->
+        <VBox styleClass="sidebar-profile">
+            <HBox styleClass="profile-container">
+                <!-- Profile Photo Container -->
+                <StackPane styleClass="profile-photo-container">
+                    <Circle fx:id="profilePhoto" radius="30" styleClass="profile-photo"/>
+                    <Circle fx:id="statusIndicator" radius="8" styleClass="status-indicator"
+                            translateX="20" translateY="20"/>
+                </StackPane>
 
-                <Region HBox.hgrow="ALWAYS" />
-
-                <!-- User Profile Section -->
-                <HBox styleClass="user-profile" alignment="CENTER" spacing="15">
-                    <!-- User Info with Dropdown -->
-                    <MenuButton fx:id="userMenuButton" styleClass="user-menu-button">
+                <!-- User Info -->
+                <VBox styleClass="user-info">
+                    <Label fx:id="userFullName" styleClass="user-fullname"/>
+                    <HBox styleClass="user-type-container" alignment="CENTER_LEFT" spacing="5">
+                        <Label fx:id="userTypeIcon" styleClass="user-type-icon"/>
+                        <Label fx:id="userType" styleClass="user-type"/>
+                    </HBox>
+                    <Label fx:id="userStatus" styleClass="user-status"/>
+                    <Button onAction="#handleProfile" styleClass="edit-profile-button">
                         <graphic>
-                            <HBox spacing="10" alignment="CENTER">
-                                <StackPane styleClass="avatar-container">
-                                    <Circle fx:id="userAvatar" radius="18" styleClass="user-avatar"/>
-                                    <Circle fx:id="userStatusIndicator" radius="5" styleClass="status-indicator"
-                                            translateX="12" translateY="12"/>
-                                </StackPane>
-                                <Label fx:id="userNameLabel" styleClass="user-name" text="Nom d'utilisateur"/>
+                            <HBox spacing="10" alignment="CENTER_LEFT">
+                                <Label text="💼" styleClass="edit-profile-icon"/>
+                                <Label text="Modifier profil" styleClass="edit-profile-text"/>
                             </HBox>
                         </graphic>
-                        <items>
-                            <MenuItem text="Mon profil" onAction="#handleProfile"/>
-
-                            <SeparatorMenuItem />
-                            <MenuItem text="Déconnexion" onAction="#handleLogout"/>
-                        </items>
-                    </MenuButton>
-                </HBox>
-            </HBox>
-
-            <!-- Navigation Menu -->
-            <HBox styleClass="nav-menu">
-                <Button text="Produits" onAction="#handleProducts" styleClass="nav-button"/>
-                <Button text="Mes commandes" onAction="#handleMyOrders" styleClass="nav-button"/>
-
-
+                    </Button>
+                </VBox>
             </HBox>
         </VBox>
-    </top>
+
+        <!-- Menu Section -->
+        <VBox styleClass="sidebar-menu">
+            <Button fx:id="btnProducts" onAction="#handleProducts" styleClass="menu-button" maxWidth="Infinity">
+                <graphic>
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label styleClass="menu-icon" text="📦"/>
+                        <Label styleClass="menu-text" text="Produits"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+            <Button fx:id="btnOrders" onAction="#handleMyOrders" styleClass="menu-button" maxWidth="Infinity">
+                <graphic>
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label styleClass="menu-icon" text="📋"/>
+                        <Label styleClass="menu-text" text="Mes commandes"/>
+                    </HBox>
+                </graphic>
+            </Button>
+        </VBox>
+
+        <!-- Spacer -->
+        <Region VBox.vgrow="ALWAYS"/>
+
+        <!-- Logout Section -->
+        <VBox styleClass="logout-section">
+            <Button onAction="#handleLogout" styleClass="logout-button" maxWidth="Infinity">
+                <graphic>
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Label styleClass="logout-icon" text="🚪"/>
+                        <Label styleClass="menu-text" text="Déconnexion"/>
+                    </HBox>
+                </graphic>
+            </Button>
+        </VBox>
+    </VBox>
 
     <!-- Main Content Area -->
-    <center>
-        <VBox styleClass="content-container">
-            <!-- Welcome Banner -->
-            <VBox fx:id="welcomeBanner" styleClass="welcome-banner">
-                <HBox alignment="CENTER_LEFT" spacing="20">
-                    <VBox spacing="10">
-                        <Label fx:id="welcomeMessage" styleClass="welcome-message" text="Bienvenue, Client!"/>
-                        <Label styleClass="welcome-subtitle" text="Découvrez nos produits et passez commande facilement"/>
-                        <HBox spacing="15" styleClass="action-buttons">
-                            <Button text="Voir les produits" onAction="#handleProducts" styleClass="primary-button"/>
-                            <Button text="Mes commandes" onAction="#handleMyOrders" styleClass="secondary-button"/>
-                        </HBox>
-                    </VBox>
-                </HBox>
-            </VBox>
+    <VBox HBox.hgrow="ALWAYS" styleClass="main-content">
+        <!-- Top Navigation Bar -->
+        <HBox styleClass="navbar">
+            <padding>
+                <Insets top="15" right="30" bottom="15" left="30"/>
+            </padding>
+            <Label fx:id="pageTitle" styleClass="page-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="dateTimeLabel" styleClass="date-time-label"/>
+        </HBox>
 
-            <!-- Content Area -->
-            <BorderPane fx:id="contentArea" VBox.vgrow="ALWAYS" styleClass="main-content"/>
+        <!-- Content Area -->
+        <StackPane fx:id="contentArea" VBox.vgrow="ALWAYS" styleClass="content-area"/>
+    </VBox>
 
-            <!-- Status Bar -->
-            <HBox styleClass="status-bar">
-                <Label fx:id="statusLabel" text="Prêt"/>
-                <Region HBox.hgrow="ALWAYS"/>
-                <Label fx:id="dateTimeLabel" text="Date et heure"/>
-            </HBox>
-        </VBox>
-    </center>
-</BorderPane>
+</HBox>

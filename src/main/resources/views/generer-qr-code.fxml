@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="mainPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Controllers.QRCodeGeneratorController"
+            styleClass="qr-generator-container" stylesheets="@../styles/client.css">
+    <top>
+        <VBox spacing="10" alignment="CENTER" styleClass="generator-header">
+            <padding>
+                <Insets top="20" right="20" bottom="10" left="20"/>
+            </padding>
+            <Label fx:id="titleLabel" text="QR Code pour le produit" styleClass="generator-title"/>
+            <Text text="Scannez ce code pour accéder rapidement aux détails du produit"
+                  styleClass="generator-subtitle" wrappingWidth="400"/>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox alignment="CENTER" spacing="20" styleClass="generator-content">
+            <padding>
+                <Insets top="10" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <!-- Zone d'affichage du QR code -->
+            <StackPane styleClass="qr-code-container">
+                <ImageView fx:id="qrCodeImageView" fitWidth="300" fitHeight="300" preserveRatio="true"/>
+            </StackPane>
+
+            <!-- Informations du produit -->
+            <VBox spacing="10" styleClass="product-info-container">
+                <Label text="Informations du produit" styleClass="info-title"/>
+                <Separator/>
+                <GridPane hgap="10" vgap="5">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" minWidth="100"/>
+                        <ColumnConstraints hgrow="ALWAYS"/>
+                    </columnConstraints>
+
+                    <Label text="ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="info-label"/>
+                    <Label fx:id="idLabel" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="info-value"/>
+
+                    <Label text="Nom:" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="info-label"/>
+                    <Label fx:id="nomLabel" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="info-value"/>
+
+                    <Label text="Catégorie:" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="info-label"/>
+                    <Label fx:id="categorieLabel" GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="info-value"/>
+
+                    <Label text="Prix:" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="info-label"/>
+                    <Label fx:id="prixLabel" GridPane.rowIndex="3" GridPane.columnIndex="1" styleClass="info-value"/>
+
+                    <Label text="Stock:" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="info-label"/>
+                    <Label fx:id="stockLabel" GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="info-value"/>
+                </GridPane>
+            </VBox>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER" spacing="15" styleClass="generator-actions">
+            <padding>
+                <Insets top="10" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <Button fx:id="saveButton" text="Enregistrer" styleClass="save-button" onAction="#handleSave"/>
+            <Button fx:id="closeButton" text="Fermer" styleClass="close-button" onAction="#handleClose"/>
+        </HBox>
+    </bottom>
+</BorderPane>

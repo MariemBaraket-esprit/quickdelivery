@@ -1,0 +1,12 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+
+<!--<?import javafx.scene.control.*?>-->
+<!--<?import javafx.scene.layout.*?>-->
+<!--<?import javafx.geometry.Insets?>-->
+
+<!--<HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: #f0f0f0; -fx-padding: 10;" xmlns:fx="http://javafx.com/fxml" fx:controller="Controllers.ClientNavBarController">-->
+<!--    <Button fx:id="btnProduits" text="Produits" onAction="#handleProduits" styleClass="nav-button"/>-->
+<!--    <Button fx:id="btnCommandes" text="Mes Commandes" onAction="#handleCommandes" styleClass="nav-button"/>-->
+<!--    <Region HBox.hgrow="ALWAYS" />-->
+<!--    <Label fx:id="lblUserName" text="Bienvenue" />-->
+<!--</HBox>-->

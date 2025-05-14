@@ -200,7 +200,18 @@ public class MainDashboardController {
         }
     }
 
-
+    @FXML
+    private void handleOrders() {
+        pageTitle.setText("");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main-view.fxml"));
+            Parent content = loader.load();
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(content);
+        } catch (IOException e) {
+            showError("Erreur", "Erreur lors du chargement de la liste des commandes: " + e.getMessage());
+        }
+    }
 
     @FXML
     private void handleRecruitment() {

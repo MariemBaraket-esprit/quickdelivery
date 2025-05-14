@@ -9,18 +9,26 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import models.Utilisateur;
 import models.Produit;
+import services.CommandeDao;
+import Controllers.QRCodeGeneratorController;
+import Controllers.QRCodeScannerController;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 
 public class ClientProduitDetailsController {
 
     @FXML
     private Label lblNomProduit;
-
-    // Utilisez le nom qui existe réellement dans votre FXML
     @FXML
-    private Button btnAddToCart;  // Gardez le nom original qui est dans le FXML
+    private Button btnCommander;
+    @FXML
+    private Button btnAddToCart;
+    @FXML
+    private Button btnQRCode; // Nouveau bouton pour le QR code
+    @FXML
+    private Button btnScanQRCode; // Nouveau bouton pour scanner un QR code
 
     @FXML
     private Label lblCategorie;
@@ -49,7 +57,14 @@ public class ClientProduitDetailsController {
 
     @FXML
     private void initialize() {
-        System.out.println("Initialisation de ClientProduitDetailsController");
+        // Initialiser les boutons QR code
+        if (btnQRCode != null) {
+            btnQRCode.setOnAction(event -> handleGenerateQRCode());
+        }
+
+        if (btnScanQRCode != null) {
+            btnScanQRCode.setOnAction(event -> handleScanQRCode());
+        }
     }
 
     public void setProduit(Produit produit) {
@@ -80,16 +95,56 @@ public class ClientProduitDetailsController {
         SpinnerValueFactory<Integer> valueFactory =
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(1, produit.getStock(), 1);
         spinnerQuantite.setValueFactory(valueFactory);
-
-        // Désactiver le bouton si le stock est épuisé
-        btnAddToCart.setDisable(produit.getStock() <= 0);
-        btnAddToCart.setText("Commander"); // Changer le texte du bouton à "Commander"
     }
 
     @FXML
-    private void handleAddToCart() {  // Gardez le nom de la méthode qui est dans le FXML
-        // Cette méthode sera appelée quand le bouton est cliqué
-        handleCommander();
+    private void handleGenerateQRCode() {
+        try {
+            // Charger le FXML du générateur de QR code
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/generer-qr-code.fxml"));
+            Parent root = loader.load();
+
+            // Configurer le contrôleur
+            QRCodeGeneratorController controller = loader.getController();
+            controller.setProduit(produit);
+
+            // Créer et configurer la fenêtre
+            Stage stage = new Stage();
+            stage.setTitle("Générer QR Code");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur d'affichage",
+                    "Impossible d'ouvrir le générateur de QR code: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleScanQRCode() {
+        try {
+            // Charger le FXML du scanner de QR code
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/scanner-qr-code.fxml"));
+            Parent root = loader.load();
+
+            // Configurer le contrôleur
+            QRCodeScannerController controller = loader.getController();
+            controller.setClientController(clientController);
+
+            // Créer et configurer la fenêtre
+            Stage stage = new Stage();
+            stage.setTitle("Scanner QR Code");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur d'affichage",
+                    "Impossible d'ouvrir le scanner de QR code: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -97,13 +152,13 @@ public class ClientProduitDetailsController {
         int quantite = spinnerQuantite.getValue();
 
         if (quantite <= 0) {
-            clientController.showAlert(Alert.AlertType.ERROR, "Erreur", "Quantité invalide",
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Quantité invalide",
                     "La quantité doit être supérieure à 0.");
             return;
         }
 
         if (quantite > produit.getStock()) {
-            clientController.showAlert(Alert.AlertType.ERROR, "Erreur", "Stock insuffisant",
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Stock insuffisant",
                     "Il n'y a que " + produit.getStock() + " unités en stock.");
             return;
         }
@@ -131,10 +186,9 @@ public class ClientProduitDetailsController {
             stage.showAndWait();
 
         } catch (IOException e) {
-            System.err.println("Erreur lors de l'ouverture du formulaire de commande: " + e.getMessage());
-            e.printStackTrace();
-            clientController.showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur d'affichage",
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur d'affichage",
                     "Impossible d'ouvrir le formulaire de commande: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -142,5 +196,17 @@ public class ClientProduitDetailsController {
     private void handleClose() {
         Stage stage = (Stage) lblNomProduit.getScene().getWindow();
         stage.close();
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String header, String content) {
+        if (clientController != null) {
+            clientController.showAlert(type, title, header, content);
+        } else {
+            Alert alert = new Alert(type);
+            alert.setTitle(title);
+            alert.setHeaderText(header);
+            alert.setContentText(content);
+            alert.showAndWait();
+        }
     }
 }

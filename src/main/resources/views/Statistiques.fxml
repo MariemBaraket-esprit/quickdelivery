@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<BorderPane prefHeight="700.0" prefWidth="1000.0" stylesheets="@../styles/application.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.StatistiquesController">
+    <top>
+        <VBox styleClass="header">
+            <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="header-label" text="Statistiques et Analyses">
+                <padding>
+                    <Insets bottom="15.0" top="15.0" />
+                </padding>
+            </Label>
+        </VBox>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="stats-scroll-pane">
+            <TabPane tabClosingPolicy="UNAVAILABLE">
+                <Tab text="Aperçu Général">
+                    <VBox spacing="20.0" styleClass="stats-container">
+                        <!-- Cartes statistiques -->
+                        <GridPane hgap="20.0" vgap="20.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <VBox alignment="CENTER" styleClass="stat-card">
+                                <Label styleClass="stat-title" text="Total des Ventes" />
+                                <Label fx:id="lblTotalVentes" styleClass="stat-value" text="0 dt" />
+                            </VBox>
+                            <VBox alignment="CENTER" styleClass="stat-card" GridPane.columnIndex="1">
+                                <Label styleClass="stat-title" text="Commandes" />
+                                <Label fx:id="lblTotalCommandes" styleClass="stat-value" text="0" />
+                            </VBox>
+                            <VBox alignment="CENTER" styleClass="stat-card" GridPane.columnIndex="2">
+                                <Label styleClass="stat-title" text="Valeur Moyenne" />
+                                <Label fx:id="lblValeurMoyenne" styleClass="stat-value" text="0 dt" />
+                            </VBox>
+                        </GridPane>
+
+                        <!-- Graphiques principaux -->
+                        <HBox spacing="20.0">
+                            <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                                <Label styleClass="chart-title" text="Ventes Mensuelles" />
+                                <BarChart fx:id="barChartVentesMensuelles" legendVisible="false">
+                                    <xAxis>
+                                        <CategoryAxis label="Mois" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Montant (dt)" />
+                                    </yAxis>
+                                </BarChart>
+                            </VBox>
+                            <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                                <Label styleClass="chart-title" text="Répartition par Catégorie" />
+                                <PieChart fx:id="pieChartCategories" />
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </Tab>
+                <Tab text="Produits">
+                    <VBox spacing="20.0" styleClass="stats-container">
+                        <!-- Statistiques produits -->
+                        <GridPane hgap="20.0" vgap="20.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <VBox alignment="CENTER" styleClass="stat-card">
+                                <Label styleClass="stat-title" text="Total Produits" />
+                                <Label fx:id="lblTotalProduits" styleClass="stat-value" text="0" />
+                            </VBox>
+                            <VBox alignment="CENTER" styleClass="stat-card" GridPane.columnIndex="1">
+                                <Label styleClass="stat-title" text="Produit le Plus Vendu" />
+                                <Label fx:id="lblProduitPlusVendu" styleClass="stat-value" text="-" />
+                            </VBox>
+                            <VBox alignment="CENTER" styleClass="stat-card" GridPane.columnIndex="2">
+                                <Label styleClass="stat-title" text="Catégorie Principale" />
+                                <Label fx:id="lblCategoriePrincipale" styleClass="stat-value" text="-" />
+                            </VBox>
+                        </GridPane>
+
+                        <!-- Graphiques produits -->
+                        <HBox spacing="20.0">
+                            <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                                <Label styleClass="chart-title" text="Top 5 Produits" />
+                                <BarChart fx:id="barChartTopProduits" legendVisible="false">
+                                    <xAxis>
+                                        <CategoryAxis label="Produit" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Quantité Vendue" />
+                                    </yAxis>
+                                </BarChart>
+                            </VBox>
+                            <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+                                <Label styleClass="chart-title" text="Niveaux de Stock" />
+                                <BarChart fx:id="barChartStock" legendVisible="false">
+                                    <xAxis>
+                                        <CategoryAxis label="Produit" />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Stock Disponible" />
+                                    </yAxis>
+                                </BarChart>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </Tab>
+                <Tab text="Commandes">
+                    <VBox spacing="20.0" styleClass="stats-container">
+                        <!-- Statistiques commandes -->
+                        <GridPane hgap="20.0" vgap="20.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <VBox alignment="CENTER" styleClass="stat-card">
+                                <Label styleClass="stat-title" text="Commandes ce Mois" />
+                                <Label fx:id="lblCommandesMois" styleClass="stat-value" text="0" />
+                            </VBox>
+                            <VBox alignment="CENTER" styleClass="stat-card" GridPane.columnIndex="1">
+                                <Label styleClass="stat-title" text="Commande Moyenne" />
+                                <Label fx:id="lblQuantiteMoyenne" styleClass="stat-value" text="0 articles" />
+                            </VBox>
+                            <VBox alignment="CENTER" styleClass="stat-card" GridPane.columnIndex="2">
+                                <Label styleClass="stat-title" text="Jour le Plus Actif" />
+                                <Label fx:id="lblJourPlusActif" styleClass="stat-value" text="-" />
+                            </VBox>
+                        </GridPane>
+
+                        <!-- Graphique commandes -->
+                        <VBox spacing="10.0">
+                            <Label styleClass="chart-title" text="Évolution des Commandes" />
+                            <BarChart fx:id="barChartEvolutionCommandes" legendVisible="false">
+                                <xAxis>
+                                    <CategoryAxis label="Mois" />
+                                </xAxis>
+                                <yAxis>
+                                    <NumberAxis label="Nombre de Commandes" />
+                                </yAxis>
+                            </BarChart>
+                        </VBox>
+                    </VBox>
+                </Tab>
+            </TabPane>
+        </ScrollPane>
+    </center>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+</BorderPane>

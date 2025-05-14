@@ -10,23 +10,12 @@ public class Produit {
     private double prix;
     private int stock;
     private LocalDate dateAjout;
-    private int taille; // Taille comme entier
+    private int taille;
+    private String image;
 
     public Produit() {}
 
-    public Produit(int id, String nom, String description, String categorie, double prix, int stock, LocalDate dateAjout, int taille) {
-        this.id = id;
-        this.nom = nom;
-        this.description = description;
-        this.categorie = categorie;
-        this.prix = prix;
-        this.stock = stock;
-        this.dateAjout = dateAjout;
-        this.taille = taille;
-    }
-
     // Getters et Setters
-
     public int getId() {
         return id;
     }
@@ -91,8 +80,11 @@ public class Produit {
         this.taille = taille;
     }
 
-    @Override
-    public String toString() {
-        return nom + " - " + prix + " DT - Taille: " + taille;
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
